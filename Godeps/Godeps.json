@@ -1,9 +1,7 @@
 {
 	"ImportPath": "github.com/tonyalaribe/edna",
 	"GoVersion": "go1.6",
-	"Packages": [
-		"./..."
-	],
+	"GodepVersion": "v60",
 	"Deps": [
 		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
@@ -49,6 +47,21 @@
 		},
 		{
 			"ImportPath": "gopkg.in/mgo.v2",
+			"Comment": "r2015.12.06",
+			"Rev": "e30de8ac9ae3b30df7065f766c71f88bba7d4e49"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2/bson",
+			"Comment": "r2015.12.06",
+			"Rev": "e30de8ac9ae3b30df7065f766c71f88bba7d4e49"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2/internal/sasl",
+			"Comment": "r2015.12.06",
+			"Rev": "e30de8ac9ae3b30df7065f766c71f88bba7d4e49"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2/internal/scram",
 			"Comment": "r2015.12.06",
 			"Rev": "e30de8ac9ae3b30df7065f766c71f88bba7d4e49"
 		}
