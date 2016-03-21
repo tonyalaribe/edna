@@ -11,7 +11,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <!--<link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
+
+
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/snap.css">
+
+
         <style>
             body {
                 padding-top: 50px;
@@ -22,18 +30,51 @@
               min-height:100%;
               min-height:100vh;
               background-color:#fff;
+              padding-top: 70px;
+
+
+              backface-visibility:hidden;
+              -webkit-backface-visibility:hidden; /* Chrome and Safari */
+              -moz-backface-visibility:hidden; /* Firefox */
+              -ms-backface-visibility:hidden; /* Internet Explorer 10+ */
             }
+
+            .scrollable{
+                overflow: auto;
+                -webkit-transition-property: top, bottom;
+                transition-property: top, bottom;
+                -webkit-transition-duration: .2s, .2s;
+                transition-duration: .2s, .2s;
+                -webkit-transition-timing-function: linear, linear;
+                transition-timing-function: linear, linear;
+                -webkit-overflow-scrolling: touch;
+            }
+
 
             .snap-drawer, .snap-drawers{
               min-height:100%;
               min-height:100vh;
               background-color:#000;
             }
-        </style>
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/snap.css">
 
+            .edna-nav{
+              display: fixed;
+            }
+            .edna-nav-logo{
+              height:1em;
+              //max-height:100%;
+            }
+
+            .edna-nav-avatar{
+              height:50px;
+              width:50px;
+            }
+
+            .dropdown-menu>li>a{
+              padding: 8px 20px;
+            }
+            #navicon{ cursor: pointer; cursor: hand; }
+        </style>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body>
@@ -54,28 +95,96 @@
                 </div>
 
                 <div id="content" class="snap-content">
+                  <section>
 
-                    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                      <div class="container">
-                        <div class="navbar-header">
-                          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                          </button>
-                          <a class="navbar-brand" href="#">edna</a>
-                        </div>
-                        <div id="navbar" class="navbar-collapse collapse">
-                          ddd
-                        </div><!--/.navbar-collapse -->
-                      </div>
-                    </nav>
-
-                    <div id="toolbar">
-                        <a href="#" id="open-left"></a>
-                        <h1>Default</h1>
+                  <nav class="navbar navbar-default navbar-fixed-top edna-nav">
+                  <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                      <a class="navbar-brand" id="navicon" aria-expanded="false" >
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-navicon"></span>
+                      </a>
+                      <a class="navbar-brand" href="#">
+                          <img alt="Edna" src="img/edna-black.png" class="edna-nav-logo"/>
+                      </a>
                     </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div style="text-align:center">
+
+                      <div style="display:inline-block">
+                        <form class="navbar-form "  role="search">
+                          <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                          </div>
+                          <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                      </div>
+                      <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding:5px;">
+                            Anthony Alaribe <img src="img/avatar.png" class=" img-circle img-thumbnail edna-nav-avatar" /> <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fa fa-gears "></i>&nbsp;&nbsp;Settings</a></li>
+                            <li><a href="#"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Help</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Logout<i class=" pull-right fa fa-power-off"></i></a></li>
+                          </ul>
+                        </li>
+                      </ul>
+
+                      <div style="clear:both"></div>
+                    </div><!-- /.navbar-collapse -->
+                    <div style="clear:both"></div>
+                  </div><!-- /.container-fluid -->
+                  <div style="clear:both"></div>
+                  </nav>
+                </section>
+                  <section>
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+                  </section>
+
 
                 </div>
 
@@ -99,6 +208,21 @@
           element: document.getElementById('content')
         });
 
+
+        document.getElementById('navicon').addEventListener('click', function(){
+
+            if( snapper.state().state=="left" ){
+                snapper.close();
+            } else {
+                snapper.open('left');
+            }
+
+        });
+
+        function showNav(){
+          console.log("show nav");
+          snapper.open('left');
+        }
 
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
