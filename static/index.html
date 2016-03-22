@@ -26,6 +26,10 @@
                 padding-bottom: 20px;
             }
 
+            a, a:hover{
+              text-decoration: none;
+            }
+
             #content{
               min-height:100%;
               min-height:100vh;
@@ -54,7 +58,19 @@
             .snap-drawer, .snap-drawers{
               min-height:100%;
               min-height:100vh;
-              background-color:#000;
+              background-color:#2B303B;
+              color:#626262;
+            }
+
+            .gray{
+              color:#626262;
+            }
+            .purple-dark{
+              color:#2B303B;
+            }
+
+            .purple-light{
+              color: #3B4753;
             }
 
             .edna-nav{
@@ -73,6 +89,14 @@
             .dropdown-menu>li>a{
               padding: 8px 20px;
             }
+
+
+            .bg-success {
+                background-color: #10cfbd;
+            }
+
+
+
             #navicon{ cursor: pointer; cursor: hand; }
         </style>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
@@ -84,10 +108,111 @@
 
 
         <div class="snap-drawers">
-                    <div class="snap-drawer snap-drawer-left">
-                        <div>
-                          kjjjgkj
-                        </div>
+                    <div class="snap-drawer snap-drawer-left page-sidebar">
+
+
+                      <div class="sidebar-overlay-slide from-top" id="appMenu">
+                      <div class="row">
+                      <div class="col-xs-6 no-padding">
+                      <a href="#" class="p-l-40"><img src="assets/img/demo/social_app.svg" alt="socail">
+                      </a>
+                      </div>
+                      <div class="col-xs-6 no-padding">
+                      <a href="#" class="p-l-10"><img src="assets/img/demo/email_app.svg" alt="socail">
+                      </a>
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="col-xs-6 m-t-20 no-padding">
+                      <a href="#" class="p-l-40"><img src="assets/img/demo/calendar_app.svg" alt="socail">
+                      </a>
+                      </div>
+                      <div class="col-xs-6 m-t-20 no-padding">
+                      <a href="#" class="p-l-10"><img src="assets/img/demo/add_more.svg" alt="socail">
+                      </a>
+                      </div>
+                      </div>
+                      </div>
+
+
+                      <div class="sidebar-header">
+                      <img src="img/edna-md.png" alt="logo" class="brand" data-src="assets/img/logo_white.png" data-src-retina="assets/img/logo_white_2x.png" width="78" height="22">
+                      <div class="sidebar-header-controls">
+                      <button type="button" class="btn btn-xs sidebar-slide-toggle btn-link m-l-20" data-pages-toggle="#appMenu"><i class="fa fa-angle-down fs-16"></i>
+                      </button>
+                      <button type="button" class="btn btn-link visible-lg-inline" data-toggle-pin="sidebar"><i class="fa fs-12"></i>
+                      </button>
+                      </div>
+                      </div>
+
+
+                      <div class="sidebar-menu">
+
+                      <div class="scroll-wrapper menu-items" style="position: relative; padding-top:30px;">
+                        <ul class="menu-items scroll-content scroll-scrolly_visible" style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 618px;">
+                      <li class="m-t-30 ">
+                      <a href="index.html" class="detailed">
+                      <span class="title">Dashboard</span>
+                      <span class="details">12 New notifications</span>
+                      </a>
+                      <span class="icon-thumbnail bg-success "><i class="fa fa-home"></i></span>
+                      </li>
+
+                      <li>
+                      <a href="javascript:;"><span class="title">Staff</span>
+                      <span class=" arrow"></span></a>
+                      <span class="icon-thumbnail">St</span>
+                      <ul class="sub-menu">
+                      <li class="">
+                      <a href="default_layout.html">Default</a>
+                      <span class="icon-thumbnail">dl</span>
+                      </li>
+                      <li class="">
+                      <a href="secondary_layout.html">Secondary</a>
+                      <span class="icon-thumbnail">sl</span>
+                      </li>
+                      <li class="">
+                      <a href="boxed_layout.html">Boxed</a>
+                      <span class="icon-thumbnail">bl</span>
+                      </li>
+                      <li class="">
+                      <a href="sidemenu_and_horizontal_menu.html">Horizontal Menu</a>
+                      <span class="icon-thumbnail">hm</span>
+                      </li>
+                      <li class="">
+                      <a href="rtl_layout.html">RTL</a>
+                      <span class="icon-thumbnail">rl</span>
+                      </li>
+                      <li class="">
+                      <a href="builder.html#tabContent">Columns</a>
+                      <span class="icon-thumbnail">cl</span>
+                      </li>
+                      </ul>
+                      </li>
+
+
+                      <li>
+                      <a href="javascript:;"><span class="title">Students </span>
+                      <span class=" arrow"></span></a>
+                      <span class="icon-thumbnail"><i class="fa fa-group"></i></span>
+                      <ul class="sub-menu">
+                      <li class="">
+                      <a href="google_map.html">Google Maps</a>
+                      <span class="icon-thumbnail">gm</span>
+                      </li>
+                      <li class="">
+                      <a href="vector_map.html">Vector Maps</a>
+                      <span class="icon-thumbnail">vm</span>
+                      </li>
+                      </ul>
+                      </li>
+
+                      </ul><div class="scroll-element scroll-x scroll-scrolly_visible"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="width: 89px;"></div></div></div><div class="scroll-element scroll-y scroll-scrolly_visible"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="height: 406px; top: 0px;"></div></div></div></div>
+                      <div class="clearfix"></div>
+                      </div>
+
+
+
                     </div>
                     <div class="snap-drawer snap-drawer-right">
                       jjkj  jkj jk  jk
