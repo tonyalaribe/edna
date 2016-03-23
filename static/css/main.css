@@ -131,9 +131,9 @@
        margin: 0;
        padding: 0;
        position: relative;
-       overflow: auto;
-       -webkit-overflow-scrolling: touch;
-       //height: calc(100% - 10px);
+       //overflow: visible;
+       -webkit-overflow-scrolling: touch;//
+       height: calc(100% - 10px);
        width: 100%;
    }
 
@@ -360,4 +360,20 @@
 
 
 
+
+
+
+
    //after
+
+.nav-search{
+    border-color:transparent;
+}
+.nav-search>.input-group-addon {
+    background-color:transparent;
+    border-color:transparent;
+
+}
+.nav-search>.form-control{
+    border-color:transparent;
+}
