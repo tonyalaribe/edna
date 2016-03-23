@@ -1,0 +1,392 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <!--<link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
+
+
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/snap.css">
+        <link rel="stylesheet" href="css/perfect-scrollbar.min.css">
+
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+
+            a, a:hover{
+              text-decoration: none;
+            }
+
+            #content{
+              min-height:100%;
+              min-height:100vh;
+              background-color:#fff;
+              padding-top: 70px;
+
+
+              backface-visibility:hidden;
+              -webkit-backface-visibility:hidden; /* Chrome and Safari */
+              -moz-backface-visibility:hidden; /* Firefox */
+              -ms-backface-visibility:hidden; /* Internet Explorer 10+ */
+            }
+
+            .scrollable{
+                overflow: auto;
+                -webkit-transition-property: top, bottom;
+                transition-property: top, bottom;
+                -webkit-transition-duration: .2s, .2s;
+                transition-duration: .2s, .2s;
+                -webkit-transition-timing-function: linear, linear;
+                transition-timing-function: linear, linear;
+                -webkit-overflow-scrolling: touch;
+            }
+
+
+            .snap-drawer, .snap-drawers{
+              min-height:100%;
+              min-height:100vh;
+              background-color:#2B303B;
+              color:#626262;
+            }
+
+            .gray{
+              color:#626262;
+            }
+            .purple-dark{
+              color:#2B303B;
+            }
+
+            .purple-light{
+              color: #3B4753;
+            }
+
+            .edna-nav{
+              display: fixed;
+            }
+            .edna-nav-logo{
+              height:1em;
+              //max-height:100%;
+            }
+
+            .edna-nav-avatar{
+              height:50px;
+              width:50px;
+            }
+
+            .dropdown-menu>li>a{
+              padding: 8px 20px;
+            }
+
+
+            .bg-success {
+                background-color: #10cfbd;
+            }
+
+            .b-danger, .b-danger:hover{
+              background-color:#D1241D;
+              color:white !important;
+              cursor: pointer; cursor: hand;
+            }
+
+
+            #navicon{ cursor: pointer; cursor: hand; }
+        </style>
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+        <div class="snap-drawers">
+                    <div class="snap-drawer snap-drawer-left page-sidebar" id="leftMenu">
+
+
+                      <div class="sidebar-menu sidebar-overlay-slide from-top" id="appOverlayMenu">
+
+
+                          <div class="menu-items" >
+                            <h4 style="color:#788195; padding-bottom:20px;"> Modules Settings</h4>
+                            <ul class="menu-items " >
+                              <li class="m-t-30 ">
+                              <a href="index.html" class="detailed side-a">
+                              <span class="title">Students</span>
+                              </a>
+
+                              <a class="icon-thumbnail b-danger pull-right"><i class="fa fa-home"></i></a>
+
+                              </li>
+                              <br/>
+                              <li class="m-t-30 ">
+                              <a href="index.html" class="detailed side-a" style="width:100%; ">
+
+                                  <span class="title" style="border:1px solid #788195; padding:5px 10px;"> <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp; Add Addon</span>
+                              </a>
+
+
+                              </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                          </div>
+
+                      </div>
+
+
+                      <div class="sidebar-header">
+                      <img src="img/edna-md.png" alt="logo" class="brand" data-src="assets/img/logo_white.png" data-src-retina="assets/img/logo_white_2x.png" width="78" height="22">
+                      <div class="sidebar-header-controls">
+                      <button type="button" class="side-a btn btn-xs sidebar-slide-toggle btn-link m-l-20" onclick="if(document.getElementById('appOverlayMenu').style.top != '-100%' ){ document.getElementById('appOverlayMenu').style.top = '-100%';}else{document.getElementById('appOverlayMenu').style.top = '0';};"><i class="fa fa-angle-down fs-16"></i>
+                      </button>
+                      </div>
+                      </div>
+
+
+                      <div class="sidebar-menu">
+
+                      <div class="scroll-wrapper menu-items" style="position: relative; padding-top:30px;">
+                        <ul class="menu-items scroll-content scroll-scrolly_visible" style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 618px;">
+                      <li class="m-t-30 ">
+                      <a href="index.html" class="detailed side-a">
+                      <span class="title">Dashboard</span>
+                      <span class="details">12 New notifications</span>
+                      </a>
+
+                      <a class="icon-thumbnail b-danger pull-right"><i class="fa fa-home"></i></a>
+
+                      </li>
+
+                      <li>
+                      <a class="side-a" href="javascript:;" onclick="dropExpand('sideNavStaff')">
+                        <span class="title">Staff</span>
+                        <span class=" arrow"></span>
+                      </a>
+                      <a class="icon-thumbnail" onclick="dropExpand('sideNavStaff')">St</a>
+                      <ul class="sub-menu" id="sideNavStaff">
+                        <li class="">
+                          <a class="side-a" href="default_layout.html">Default</a>
+                          <a class="icon-thumbnail">dl</a>
+                        </li>
+                        <li class="">
+                          <a class="side-a" href="secondary_layout.html">Secondary</a>
+                          <a class="icon-thumbnail">sl</a>
+                        </li>
+                        <li class="">
+                          <a class="side-a" href="boxed_layout.html">Boxed</a>
+                          <span class="icon-thumbnail">bl</span>
+                        </li>
+                        <li class="">
+                          <a class="side-a" href="sidemenu_and_horizontal_menu.html">Horizontal Menu</a>
+                          <span class="icon-thumbnail">hm</span>
+                        </li>
+                        <li class="">
+                          <a class="side-a" href="rtl_layout.html">RTL</a>
+                          <span class="icon-thumbnail">rl</span>
+                        </li>
+                        <li class="">
+                          <a class="side-a" href="builder.html#tabContent">Columns</a>
+                          <span class="icon-thumbnail">cl</span>
+                        </li>
+                      </ul>
+                      </li>
+
+
+                      <li>
+                        <a class="side-a" href="javascript:;" onclick="dropExpand('sideNavStudent')">
+                          <span class="title">Students </span>
+                          <span class=" arrow"></span>
+
+                        </a>
+
+                        <a onclick="dropExpand('sideNavStudent')" class="icon-thumbnail"><i class="fa fa-group"></i></a>
+
+                        <ul class="sub-menu" id="sideNavStudent">
+                          <li class="">
+                            <a href="google_map.html">Google Maps</a>
+                            <span class="icon-thumbnail">gm</span>
+                          </li>
+                          <li class="">
+                            <a href="vector_map.html">Vector Maps</a>
+                            <span class="icon-thumbnail">vm</span>
+                          </li>
+                        </ul>
+                      </li>
+
+                      </ul>
+                      <div class="scroll-element scroll-x scroll-scrolly_visible"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="width: 89px;"></div></div></div><div class="scroll-element scroll-y scroll-scrolly_visible"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="height: 406px; top: 0px;"></div></div></div></div>
+                      <div class="clearfix"></div>
+                      </div>
+
+
+
+                    </div>
+                    <div class="snap-drawer snap-drawer-right">
+                      jjkj  jkj jk  jk
+                    </div>
+                </div>
+
+                <div id="content" class="snap-content">
+                  <section>
+
+                  <nav class="navbar navbar-default navbar-fixed-top edna-nav">
+                  <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                      <a class="navbar-brand" id="navicon" aria-expanded="false" >
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-navicon"></span>
+                      </a>
+                      <a class="navbar-brand" href="#">
+                          <img alt="Edna" src="img/edna-black.png" class="edna-nav-logo"/>
+                      </a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div style="text-align:center">
+
+                      <div style="display:inline-block">
+                        <form class="navbar-form "  role="search">
+                          <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                          </div>
+                          <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                      </div>
+                      <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding:5px;">
+                            Anthony Alaribe <img src="img/avatar.png" class=" img-circle img-thumbnail edna-nav-avatar" /> <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fa fa-gears "></i>&nbsp;&nbsp;Settings</a></li>
+                            <li><a href="#"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Help</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Logout<i class=" pull-right fa fa-power-off"></i></a></li>
+                          </ul>
+                        </li>
+                      </ul>
+
+                      <div style="clear:both"></div>
+                    </div><!-- /.navbar-collapse -->
+                    <div style="clear:both"></div>
+                  </div><!-- /.container-fluid -->
+                  <div style="clear:both"></div>
+                  </nav>
+                </section>
+                  <section>
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+
+                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/>
+                  </section>
+
+
+                </div>
+
+
+
+
+
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/snap.min.js"></script>
+        <script src="js/perfect-scrollbar.min.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+
+        document.getElementById('appOverlayMenu').style.top = '-100%';
+
+        var snapper = new Snap({
+          element: document.getElementById('content')
+        });
+
+
+        document.getElementById('navicon').addEventListener('click', function(){
+
+            if( snapper.state().state=="left" ){
+                snapper.close();
+            } else {
+                snapper.open('left');
+            }
+
+        });
+
+        function showNav(){
+          snapper.open('left');
+        }
+
+        function dropExpand(e){
+          var x = document.getElementById(e).style.display;
+          console.log(x)
+          if (x == 'block'){
+            document.getElementById(e).style.display = 'none';
+          } else{
+            document.getElementById(e).style.display = 'block';
+          }
+
+
+        }
+
+
+        var container = document.getElementById('leftMenu');
+        Ps.initialize(container);
+
+        </script>
+    </body>
+</html>
