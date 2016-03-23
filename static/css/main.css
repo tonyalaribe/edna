@@ -109,9 +109,13 @@
    }
 
    .page-sidebar .sidebar-menu {
-       height: calc(100% - 50px);
+
        position: relative;
        width: 100%;
+   }
+
+   .sidebar-calc-height{
+     height: calc(100% - 50px);
    }
 
    .page-sidebar .sidebar-menu .outer-tab-nav-section {

@@ -147,7 +147,7 @@
 
 
                       <div class="sidebar-header">
-                      <img src="img/edna-md.png" alt="logo" class="brand" data-src="assets/img/logo_white.png" data-src-retina="assets/img/logo_white_2x.png" width="78" height="22">
+                      <img src="img/edna-md.png" alt="logo" class="brand"  width="78" height="22" style="cursor: pointer; cursor: hand;" onclick="if(document.getElementById('appOverlayMenu').style.top != '-100%' ){ document.getElementById('appOverlayMenu').style.top = '-100%';}else{document.getElementById('appOverlayMenu').style.top = '0';};">
                       <div class="sidebar-header-controls">
                       <button type="button" class="side-a btn btn-xs sidebar-slide-toggle btn-link m-l-20" onclick="if(document.getElementById('appOverlayMenu').style.top != '-100%' ){ document.getElementById('appOverlayMenu').style.top = '-100%';}else{document.getElementById('appOverlayMenu').style.top = '0';};"><i class="fa fa-angle-down fs-16"></i>
                       </button>
@@ -155,7 +155,7 @@
                       </div>
 
 
-                      <div class="sidebar-menu">
+                      <div class="sidebar-menu sidebar-calc-height">
 
                       <div class="scroll-wrapper menu-items" style="position: relative; padding-top:30px;">
                         <ul class="menu-items scroll-content scroll-scrolly_visible" style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 618px;">
@@ -249,8 +249,8 @@
                         <span class="sr-only">Toggle navigation</span>
                         <span class="fa fa-navicon"></span>
                       </a>
-                      <a class="navbar-brand" href="#">
-                          <img alt="Edna" src="img/edna-black.png" class="edna-nav-logo"/>
+                      <a class="navbar-brand" id="navimage">
+                          <img alt="Edna" src="img/edna-black.png" class="edna-nav-logo" style="cursor: pointer; cursor: hand;"/>
                       </a>
                     </div>
 
@@ -367,6 +367,16 @@
 
 
         document.getElementById('navicon').addEventListener('click', function(){
+
+            if( snapper.state().state=="left" ){
+                snapper.close();
+            } else {
+                snapper.open('left');
+            }
+
+        });
+
+        document.getElementById('navimage').addEventListener('click', function(){
 
             if( snapper.state().state=="left" ){
                 snapper.close();
