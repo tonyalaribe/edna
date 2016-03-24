@@ -26,35 +26,103 @@
             margin: 2em auto;
         }
 
-        h1 {
+        h1{
+          color: #555;
+          font-size: 7em;
+          font-weight: 600;
+        }
+        h2 {
             color: #555;
-            font-size: 2em;
-            font-weight: 400;
+            font-size: 3.5em;
+            font-weight: 100;
         }
 
         p {
+            padding-top:10px;
             margin: 0 auto;
-            width: 280px;
+            width: 480px;
+            font-size: 1.2em;
+            font-weight:100;
         }
 
-        @media only screen and (max-width: 280px) {
+        .footer-p{
+          font-size: 0.8em;
+        }
+        @media only screen and (max-width: 500px) {
 
-            body, p {
+            body {
                 width: 95%;
             }
 
-            h1 {
+            p {
+                width: 85%;
+            }
+
+            h1{
+
+                font-size: 4.5em;
+                margin: 0 0 0.3em;
+            }
+            h2 {
                 font-size: 1.5em;
                 margin: 0 0 0.3em;
             }
+            p{
+              font-size: 0.8em;
+            }
+            .footer-p{
+              font-size: 0.6em;
+            }
 
+        }
+
+        .logo-footer{
+          position:absolute;
+          bottom:0;
+          width:100%;
+          text-align: center;
+          padding:20px 5px;
+        }
+
+        .logo-footer .img{
+          display: inline-block;
+
+          //width:30%;
+          text-align: right;
+          padding:10px;
+        }
+        .logo-footer img{
+          height:20px;
+        }
+
+        .logo-footer p{
+          display: inline-block;
+          height:20px;
+          width:69%;
+          text-align: left;
+        }
+
+
+        .logo-wrapper{
+          //width: 26em;
+          display:inline-block;
         }
 
     </style>
 </head>
 <body>
-    <h1>Page Not Found</h1>
-    <p>Sorry, but the page you were trying to view does not exist.</p>
+    <h1>404</h1>
+    <h2>Page Not Found</h2>
+    <p>Sorry, but the page you are trying to view does not exist. <a href="/">Click here to go home</a> </p>
+
+    <div class="logo-footer">
+      <div class="logo-wrapper">
+        <div class="img">
+          <a href="/"><img  src="img/edna-black.png" /></a>
+        </div>
+        <p class="footer-p">Manage  students, data and financials for your school with ease</p>
+      </div>
+    </div>
 </body>
 </html>
 <!-- IE needs 512+ bytes: http://blogs.msdn.com/b/ieinternals/archive/2010/08/19/http-error-pages-in-internet-explorer.aspx -->
