@@ -377,3 +377,123 @@
 .nav-search>.form-control{
     border-color:transparent;
 }
+
+
+
+//register
+
+body{
+  padding:0;
+}
+.register-image-side{
+  height:100vh;
+  background-image: url(/img/loginbg.jpg);
+  background-size: cover;
+  padding:0;
+}
+.register-form-side{
+  height:100vh;
+  padding:0;
+  background-color:#FFFFFF;
+}
+
+.register-form-side form{
+  padding: 20px 0;
+}
+
+.register-form-side .pad{
+  padding:50px 20px;
+}
+.register-heading img{
+  height:30px;
+  margin:0px 0 10px;
+}
+
+.edna-form-group{
+  border: 1px solid #ddd;
+  padding:10px;
+  border-radius: 5px;
+}
+.edna-form-group input{
+  background-color:transparent;
+  border:none;
+  padding:0;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  height:auto;
+}
+.register-btn{
+
+  background-color: #6d5cae;
+  border: 1px solid #6d5cae;
+  color:#fff;
+}
+.register-btn:hover{
+
+  background-color: #8a7dbe;
+  border: 1px solid #8a7dbe;
+  color:#fff;
+}
+
+.logo-footer{
+  width:100%;
+  text-align: center;
+  padding:20px 5px;
+}
+
+@media only screen and (min-width: 500px) {
+  .logo-footer{
+    position:absolute;
+    bottom:0;
+  }
+}
+
+.logo-footer .img{
+  display: inline-block;
+
+  //width:30%;
+  text-align: right;
+  padding:10px;
+}
+.logo-footer img{
+  height:20px;
+}
+
+.logo-footer p{
+  display: inline-block;
+  height:20px;
+  width:69%;
+  text-align: left;
+  font-size: 0.7em;
+}
+
+@media only screen and (min-width: 500px) {
+  .logo-footer p{
+    font-size: 0.8em;
+  }
+}
+.logo-wrapper{
+  //width: 26em;
+  display:inline-block;
+}
+
+.register-image-side .bottom-content{
+  position:absolute;
+  bottom:2px;
+  left:2px;
+  max-width:36em;
+  padding:20px;
+}
+
+.register-bottom-h2{
+  font-size:28px;
+  line-height:40px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.register-form{
+  display: inline-block;
+  width:100%;
+  max-width:500px;
+  background-color:transparent;
+}
