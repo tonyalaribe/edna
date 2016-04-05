@@ -13,13 +13,13 @@ func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println(len(h))
 	if h[0] == "www" || len(h) == 1 {
 		log.Println("landing page")
-		xx := template.New("landing.html").Delims("<&", "&>")
-		xx, err := xx.ParseFiles("static/landing.html")
+		xx := template.New("index.html").Delims("<&", "&>")
+		xx, err := xx.ParseFiles("static/index.html")
 		if err != nil {
 			log.Fatal(err)
 		}
 		w.Header().Set("Content-Type", "text/html")
-		err = xx.ExecuteTemplate(w, "landing.html", "")
+		err = xx.ExecuteTemplate(w, "index.html", "")
 		if err != nil {
 			log.Fatal(err)
 		}
