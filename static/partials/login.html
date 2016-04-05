@@ -1,0 +1,59 @@
+    <body style="padding-top:0;">
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <section ng-controller="LoginCtrl as login">
+            <section class="col-sm-6 col-md-8 register-image-side hidden-xs" >
+
+              <div class="bottom-content" style="color:#fff;">
+                <h2 class="register-bottom-h2" style="color:#fff;">
+                Edna makes managing your school a breeze</h2>
+                <p class="register-bottom-p" >
+                images Displayed are solely for representation purposes only, All work copyright of respective
+                owner, otherwise © 2013-2014 Edna.
+                </p>
+              </div>
+            </section>
+
+            <section class="col-sm-6 col-md-4 register-form-side">
+              <div  class="pad">
+                <br/>
+                <div class="register-heading">
+                  <a href="/"><img  src="img/edna-black.png" /></a>
+                </div>
+                <form id="login_form" >
+                  <p>Sign into your edna account</p>
+                  <br/>
+                  <div class="form-group edna-form-group">
+                    <label for="username" >LOGIN</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="User Name" ng-model="login.username">
+                  </div>
+                  <div class="form-group edna-form-group">
+                    <label for="password">PASSWORD</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Credentials" ng-model="login.password">
+                  </div>
+
+                  <div class="checkbox" style="margin:25px  0;">
+                    <label>
+                      <input type="checkbox" id="remember" name="remember" ng-model="login.remember"  /> Keep Me Signed In
+                    </label>
+                  </div>
+
+
+                  <button type="submit"  class="btn register-btn" style="padding: 8px 30px;" ng-click="login.login()" >Submit</button>
+                  </form>
+              </div>
+              <div class="logo-footer">
+                <div class="logo-wrapper">
+                  <div class="img">
+                    <a href="/"><img  src="img/edna-black.png" /></a>
+                  </div>
+                  <p class="footer-p">Manage  students, data and financials for your school with ease</p>
+                </div>
+              </div>
+            </section
+
+        </section>
+
+    </body>

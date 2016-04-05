@@ -1,0 +1,37 @@
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="NewStaffCtrl">
+
+  <form method="post">
+      <br/>
+    <div class="form-group edna-form-group ">
+      <label for="staff_name">Staff Name</label>
+      <input type="text" class="form-control" id="staff_name"  name="staff_name"  placeholder="John Etim" ng-model="newstaff.name"/>
+    </div>
+    <div class="form-group edna-form-group "  style="width:49%; display:inline-block">
+      <label for="staff_type">Staff Type</label>
+      <select class="form-control" ng-model="newstaff.type">
+        <option>Teaching Staff</option>
+        <option>Non-Teaching Staff</option>
+      </select>
+    </div>
+
+    <div class="form-group edna-form-group "  style="width:49%; display:inline-block">
+      <label for="staff_email">Email</label>
+      <input type="text" class="form-control" ng-model="newstaff.email" id="staff_email" name="staff_email" placeholder="john.etim@example.com"/>
+    </div>
+
+    <div class="form-group edna-form-group " style="width:49%; display:inline-block">
+      <label for="staff_phone">Phone no</label>
+      <input type="text" class="form-control" ng-model="newstaff.phone" id="staff_phone"  name="admin_phone" placeholder="Will serve as a username"/>
+    </div>
+
+    <div class="form-group edna-form-group " style="width:50%; display:inline-block">
+      <label for="phone">Password</label>
+      <input type="text" class="form-control" ng-model="newstaff.password" id="password" name="password" placeholder="Minimum 4 characters"/>
+    </div>
+
+
+    <br/>
+    <button type="submit" class="btn register-btn" style="padding: 8px 30px;"  ng-click="newstaffx(newstaff)">Submit</button>
+    </form>
+
+  </section>

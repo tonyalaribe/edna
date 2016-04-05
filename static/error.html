@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Error</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        * {
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        html {
+            color: #888;
+            display: table;
+            font-family: sans-serif;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
+        body {
+            display: table-cell;
+            vertical-align: middle;
+            margin: 2em auto;
+        }
+
+        h1{
+          color: #555;
+          font-size: 7em;
+          font-weight: 600;
+        }
+        h2 {
+            color: #555;
+            font-size: 3.5em;
+            font-weight: 100;
+        }
+
+        p {
+            padding-top:10px;
+            margin: 0 auto;
+            width: 480px;
+            font-size: 1.2em;
+            font-weight:100;
+        }
+
+        .footer-p{
+          font-size: 0.8em;
+        }
+        @media only screen and (max-width: 500px) {
+
+            body {
+                width: 95%;
+            }
+
+            p {
+                width: 85%;
+            }
+
+            h1{
+
+                font-size: 4.5em;
+                margin: 0 0 0.3em;
+            }
+            h2 {
+                font-size: 1.5em;
+                margin: 0 0 0.3em;
+            }
+            p{
+              font-size: 0.8em;
+            }
+            .footer-p{
+              font-size: 0.6em;
+            }
+
+        }
+
+        .logo-footer{
+          position:absolute;
+          bottom:0;
+          width:100%;
+          text-align: center;
+          padding:20px 5px;
+        }
+
+        .logo-footer .img{
+          display: inline-block;
+
+          //width:30%;
+          text-align: right;
+          padding:10px;
+        }
+        .logo-footer img{
+          height:20px;
+        }
+
+        .logo-footer p{
+          display: inline-block;
+          height:20px;
+          width:69%;
+          text-align: left;
+        }
+
+
+        .logo-wrapper{
+          //width: 26em;
+          display:inline-block;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Error</h1>
+    <h3>There was a problem.</h3>
+    <p>The verification you followed is invalid. <a href="/">Go back to the Homepage</a> </p>
+
+    <div class="logo-footer">
+      <div class="logo-wrapper">
+        <div class="img">
+          <a href="/"><img  src="img/edna-black.png" /></a>
+        </div>
+        <p class="footer-p">Manage  students, data and financials for your school with ease</p>
+      </div>
+    </div>
+</body>
+</html>
+<!-- IE needs 512+ bytes: http://blogs.msdn.com/b/ieinternals/archive/2010/08/19/http-error-pages-in-internet-explorer.aspx -->

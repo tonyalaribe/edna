@@ -1,0 +1,40 @@
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="NewSubjectCtrl">
+
+  <form method="post">
+    <h3>New Subject</h3>
+      <br/>
+    <div class="form-group edna-form-group ">
+      <label for="subject_name">Subject Name</label>
+      <input type="text" class="form-control" id="subject_name"  name="subject_name"  placeholder="JSS 1 Maths" ng-model="subject.name"/>
+    </div>
+    <div class="form-group edna-form-group "  style="width:49%; display:inline-block">
+      <label for="parent_class">Parent Class</label>
+      <select class="form-control" id="parent_class" ng-model="subject.parent">
+        <option>None</option>
+        <option>JSS 1</option>
+        <option>JSS 1A</option>
+        <option>JSS 1B</option>
+        <option>JSS 2</option>
+        <option>JSS 3</option>
+      </select>
+    </div>
+
+    <div class="form-group edna-form-group "  style="width:49%; display:inline-block">
+      <label for="subject_teacher">Subject Teacher</label>
+      <select class="form-control" id="subject_teacher" ng-model="subject.teacher[0]" >
+        <option>None</option>
+        <option>Mr Okon</option>
+        <option>JSS 1A</option>
+        <option>JSS 1B</option>
+        <option>JSS 2</option>
+        <option>JSS 3</option>
+      </select>
+    </div>
+
+
+    <br/>
+    <button type="submit" class="btn register-btn" style="padding: 8px 30px;"  ng-click="newsubject(subject)">Submit</button>
+    </form>
+
+  </section>
+<br/><br/><br/>

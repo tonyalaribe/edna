@@ -25,7 +25,7 @@
         </style>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
-    <body>
+    <body ng-app="edna" ui-view="body" ng-controller="RootCtrl as root">
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -79,12 +79,12 @@
                       <div class="scroll-wrapper menu-items" style="position: relative; padding-top:30px;">
                         <ul class="menu-items scroll-content scroll-scrolly_visible" style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 618px;">
                       <li class="m-t-30 ">
-                      <a href="index.html" class="detailed side-a">
+                      <a ui-sref="root" class="detailed side-a">
                       <span class="title">Dashboard</span>
                       <span class="details">12 New notifications</span>
                       </a>
 
-                      <a class="icon-thumbnail b-danger pull-right"><i class="fa fa-home"></i></a>
+                      <a class="icon-thumbnail b-danger pull-right" ui-sref="root" ><i class="fa fa-home"></i></a>
 
                       </li>
 
@@ -96,26 +96,53 @@
                       <a class="icon-thumbnail" onclick="dropExpand('sideNavStaff')">St</a>
                       <ul class="sub-menu" id="sideNavStaff">
                         <li class="">
-                          <a class="side-a" href="default_layout.html">Default</a>
-                          <a class="icon-thumbnail pull-right">dl</a>
+                          <a class="side-a" ui-sref="staff.new">New</a>
+                          <a class="icon-thumbnail pull-right" ui-sref="staff.new"><i class="fa fa-plus"></i></a>
                           <div style="clear:both"></div>
                         </li>
                         <li class="">
-                          <a class="side-a" href="secondary_layout.html">Secondary</a>
-                          <a class="icon-thumbnail pull-right">sl</a>
+                          <a class="side-a" ui-sref="staff.list">List</a>
+                          <a class="icon-thumbnail pull-right" ui-sref="staff.list">li</a>
                           <div style="clear:both"></div>
                         </li>
-                        <li class="">
-                          <a class="side-a" href="boxed_layout.html">Boxed</a>
-                          <span class="icon-thumbnail pull-right">bl</span>
-                          <div style="clear:both"></div>
-                        </li>
-
-
 
                       </ul>
                       </li>
 
+                      <li>
+                        <a class="side-a" onclick="dropExpand('sideNavClass')">
+                          <span class="title">Classes and Subjects </span>
+                          <span class=" arrow"></span>
+                          <div style="clear:both"></div>
+
+                        </a>
+
+                        <a onclick="dropExpand('sideNavClass')" class="icon-thumbnail"><i class="fa fa-group"></i></a>
+
+                        <ul class="sub-menu" id="sideNavClass">
+                          <li class="">
+                            <a class="side-a" ui-sref="class.new">New Class</a>
+                            <a class="icon-thumbnail pull-right" ui-sref="class.new"><i class="fa fa-plus"></i></a>
+                            <div style="clear:both"></div>
+                          </li>
+                          <li class="">
+                            <a class="side-a" ui-sref="class.list">Classes</a>
+                            <a class="icon-thumbnail pull-right" ui-sref="class.list">li</a>
+                            <div style="clear:both"></div>
+                          </li>
+                          <li class="">
+                            <a class="side-a" ui-sref="class.subject_new">New Subject</a>
+                            <a class="icon-thumbnail pull-right" ui-sref="class.subject_new"><i class="fa fa-plus"></i></a>
+                            <div style="clear:both"></div>
+                          </li>
+                          <li class="">
+                            <a class="side-a" ui-sref="class.subject_list">Subjects</a>
+                            <a class="icon-thumbnail pull-right" ui-sref="class.subject_list">li</a>
+                            <div style="clear:both"></div>
+                          </li>
+
+                          </ul>
+                      </li>
 
                       <li>
                         <a class="side-a" onclick="dropExpand('sideNavStudent')">
@@ -129,38 +156,16 @@
 
                         <ul class="sub-menu" id="sideNavStudent">
 
-                            <li class="">
-                              <a class="side-a" href="default_layout.html">Default</a>
-                              <a class="icon-thumbnail pull-right">dl</a>
-                              <div style="clear:both"></div>
-                            </li>
-                            <li class="">
-                              <a class="side-a" href="secondary_layout.html">Secondary</a>
-                              <a class="icon-thumbnail pull-right">sl</a>
-                              <div style="clear:both"></div>
-                            </li>
-                            <li class="">
-                              <a class="side-a" href="boxed_layout.html">Boxed</a>
-                              <span class="icon-thumbnail pull-right">bl</span>
-                              <div style="clear:both"></div>
-                            </li>
-
-
-                            <li class="">
-                              <a class="side-a" href="default_layout.html">Default</a>
-                              <a class="icon-thumbnail pull-right">dl</a>
-                              <div style="clear:both"></div>
-                            </li>
-                            <li class="">
-                              <a class="side-a" href="secondary_layout.html">Secondary</a>
-                              <a class="icon-thumbnail pull-right">sl</a>
-                              <div style="clear:both"></div>
-                            </li>
-                            <li class="">
-                              <a class="side-a" href="boxed_layout.html">Boxed</a>
-                              <span class="icon-thumbnail pull-right">bl</span>
-                              <div style="clear:both"></div>
-                            </li>
+                          <li class="">
+                            <a class="side-a" ui-sref="staff.new">New</a>
+                            <a class="icon-thumbnail pull-right" ui-sref="staff.new"><i class="fa fa-plus"></i></a>
+                            <div style="clear:both"></div>
+                          </li>
+                          <li class="">
+                            <a class="side-a" ui-sref="staff.list">List</a>
+                            <a class="icon-thumbnail pull-right" ui-sref="staff.list">li</a>
+                            <div style="clear:both"></div>
+                          </li>
 
                           </ul>
                       </li>
@@ -169,8 +174,6 @@
                       <div class="scroll-element scroll-x scroll-scrolly_visible"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="width: 89px;"></div></div></div><div class="scroll-element scroll-y scroll-scrolly_visible"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="height: 406px; top: 0px;"></div></div></div></div>
                       <div class="clearfix"></div>
                       </div>
-
-
 
                     </div>
 
@@ -467,280 +470,77 @@
 
                     </style>
 
-                  <nav class="navbar navbar-default navbar-fixed-top edna-nav">
-                  <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header" style="display:inline-block;">
-                      <a class="navbar-brand" id="navicon" aria-expanded="false" >
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="fa fa-align-right"></span>
-                      </a>
-                      <a class="navbar-brand" id="navimage">
-                          <img alt="Edna" src="img/edna-black.png" class="edna-nav-logo" style="cursor: pointer; cursor: hand;"/>
-                      </a>
-                    </div>
-
-                    <!-- Collect the nav links, forms, and other content for toggling
-                    <div style="text-align:center; " class="nav-centered-group">-->
-
-                      <ul class="nav navbar-nav pull-right navbar-right" style="display:inline-block; margin:0;">
-
-                        <li class="navbar-form" style="padding:10px; margin:0;">
-                          <div class="input-group nav-search" style="width:auto; display:inline-table;" >
-                              <div class="input-group-addon " style="width:auto;"><i class="fa fa-search"></i></div>
-                              <input type="text" class="form-control hidden-xs" style="width:200px;" placeholder="Type to Search">
-
-                           </div>
-
-                        </li>
-                        <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding:5px;">
-                            <span class="hidden-xs">Anthony Alaribe</span> <img src="img/avatar.png" class=" img-circle img-thumbnail edna-nav-avatar" /> <span class="caret"></span></a>
-                          <ul class="dropdown-menu">
-                            <li><a href="#"><i class="fa fa-gears "></i>&nbsp;&nbsp;Settings</a></li>
-                            <li><a href="#"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Help</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Logout<i class=" pull-right fa fa-power-off"></i></a></li>
-                          </ul>
-                        </li>
-                        <li style="cursor: pointer; cursor: hand;">
-                          <a class="" id="rightNavToggle" aria-expanded="false" style="margin-left:10px;">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="fa fa-align-left" style="font-size:1.2em"></span>
-                          </a>
-                        </li>
-
-                        <div style="clear:both"></div>
-                      </ul>
-
-
-                    <!--</div> /.navbar-collapse -->
-                    <div style="clear:both"></div>
-                  </div><!-- /.container-fluid -->
-                  <div style="clear:both"></div>
-                  </nav>
-                </section>
-                  <section>
-
-                    <style>
-                      .edna-sub-nav .highlight>a{
-                        background-color: transparent;
-                        color:#000 !important;
-                      }
-                    </style>
-
-                    <div class="jumbotron" style="margin:0">
-
-                      <div class="container">
-                        <ol class="breadcrumb">
-                          <li><a href="#">Home</a></li>
-                          <li><a href="#">Library</a></li>
-                          <li class="active">Data</li>
-                        </ol>
-                        <h1>Hello, world!</h1>
-                        <img src="http://placehold.it/400x400" class="img-responsive"/>
-                        <p>...</p>
-                        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                    <nav class="navbar navbar-default navbar-fixed-top edna-nav">
+                    <div class="container-fluid">
+                      <!-- Brand and toggle get grouped for better mobile display -->
+                      <div class="navbar-header" style="display:inline-block;">
+                        <a class="navbar-brand" id="navicon" aria-expanded="false" >
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="fa fa-align-right"></span>
+                        </a>
+                        <a class="navbar-brand" id="navimage">
+                            <img alt="Edna" src="img/edna-black.png" class="edna-nav-logo" style="cursor: pointer; cursor: hand;"/>
+                        </a>
                       </div>
-                    </div>
 
-                                <nav class="navbar navbar-default edna-sub-nav" style="height:auto">
-                                <div class="container-fluid">
-                                  <!-- Brand and toggle get grouped for better mobile display -->
+                      <!-- Collect the nav links, forms, and other content for toggling
+                      <div style="text-align:center; " class="nav-centered-group">-->
 
-                                  <!-- Collect the nav links, forms, and other content for toggling
-                                  <div style="text-align:center; " class="nav-centered-group">-->
+                        <ul class="nav navbar-nav pull-right navbar-right" style="display:inline-block; margin:0;">
+                          <li class="navbar-form" style="padding:10px; margin:0;">
+                            <div class="input-group nav-search" style="width:auto; display:inline-table;" >
+                                <div class="input-group-addon " style="width:auto;"><i class="fa fa-search"></i></div>
+                                <input type="text" class="form-control hidden-xs" style="width:200px;" placeholder="Type to Search">
+                             </div>
+                          </li>
+                          <li class="dropdown">
+                            <a href="#" onclick="dropExpandInline('nav-dropdown')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding:5px;">
+                              <span class="hidden-xs" ng-bind="root.user.name"></span> <img src="{{ root.user.image || 'img/avatar.png' }}" class=" img-circle img-thumbnail edna-nav-avatar" /> <span class="caret"></span></a>
+                            <ul class="dropdown-menu" id="nav-dropdown">
+                              <li><a href="#"><i class="fa fa-gears "></i>&nbsp;&nbsp;Settings</a></li>
+                              <li><a href="#"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Help</a></li>
+                              <li role="separator" class="divider"></li>
+                              <li><a ng-click="root.logout()">Logout<i class=" pull-right fa fa-power-off"></i></a></li>
+                            </ul>
+                          </li>
+                          <li style="cursor: pointer; cursor: hand;">
+                            <a class="" id="rightNavToggle" aria-expanded="false" style="margin-left:10px;">
+                              <span class="sr-only">Toggle navigation</span>
+                              <span class="fa fa-align-left" style="font-size:1.2em"></span>
+                            </a>
+                          </li>
 
-                                    <ul class="nav navbar-nav " style="display:inline-block; margin:0;">
+                          <div style="clear:both"></div>
+                        </ul>
 
 
+                      <!--</div> /.navbar-collapse -->
+                      <div style="clear:both"></div>
+                    </div><!-- /.container-fluid -->
+                    <div style="clear:both"></div>
+                    </nav>
 
-                                      <li ><a href="#"><i class="fa fa-plus"></i>&nbsp;<span>New Student</span></a></li>
-                                      <li><a href="#"><i class="fa fa-group"></i>&nbsp;<span>Student List</span></a></li>
+                </section>
+                  <section ui-view="content">
 
-                                      <li><a href="#"><i class="fa fa-plus"></i>&nbsp;<span>Class</span></a></li>
-                                      <li><a href="#"><i class="fa fa-group"></i>&nbsp;<span>Results</span></a></li>
-
-                                      <li class="highlight" ><a href="#"><i class="fa fa-plus"></i>&nbsp;<span>Admission</span></a></li>
-
-                                    <div style="clear:both"></div>
-                                    </ul>
-
-
-                                  <!--</div> /.navbar-collapse -->
-                                  <div style="clear:both"></div>
-                                </div><!-- /.container-fluid -->
-                                <div style="clear:both"></div>
-                                </nav>
-
-                              <section class="container" style="background-color:#fff">
-                                <div class="table-responsive" data-snap-ignore="true">
-                                    <table class="table">
-                                      <thead>
-                                        <tr>
-                                          <th>#</th>
-                                          <th>Table heading</th>
-                                          <th>Table heading</th>
-                                          <th>Table heading</th>
-                                          <th>Table heading</th>
-                                          <th>Table heading</th>
-                                          <th>Table heading</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr>
-                                          <th scope="row">1</th>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row">2</th>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row">3</th>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                          <td>Table cell</td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </section>
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
-
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    <br/>
                   </section>
-
+                  <br/><br/>
 
                 </div>
 
 
-
-
-
-
-
-
-        <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>-->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/snap.min.js"></script>
         <script src="js/perfect-scrollbar.min.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/angular-ui-router.min.js"></script>
         <script src="js/main.js"></script>
-
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
 
-        document.getElementById('appOverlayMenu').style.top = '-100%';
-
-        var snapper = new Snap({
-          element: document.getElementById('content')
-        });
-
-
-        document.getElementById('navicon').addEventListener('click', function(){
-
-            if( snapper.state().state=="left" ){
-                snapper.close();
-            } else {
-                snapper.open('left');
-            }
-
-        });
-
-        document.getElementById('navimage').addEventListener('click', function(){
-
-            if( snapper.state().state=="left" ){
-                snapper.close();
-            } else {
-                snapper.open('left');
-            }
-
-        });
-
-        document.getElementById('rightNavToggle').addEventListener('click', function(){
-
-            if( snapper.state().state=="right" ){
-                snapper.close();
-            } else {
-                snapper.open('right');
-            }
-
-        });
-
-
-
-        function showNav(){
-          snapper.open('left');
-        }
-
-        function dropExpand(e){
-          var x = document.getElementById(e).style.display;
-          console.log(x)
-          if (x == 'block'){
-            document.getElementById(e).style.display = 'none';
-          } else{
-            document.getElementById(e).style.display = 'block';
-          }
-
-
-        }
-
-
-        var container = document.getElementById('leftMenu');
-        Ps.initialize(container);
 
         </script>
     </body>
