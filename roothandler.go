@@ -11,7 +11,7 @@ func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.Host)
 	h := strings.Split(r.Host, ".")
 	log.Println(len(h))
-	if h[0] == "www" || len(h) == 1 {
+	if h[0] == "www" || len(h) == 2 {
 		log.Println("landing page")
 		xx := template.New("index.html").Delims("<&", "&>")
 		xx, err := xx.ParseFiles("static/index.html")
