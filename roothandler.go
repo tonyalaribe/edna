@@ -18,7 +18,7 @@ func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = t.Execute(w, "")
+		err = t.ExecuteTemplate(w, "index.html", "")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -29,7 +29,7 @@ func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = tt.Execute(w, "")
+		err = tt.ExecuteTemplate(w, "dashboard.html", "")
 		if err != nil {
 			log.Fatal(err)
 		}
