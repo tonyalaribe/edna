@@ -10,8 +10,9 @@ import (
 func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.Host)
 	h := strings.Split(r.Host, ".")
-	log.Println(h)
-	if h[0] == "www" || len(h) > 2 {
+	log.Println(len(h))
+	if h[0] == "www" || len(h) == 2 {
+		log.Println("landing page")
 		t := template.New("index.html").Delims("<&", "&>")
 		t, err := t.ParseFiles("static/index.html")
 		if err != nil {
@@ -22,12 +23,13 @@ func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 	} else {
-		t := template.New("dashboard.html").Delims("<&", "&>")
-		t, err := t.ParseFiles("static/dashboard.html")
+		log.Println("dashboard")
+		tt := template.New("dashboard.html").Delims("<&", "&>")
+		tt, err := tt.ParseFiles("static/dashboard.html")
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = t.Execute(w, "")
+		err = tt.Execute(w, "")
 		if err != nil {
 			log.Fatal(err)
 		}
