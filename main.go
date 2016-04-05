@@ -52,7 +52,7 @@ func main() {
 	router.Get("/api/me", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getMeHandler))
 	router.Post("/register.html", commonHandlers.ThenFunc(config.NewSchool))
 	router.Get("/verify", commonHandlers.ThenFunc(config.VerifySchool))
-	router.Get("/", commonHandlers.ThenFunc(config.RootHandler))
+	router.Get("/", commonHandlers.Append(dbsetter).ThenFunc(config.RootHandler))
 
 	router.HandleMethodNotAllowed = false
 	router.NotFound = http.FileServer(http.Dir("./static")).ServeHTTP
