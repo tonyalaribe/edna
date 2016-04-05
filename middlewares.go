@@ -85,16 +85,27 @@ func dbsetter(next http.Handler) http.Handler {
 		school := School{}
 
 		if strings.Contains(r.Host, ":8080") || h[0] == "www" {
-			col.Find(bson.M{
+			err := col.Find(bson.M{
 				"_id": "unical",
 			}).One(&school)
+			if err != nil {
+				log.Println(err)
+			}
 			context.Set(r, "school", school)
-
+			if err != nil {
+				log.Println(err)
+			}
 		} else {
-			col.Find(bson.M{
+			err = col.Find(bson.M{
 				"_id": h[0],
 			}).One(&school)
+			if err != nil {
+				log.Println(err)
+			}
 			context.Set(r, "school", school)
+			if err != nil {
+				log.Println(err)
+			}
 		}
 		next.ServeHTTP(w, r)
 	}
