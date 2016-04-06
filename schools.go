@@ -214,5 +214,5 @@ func (c *Config) VerifySchool(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println(school.Domain)
-	http.Redirect(w, r, school.Domain, http.StatusFound)
+	http.Redirect(w, r, "https://"+school.Domain, http.StatusFound)
 }
