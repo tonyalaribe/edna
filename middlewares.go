@@ -81,7 +81,7 @@ func dbsetter(next http.Handler) http.Handler {
 			//log.Println(err)
 		}
 		session.SetMode(mgo.Monotonic, true)
-		col := session.DB("edna").C("schools")
+		col := session.DB(MONGODB).C("schools")
 		school := School{}
 
 		if strings.Contains(r.Host, ":8080") || h[0] == "www" {

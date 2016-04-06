@@ -95,7 +95,7 @@ handlers
 //createSubjectHandler would create a class
 func (c *Config) createSubjectHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	u := SubjectRepo{c.MongoSession.DB(school.ID).C("subjects")}
+	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
 	subject := Subject{}
 	err := json.NewDecoder(r.Body).Decode(&subject)
 	if err != nil {
@@ -111,7 +111,7 @@ func (c *Config) createSubjectHandler(w http.ResponseWriter, r *http.Request) {
 func (c *Config) getSubjectsHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
 
-	u := SubjectRepo{c.MongoSession.DB(school.ID).C("subjects")}
+	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
 	subjects, err := u.GetAll()
 
 	err = json.NewEncoder(w).Encode(SubjectCollection{subjects})
@@ -123,7 +123,7 @@ func (c *Config) getSubjectsHandler(w http.ResponseWriter, r *http.Request) {
 //putSubjectHandler would create a class
 func (c *Config) putSubjectHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	u := SubjectRepo{c.MongoSession.DB(school.ID).C("subjects")}
+	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
 	subject := Subject{}
 	err := json.NewDecoder(r.Body).Decode(&subject)
 	if err != nil {

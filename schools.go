@@ -135,7 +135,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 		url.Values{"secret": {"6Lf5yBsTAAAAANVM9JnJ8u8mFCg9t4clPSCvY65Z"}, "response": {recaptcha}})
 	if err != nil {
 		log.Println(err)
-		http.Redirect(w, r, "/error.html", http.StatusFound)
+		http.Redirect(w, r, "/registrationerror.html", http.StatusFound)
 		return
 	}
 
@@ -146,18 +146,18 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if rResponse.Success == false {
-		http.Redirect(w, r, "/error.html", http.StatusInternalServerError)
+		http.Redirect(w, r, "/registrationerror.html", http.StatusInternalServerError)
 		return
 	}
 
 	//recaptcha verification ends here
 
-	x := SchoolRepo{c.MongoSession.DB("edna").C("schools")}
+	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
 
 	err = x.Create(&school)
 	if err != nil {
 		log.Println(err)
-		http.Redirect(w, r, "/error.html", http.StatusInternalServerError)
+		http.Redirect(w, r, "/registrationerror.html", http.StatusInternalServerError)
 		return
 	}
 	verificationURL := c.RootURL + "/verify?key=" + school.VerificationKey + "&email=" + school.AdminEmail + "&id=" + school.ID
@@ -172,20 +172,22 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	mesg := bytes.NewReader([]byte(str))
 
 	req, err := http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", mesg)
-	// ...api-key:your_access_key
-	req.Header.Add("api-key", "2BsIqZ9XWMp6YKUk")
-	resp2, err := client.Do(req)
-
-	log.Println(resp2)
 	if err != nil {
 		log.Println(err)
-		http.Redirect(w, r, "/error.html", http.StatusInternalServerError)
+		http.Redirect(w, r, "/registrationerror.html", http.StatusInternalServerError)
 		return
 	}
 
-	//http.NewRequest(method string, urlStr string, body io.Reader)
+	req.Header.Add("api-key", "2BsIqZ9XWMp6YKUk")
+	_, err = client.Do(req)
 
-	//respp, err := http.Post(url string, bodyType string, body io.Reader)
+	if err != nil {
+
+		log.Println(err)
+		http.Redirect(w, r, "/registrationerror.html", http.StatusInternalServerError)
+		return
+	}
+
 	http.Redirect(w, r, "/success.html", http.StatusFound)
 }
 
@@ -194,19 +196,19 @@ func (c *Config) VerifySchool(w http.ResponseWriter, r *http.Request) {
 	verificationKey := r.URL.Query().Get("key")
 	adminEmail := r.URL.Query().Get("email")
 	schoolID := r.URL.Query().Get("id")
-	x := SchoolRepo{c.MongoSession.DB("edna").C("schools")}
+	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
 	school, err := x.Verify(adminEmail, schoolID, verificationKey, c.RootURL)
 	if err != nil {
 		log.Println(err)
-		http.Redirect(w, r, "/error.html", http.StatusNotAcceptable)
+		http.Redirect(w, r, "/verificationerror.html", http.StatusNotAcceptable)
 		return
 	}
 
-	u := UserRepo{c.MongoSession.DB(school.ID).C("users")}
+	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
 	err = u.CreateAdmin(&school)
 	if err != nil {
 		log.Println(err)
-		http.Redirect(w, r, "/error.html", http.StatusNotAcceptable)
+		http.Redirect(w, r, "/verificationerror.html", http.StatusNotAcceptable)
 		return
 	}
 

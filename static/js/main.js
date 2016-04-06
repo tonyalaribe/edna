@@ -88,7 +88,8 @@ function authInterceptor(API, auth, $location, $rootScope) {
     request: function(config) {
       var token = auth.getToken();
       if(token ) {
-        config.headers.Authorization = 'Bearer ' + token;
+        //config.headers.Authorization = 'Bearer ' + token;
+        config.headers['X-AUTH-TOKEN'] = token;
       }
       return config;
     },

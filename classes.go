@@ -95,7 +95,7 @@ handlers
 //createClassHandler would create a class
 func (c *Config) createClassHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	u := ClassRepo{c.MongoSession.DB(school.ID).C("classes")}
+	u := ClassRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_classes")}
 	class := Class{}
 	err := json.NewDecoder(r.Body).Decode(&class)
 	if err != nil {
@@ -111,7 +111,7 @@ func (c *Config) createClassHandler(w http.ResponseWriter, r *http.Request) {
 func (c *Config) getClassesHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
 
-	u := ClassRepo{c.MongoSession.DB(school.ID).C("classes")}
+	u := ClassRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_classes")}
 	classes, err := u.GetAll()
 
 	err = json.NewEncoder(w).Encode(ClassCollection{classes})
@@ -123,7 +123,7 @@ func (c *Config) getClassesHandler(w http.ResponseWriter, r *http.Request) {
 //putClassHandler would create a class
 func (c *Config) putClassHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	u := ClassRepo{c.MongoSession.DB(school.ID).C("classes")}
+	u := ClassRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_classes")}
 	class := Class{}
 	err := json.NewDecoder(r.Body).Decode(&class)
 	if err != nil {

@@ -11,6 +11,7 @@ import (
 
 var (
 	MONGOSERVER string
+	MONGODB     string
 )
 
 //Config struct is important, as all handlers will  be methods implementing
@@ -45,6 +46,7 @@ func generateConfig() (config Config) {
 		log.Println("No Mongo database name set, resulting to default")
 		config.MONGODB = "edna"
 	}
+	MONGODB = config.MONGODB
 	log.Println("MONGODB is ", config.MONGODB)
 
 	session, err := mgo.Dial(config.MONGOSERVER)

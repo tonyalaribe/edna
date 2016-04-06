@@ -147,7 +147,7 @@ func (c *Config) LoginPost(w http.ResponseWriter, r *http.Request) {
 
 	school := context.Get(r, "school").(School)
 
-	u := UserRepo{c.MongoSession.DB(school.ID).C("users")}
+	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
 
 	user, err := u.Get(x.Username)
 	if err != nil {
@@ -229,7 +229,7 @@ func (c *Config) getMeHandler(w http.ResponseWriter, r *http.Request) {
 //createUserHandler would create a user/staff
 func (c *Config) createUserHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	u := UserRepo{c.MongoSession.DB(school.ID).C("users")}
+	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
 	user := User{}
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -244,7 +244,7 @@ func (c *Config) createUserHandler(w http.ResponseWriter, r *http.Request) {
 //updateUserHandler would create a user/staff
 func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	u := UserRepo{c.MongoSession.DB(school.ID).C("users")}
+	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
 	user := User{}
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -260,7 +260,7 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 func (c *Config) getUsersHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
 	log.Println(school)
-	u := UserRepo{c.MongoSession.DB(school.ID).C("users")}
+	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
 	users, err := u.GetAll()
 
 	err = json.NewEncoder(w).Encode(UserCollection{users})
