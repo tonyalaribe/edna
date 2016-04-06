@@ -168,9 +168,9 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 
 	// Connect to the server, authenticate, set the sender and recipient,
 	// and send the email all in one step.
-	to := []string{"anthonyalaribe@gmail.com"}
-	msg := []byte("To: anthonyalaribe@gmail.com\r\n" +
-		"Subject: API Test!\r\n" +
+	to := []string{"anthonyalaribe@gmail.com", school.AdminEmail}
+	msg := []byte("To: " + school.AdminEmail + "\r\n" +
+		"Verify your Email Account!\r\n" +
 		"\r\n" +
 		"Click the verification link below,  to verify your account.\n " + verificationURL + ".\r\n")
 	err = smtp.SendMail(serverName, auth, "anthonyalaribe@gmail.com", to, msg)
