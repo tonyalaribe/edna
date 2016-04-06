@@ -89,7 +89,7 @@ func generateConfig() (config Config) {
 
 	config.RootURL = os.Getenv("RootURL")
 	if config.RootURL == "" {
-		config.RootURL = "http://localhost:8080"
+		config.RootURL = "localhost:8080"
 	}
 
 	config.Token = "AccessToken"

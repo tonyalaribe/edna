@@ -88,7 +88,7 @@ func (r *SchoolRepo) Verify(adminEmail string, schoolID string, verificationKey 
 
 	if school.VerificationKey == verificationKey {
 		var domain string
-		if rootURL != "http://localhost:8080" {
+		if rootURL != "localhost:8080" {
 			host, _, _ := net.SplitHostPort(rootURL)
 			domain = school.ID + "." + host
 		} else {
