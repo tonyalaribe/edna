@@ -135,7 +135,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 		url.Values{"secret": {"6Lf5yBsTAAAAANVM9JnJ8u8mFCg9t4clPSCvY65Z"}, "response": {recaptcha}})
 	if err != nil {
 		log.Println(err)
-		http.Redirect(w, r, "/success.html", http.StatusFound)
+		http.Redirect(w, r, "/error.html", http.StatusFound)
 		return
 	}
 
@@ -146,7 +146,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if rResponse.Success == false {
-		http.Redirect(w, r, "/success.html", http.StatusInternalServerError)
+		http.Redirect(w, r, "/error.html", http.StatusInternalServerError)
 		return
 	}
 
@@ -157,7 +157,8 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	err = x.Create(&school)
 	if err != nil {
 		log.Println(err)
-		http.Redirect(w, r, "/success.html", http.StatusInternalServerError)
+		http.Redirect(w, r, "/error.html", http.StatusInternalServerError)
+		return
 	}
 	verificationURL := c.RootURL + "/verify?key=" + school.VerificationKey + "&email=" + school.AdminEmail + "&id=" + school.ID
 	log.Println(verificationURL)
@@ -178,6 +179,8 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	log.Println(resp2)
 	if err != nil {
 		log.Println(err)
+		http.Redirect(w, r, "/error.html", http.StatusInternalServerError)
+		return
 	}
 
 	//http.NewRequest(method string, urlStr string, body io.Reader)
