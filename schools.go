@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
@@ -9,7 +10,7 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"net/smtp"
+	//"net/smtp"
 	"net/url"
 )
 
@@ -161,23 +162,27 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	verificationURL := c.RootURL + "/verify?key=" + school.VerificationKey + "&email=" + school.AdminEmail + "&id=" + school.ID
 	log.Println(verificationURL)
 
-	serverName := "smtp-relay.sendinblue.com:587"
-	host, _, _ := net.SplitHostPort(serverName)
-	// Set up authentication information.
-	auth := smtp.PlainAuth("", "anthonyalaribe@gmail.com", "2BsIqZ9XWMp6YKUk", host)
+	client := &http.Client{}
 
-	// Connect to the server, authenticate, set the sender and recipient,
-	// and send the email all in one step.
-	to := []string{"anthonyalaribe@gmail.com", school.AdminEmail}
-	msg := []byte("To: " + school.AdminEmail + "\r\n" +
-		"Verify your Email Account!\r\n" +
-		"\r\n" +
-		"Click the verification link below,  to verify your account.\n " + verificationURL + ".\r\n")
-	err = smtp.SendMail(serverName, auth, "anthonyalaribe@gmail.com", to, msg)
+	// ...
+
+	str := `{"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"}, "from":["anthonyalaribe@gmail.com","Edna - School Management System"], "subject":"Edna: Verify your Account", "html":"You created a School named <strong>` + school.Name + `</strong>. Please click the verification link below,  to verify your account.<br/> <a href='` + verificationURL + `'>` + verificationURL + `</a>"}`
+
+	mesg := bytes.NewReader([]byte(str))
+
+	req, err := http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", mesg)
+	// ...api-key:your_access_key
+	req.Header.Add("api-key", "2BsIqZ9XWMp6YKUk")
+	resp2, err := client.Do(req)
+
+	log.Println(resp2)
 	if err != nil {
 		log.Println(err)
 	}
 
+	//http.NewRequest(method string, urlStr string, body io.Reader)
+
+	//respp, err := http.Post(url string, bodyType string, body io.Reader)
 	http.Redirect(w, r, "/success.html", http.StatusFound)
 }
 
