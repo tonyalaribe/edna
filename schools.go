@@ -104,6 +104,7 @@ func (r *SchoolRepo) Verify(adminEmail string, schoolID string, verificationKey 
 				"domain":   domain,
 			},
 		})
+		school.Domain = domain
 		return school, nil
 	}
 	return school, errors.New("wrong verification key")
