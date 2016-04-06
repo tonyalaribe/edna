@@ -8,7 +8,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
-	"net"
+	//"net"
 	"net/http"
 	//"net/smtp"
 	"net/url"
@@ -89,8 +89,8 @@ func (r *SchoolRepo) Verify(adminEmail string, schoolID string, verificationKey 
 	if school.VerificationKey == verificationKey {
 		var domain string
 		if rootURL != "localhost:8080" {
-			host, _, _ := net.SplitHostPort(rootURL)
-			domain = school.ID + "." + host
+			//host, _, _ := net.SplitHostPort(rootURL)
+			domain = school.ID + "." + rootURL
 		} else {
 			domain = rootURL + "/dashboard"
 		}
