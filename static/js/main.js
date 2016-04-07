@@ -165,7 +165,7 @@ function userService($http, API, auth) {
 
 }
 
-function RootCtrl(auth,user, $state) {
+function RootCtrl(auth,user,$rootScope, $state) {
   var self = this;
   console.log("roor ctrl");
   function handleRequest(res) {
@@ -196,17 +196,35 @@ function RootCtrl(auth,user, $state) {
 /**************************************
 LoginCtrl
 ***************************************/
-function LoginCtrl(user, auth, $state) {
+function LoginCtrl(user, auth, $state, $rootScope) {
   var self = this;
   self.remember = false;
   console.log("login ");
 
 
 
+  function handleRequest2(res) {
+    console.log(res)
+    $rootScope.user = res.data;
+
+  }
+
+  function handleError2(err){
+    console.log("Error")
+    console.log(err)
+  }
+
+
+
+
   function handleRequest(res) {
     console.log(res)
     var token = res.data.token ? res.data.token : null;
-    if(token) { console.log('JWT:', token);  $state.go("root");}
+    if(token) {
+      console.log('JWT:', token);
+      user.details().then(handleRequest2, handleError2);
+      $state.go("root");
+    }
 
   }
 
