@@ -222,8 +222,8 @@ function LoginCtrl(user, auth, $state, $rootScope) {
     var token = res.data.token ? res.data.token : null;
     if(token) {
       console.log('JWT:', token);
-      user.details().then(handleRequest2, handleError2);
       $state.go("root");
+      user.details().then(handleRequest2, handleError2);
     }
 
   }
