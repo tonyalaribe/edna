@@ -1,17 +1,22 @@
-<div class="form-group edna-form-group ">
-  <label for="student_signupdate">Signup date</label>
-  <input type="text" class="form-control" id="student_signupdate"  name="student_signupdate"  placeholder="9/9/2009" ng-model="student.signupdate"/>
+<div class="col-sm-6">
+  <div class="form-group edna-form-group ">
+    <label for="student_signupdate">Signup date</label>
+    <input type="date" class="form-control" id="student_signupdate"  name="student_signupdate"  placeholder="9/9/2009" ng-model="student.signupdate"/>
+  </div>
 </div>
+<div class="col-sm-6">
 
-<div class="form-group edna-form-group "  >
-  <label for="student_class">Class</label>
-  <select class="form-control" ng-model="student_class">
-    <option>Teaching Staff</option>
-    <option>Non-Teaching Staff</option>
-  </select>
+  <div class="form-group edna-form-group "  >
+    <label for="student_class">Class</label>
+    <select class="form-control" ng-model="student.class">
+      <option>Teaching Staff</option>
+      <option>Non-Teaching Staff</option>
+    </select>
 
+  </div>
 </div>
-
+<div style="clear:both"></div>
+<br/>
   <button ng-disabled="$isLast()" class="btn btn-default pull-right" ng-click="$nextStep()">
       Next
       <span class="fa fa-chevron-right"></span>

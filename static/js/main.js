@@ -428,16 +428,18 @@ function NewStudentCtrl(API, $http, $scope) {
   function handleRequest(res) {
     console.log(res)
     $scope.student = {};
-
+    $scope.submittedStudent = false;
   }
 
   function handleError(err){
     console.log("Error")
     console.log(err)
+    $scope.submittedStudent = false;
   }
 
 
   $scope.newstudent = function(student){
+    $scope.submittedStudent = true;
     $http.post(API + '/student', student).then(handleRequest, handleError)
   }
 }

@@ -14,10 +14,41 @@ import (
 
 // Student struct
 type Student struct {
-	ID       bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
-	Name     string        `json:"name"`
-	Parent   string        `json:"parent"`
-	Teachers []string      `json:"teachers"`
+	ID                    bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
+	SignUpDate            string        `json:"signupdate,omitempty" bson:",omitempty"`
+	Class                 string        `json:"class, omitempty" bson:",omitempty"`
+	FirstName             string        `json:"firstname,omitempty" bson:",omitempty"`
+	MiddleName            string        `json:"middlename,omitempty" bson:",omitempty"`
+	LastName              string        `json:"lastname,omitempty" bson:",omitempty"`
+	DateOfBirth           string        `json:"dateofbirth,omitempty" bson:",omitempty"`
+	Gender                string        `json:"gender,omitempty" bson:",omitempty"`
+	BloodGroup            string        `json:"bloodgroup,omitempty" bson:",omitempty"`
+	Nationality           string        `json:"nationality,omitempty" bson:",omitempty"`
+	StateOfOrigin         string        `json:"stateoforigin,omitempty" bson:",omitempty"`
+	State                 string        `json:"state,omitempty" bson:",omitempty"`
+	PermanentAddress      string        `json:"permanentaddress,omitempty" bson:",omitempty"`
+	Country               string        `json:"country,omitempty" bson:",omitempty"`
+	City                  string        `json:"city,omitempty" bson:",omitempty"`
+	Phone                 string        `json:"phone,omitempty" bson:",omitempty"`
+	Email                 string        `json:"email,omitempty" bson:",omitempty"`
+	GuardianRelationship  string        `json:"guardian_relationship,omitempty" bson:",omitempty"`
+	GuardianName          string        `json:"guardian_name,omitempty" bson:",omitempty"`
+	GuardianMobile        string        `json:"guardian_mobile,omitempty" bson:",omitempty"`
+	GuardianEmail         string        `json:"guardian_email,omitempty" bson:",omitempty"`
+	GuardianOccupation    string        `json:"guardian_occupation,omitempty" bson:",omitempty"`
+	GuardianAddress       string        `json:"guardian_address,omitempty" bson:",omitempty"`
+	GuardianCountry       string        `json:"guardian_country,omitempty" bson:",omitempty"`
+	GuardianState         string        `json:"guardian_state,omitempty" bson:",omitempty"`
+	GuardianCity          string        `json:"guardian_city,omitempty" bson:",omitempty"`
+	Guardian2Relationship string        `json:"guardian2_relationship,omitempty" bson:",omitempty"`
+	Guardian2Name         string        `json:"guardian2_name,omitempty" bson:",omitempty"`
+	Guardian2Mobile       string        `json:"guardian2_mobile,omitempty" bson:",omitempty"`
+	Guardian2Email        string        `json:"guardian2_email,omitempty" bson:",omitempty"`
+	Guardian2Occupation   string        `json:"guardian2_occupation,omitempty" bson:",omitempty"`
+	Guardian2Address      string        `json:"guardian2_address,omitempty" bson:",omitempty"`
+	Guardian2Country      string        `json:"guardian2_country,omitempty" bson:",omitempty"`
+	Guardian2State        string        `json:"guardian2_state,omitempty" bson:",omitempty"`
+	Guardian2City         string        `json:"guardian2_city,omitempty" bson:",omitempty"`
 }
 
 //StudentCollection struct
@@ -105,6 +136,42 @@ func (c *Config) createStudentHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+
+	guardian1 := Guardian{
+		Name:       student.GuardianName,
+		Phone:      student.GuardianMobile,
+		Email:      student.GuardianEmail,
+		Occupation: student.GuardianOccupation,
+		Address:    student.GuardianAddress,
+		Country:    student.GuardianCountry,
+		State:      student.GuardianState,
+		City:       student.GuardianCity,
+	}
+
+	guardian2 := Guardian{
+		Name:       student.Guardian2Name,
+		Phone:      student.Guardian2Mobile,
+		Email:      student.Guardian2Email,
+		Occupation: student.Guardian2Occupation,
+		Address:    student.Guardian2Address,
+		Country:    student.Guardian2Country,
+		State:      student.Guardian2State,
+		City:       student.Guardian2City,
+	}
+	g := GuardianRepo{c.MongoSession.DB(c.MONGODB).C("guardians")}
+	if guardian1.Phone != "" {
+		err = g.Create(&guardian1, school.ID)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+	if guardian2.Phone != "" {
+		err = g.Create(&guardian2, school.ID)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
 }
 
 //getStudentsHandler would create a student

@@ -1,106 +1,114 @@
-
 <section>
-<h2>Guardian 1</h2>
+  <h2>Guardian 1</h2>
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_relationship">Relationship</label>
+      <input type="text" class="form-control" id="student_guardian_relationship"  name="student_guardian_relationship"  placeholder="Father" ng-model="student.guardian_relationship"/>
+    </div>
+
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_name">Name</label>
+      <input type="text" class="form-control" id="student_guardian_name"  name="student_guardian_name"  placeholder="John Etim" ng-model="student.guardian_name"/>
+    </div>
+
+  <div class="col-sm-6">
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_mobile">Mobile</label>
+      <input type="text" class="form-control" id="student_guardian_mobile"  name="student_guardian_mobile"  placeholder="2349826749323" ng-model="student.guardian_mobile"/>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_email">Email</label>
+      <input type="text" class="form-control" id="student_guardian_email"  name="student_guardian_email"  placeholder="John@example.com" ng-model="student.guardian_email"/>
+    </div>
+  </div>
+
+<div style="clear:both"></div>
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_occupation">Occupation</label>
+      <input type="text" class="form-control" id="student_guardian_occupation"  name="student_guardian_occupation"  placeholder="Teacher" ng-model="student.guardian_occupation"/>
+    </div>
+
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_address">Address</label>
+      <input type="text" class="form-control" id="student_guardian_address"  name="student_guardian_address"  placeholder="no 2 lagos road" ng-model="student.guardian_address"/>
+    </div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_country">Country</label>
+      <input type="text" class="form-control" id="student_guardian_country"  name="student_guardian_country"  placeholder="Nigeria" ng-model="student.guardian_country"/>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_state">State</label>
+      <input type="text" class="form-control" id="student_guardian_state"  name="student_guardian_state"  placeholder="Cross River State" ng-model="student.guardian_state"/>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_guardian_city">City</label>
+      <input type="text" class="form-control" id="student_guardian_city"  name="student_guardian_city"  placeholder="Calabar" ng-model="student.guardian_city"/>
+    </div>
+  </div>
+
+
+  <h2>Guardian 2 (If Applicable)</h2>
   <div class="form-group edna-form-group ">
-    <label for="student_guardian_relationship">Relationship</label>
-    <input type="text" class="form-control" id="student_guardian_relationship"  name="student_guardian_relationship"  placeholder="Father" ng-model="student.guardian_relationship"/>
+    <label for="student_guardian2_relationship">Relationship</label>
+    <input type="text" class="form-control" id="student_guardian2_relationship"  name="student_guardian2_relationship"  placeholder="Mother" ng-model="student.guardian2_relationship"/>
   </div>
 
   <div class="form-group edna-form-group ">
-    <label for="student_guardian_name">Name</label>
-    <input type="text" class="form-control" id="student_guardian_name"  name="student_guardian_name"  placeholder="John Etim" ng-model="student.guardian_name"/>
+    <label for="student_guardian2_name">Name</label>
+    <input type="text" class="form-control" id="student_guardian2_name"  name="student_guardian2_name"  placeholder="John Etim" ng-model="student.guardian2_name"/>
+  </div>
+
+  <div class="col-sm-6">
+  <div class="form-group edna-form-group ">
+    <label for="student_guardian2_mobile">Phone</label>
+    <input type="text" class="form-control" id="student_guardian2_mobile"  name="student_guardian2_mobile"  placeholder="2349826749323" ng-model="student.guardian2_mobile"/>
+  </div>
+</div>
+<div class="col-sm-6">
+  <div class="form-group edna-form-group ">
+    <label for="student_guardian2_email">Email</label>
+    <input type="text" class="form-control" id="student_guardian2_email"  name="student_guardian2_email"  placeholder="John@example.com" ng-model="student.guardian2_email"/>
+  </div>
+</div>
+<div style="clear:both"></div>
+  <div class="form-group edna-form-group ">
+    <label for="student_guardian2_occupation">Occupation</label>
+    <input type="text" class="form-control" id="student_guardian2_occupation"  name="student_guardian2_occupation"  placeholder="Teacher" ng-model="student.guardian2_occupation"/>
   </div>
 
   <div class="form-group edna-form-group ">
-    <label for="student_guardian_mobile">Mobile</label>
-    <input type="text" class="form-control" id="student_guardian_mobile"  name="student_guardian_mobile"  placeholder="2349826749323" ng-model="student.guardian_mobile"/>
+    <label for="student_guardian2_address">Address</label>
+    <input type="text" class="form-control" id="student_guardian2_address"  name="student_guardian2_address"  placeholder="no 2 lagos road" ng-model="student.guardian2_address"/>
   </div>
 
+  <div class="col-sm-4">
   <div class="form-group edna-form-group ">
-    <label for="student_guardian_email">Email</label>
-    <input type="text" class="form-control" id="student_guardian_email"  name="student_guardian_email"  placeholder="John@example.com" ng-model="student.guardian_email"/>
+    <label for="student_guardian2_country">Country</label>
+    <input type="text" class="form-control" id="student_guardian2_country"  name="student_guardian2_country"  placeholder="Nigeria" ng-model="student.guardian2_country"/>
   </div>
-
+  </div>
+  <div class="col-sm-4">
   <div class="form-group edna-form-group ">
-    <label for="student_guardian_occupation">Occupation</label>
-    <input type="text" class="form-control" id="student_guardian_occupation"  name="student_guardian_occupation"  placeholder="Teacher" ng-model="student.guardian_occupation"/>
+    <label for="student_guardian2_state">State</label>
+    <input type="text" class="form-control" id="student_guardian2_state"  name="student_guardian2_state"  placeholder="Cross River State" ng-model="student.guardian2_state"/>
   </div>
-
+  </div>
+  <div class="col-sm-4">
   <div class="form-group edna-form-group ">
-    <label for="student_guardian_address">Address</label>
-    <input type="text" class="form-control" id="student_guardian_address"  name="student_guardian_address"  placeholder="no 2 lagos road" ng-model="student.guardian_address"/>
+    <label for="student_guardian2_city">City</label>
+    <input type="text" class="form-control" id="student_guardian2_city"  name="student_guardian2_city"  placeholder="Calabar" ng-model="student.guardian2_city"/>
+  </div>
   </div>
 
-<div class="col-sm-4">
-  <div class="form-group edna-form-group ">
-    <label for="student_guardian_country">Country</label>
-    <input type="text" class="form-control" id="student_guardian_country"  name="student_guardian_country"  placeholder="Nigeria" ng-model="student.guardian_country"/>
-  </div>
-</div>
-<div class="col-sm-4">
-  <div class="form-group edna-form-group ">
-    <label for="student_guardian_state">State</label>
-    <input type="text" class="form-control" id="student_guardian_state"  name="student_guardian_state"  placeholder="Cross River State" ng-model="student.guardian_state"/>
-  </div>
-</div>
-<div class="col-sm-4">
-  <div class="form-group edna-form-group ">
-    <label for="student_guardian_city">City</label>
-    <input type="text" class="form-control" id="student_guardian_city"  name="student_guardian_city"  placeholder="Calabar" ng-model="student.guardian_city"/>
-  </div>
-</div>
-
-
-<h2>Guardian 2 (If Applicable)</h2>
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_relationship">Relationship</label>
-  <input type="text" class="form-control" id="student_guardian2_relationship"  name="student_guardian2_relationship"  placeholder="Mother" ng-model="student.guardian2_relationship"/>
-</div>
-
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_name">Name</label>
-  <input type="text" class="form-control" id="student_guardian2_name"  name="student_guardian2_name"  placeholder="John Etim" ng-model="student.guardian2_name"/>
-</div>
-
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_mobile">Mobile</label>
-  <input type="text" class="form-control" id="student_guardian2_mobile"  name="student_guardian2_mobile"  placeholder="2349826749323" ng-model="student.guardian2_mobile"/>
-</div>
-
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_email">Email</label>
-  <input type="text" class="form-control" id="student_guardian2_email"  name="student_guardian2_email"  placeholder="John@example.com" ng-model="student.guardian2_email"/>
-</div>
-
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_occupation">Occupation</label>
-  <input type="text" class="form-control" id="student_guardian2_occupation"  name="student_guardian2_occupation"  placeholder="Teacher" ng-model="student.guardian2_occupation"/>
-</div>
-
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_address">Address</label>
-  <input type="text" class="form-control" id="student_guardian2_address"  name="student_guardian2_address"  placeholder="no 2 lagos road" ng-model="student.guardian2_address"/>
-</div>
-
-<div class="col-sm-4">
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_country">Country</label>
-  <input type="text" class="form-control" id="student_guardian2_country"  name="student_guardian2_country"  placeholder="Nigeria" ng-model="student.guardian2_country"/>
-</div>
-</div>
-<div class="col-sm-4">
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_state">State</label>
-  <input type="text" class="form-control" id="student_guardian2_state"  name="student_guardian2_state"  placeholder="Cross River State" ng-model="student.guardian2_state"/>
-</div>
-</div>
-<div class="col-sm-4">
-<div class="form-group edna-form-group ">
-  <label for="student_guardian2_city">City</label>
-  <input type="text" class="form-control" id="student_guardian2_city"  name="student_guardian2_city"  placeholder="Calabar" ng-model="student.guardian2_city"/>
-</div>
-</div>
-
+  <div style="clear:both"></div>
+  <br/>
 
   <button ng-disabled="$isLast()" class="btn btn-default pull-right" ng-click="$nextStep()">
       Next
