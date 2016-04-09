@@ -6,17 +6,16 @@ var snapper = new Snap({
 
 
 document.getElementById('navicon').addEventListener('click', function(){
-
+    console.log("snap");
     if( snapper.state().state=="left" ){
         snapper.close();
     } else {
         snapper.open('left');
     }
-
 });
 
 document.getElementById('navimage').addEventListener('click', function(){
-
+    console.log("snap");
     if( snapper.state().state=="left" ){
         snapper.close();
     } else {
@@ -26,13 +25,12 @@ document.getElementById('navimage').addEventListener('click', function(){
 });
 
 document.getElementById('rightNavToggle').addEventListener('click', function(){
-
+    console.log("snap");
     if( snapper.state().state=="right" ){
         snapper.close();
     } else {
         snapper.open('right');
     }
-
 });
 
 
@@ -50,8 +48,6 @@ function dropExpand(e){
   } else{
     document.getElementById(e).style.display = 'block';
   }
-
-
 }
 
 function dropExpandInline(e){
@@ -62,17 +58,10 @@ function dropExpandInline(e){
   } else{
     document.getElementById(e).style.display = 'inline-block';
   }
-
-
 }
 
 var container = document.getElementById('leftMenu');
 Ps.initialize(container);
-
-
-
-
-
 
 
 /***********************************************************************
@@ -398,6 +387,109 @@ function EditSubjectCtrl(API, $scope, $http, $state, $rootScope) {
   }
 }
 
+
+/**********************************************************
+staff
+**********************************************************/
+
+function NewStudentCtrl(API, $http, $scope) {
+  console.log("new staff");
+
+  $scope.steps = [
+    {
+        templateUrl: '/partials/students_new_official.html',
+        title: 'Official Details',
+        hasForm: true,
+    },
+    {
+        templateUrl: '/partials/students_new_personal.html',
+        title: 'Personal Details',
+        hasForm: true,
+    },
+    {
+        templateUrl: '/partials/students_new_contacts.html',
+        title: 'Contact Details',
+        hasForm: true,
+    },
+    {
+        templateUrl: '/partials/students_new_guardians.html',
+        title: 'Guardian Details',
+        hasForm: true,
+    },
+    {
+        templateUrl: '/partials/students_new_previousqualification.html',
+        title: 'Previous Qualification Details',
+        hasForm: true,
+
+    }
+];
+
+  $scope.student = {};
+  function handleRequest(res) {
+    console.log(res)
+    $scope.student = {};
+
+  }
+
+  function handleError(err){
+    console.log("Error")
+    console.log(err)
+  }
+
+
+  $scope.newstudent = function(student){
+    $http.post(API + '/student', student).then(handleRequest, handleError)
+  }
+}
+
+function StudentListCtrl(API, $scope, $rootScope, $state, $http) {
+  console.log("staff list ctrl");
+  function handleRequest(res) {
+    console.log(res)
+    $scope.staff = res.data.users;
+
+  }
+
+  function handleError(err){
+    console.log("Error")
+    console.log(err)
+  }
+
+
+  $http.get(API + '/staff').then(handleRequest, handleError)
+
+  $scope.edit = function(staff){
+    console.log("edit");
+    console.log(staff);
+    $rootScope.staff = staff;
+    $state.go("staff.edit")
+  }
+}
+
+
+function EditStudentCtrl(API, $scope, $http, $state, $rootScope) {
+  console.log("edit staff ctrl");
+  $scope.staff = $rootScope.staff;
+  function handleRequest(res) {
+    console.log(res)
+    $scope.staff = {};
+    $state.go("staff.list")
+
+  }
+
+  function handleError(err){
+    console.log("Error")
+    console.log(err)
+  }
+
+
+  $scope.editstaff = function(staff){
+    console.log(staff);
+    $http.put(API + '/staff', staff).then(handleRequest, handleError)
+  }
+}
+
+
 /**********************************************************
 staff
 **********************************************************/
@@ -470,7 +562,7 @@ function EditStaffCtrl(API, $scope, $http, $state, $rootScope) {
 }
 
 
-var edna = angular.module('edna', ['ui.router']);
+var edna = angular.module('edna', ['ui.router', 'multiStepForm']);
 edna.config(function($stateProvider, $urlRouterProvider) {
   //
   // For any unmatched url, redirect to /state1
@@ -539,6 +631,43 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
       views: {
         "staff": { templateUrl: "/partials/staff_edit.html" },
+      },data:{
+        roles: [],
+        requireLogin: true,
+      }
+    })
+    .state('students', {
+      views: {
+        "content": { templateUrl: "/partials/students.html" },
+      },data:{
+        roles: [],
+        requireLogin: true,
+      }
+    })
+    .state('students.new', {
+      url: "/students/new",
+      views: {
+        "students": { templateUrl: "/partials/students_new.html" },
+      },data:{
+        roles: [],
+        requireLogin: true,
+      }
+    })
+    .state('students.list', {
+      url: "/students/list",
+
+      views: {
+        "students": { templateUrl: "/partials/students_list.html" },
+      },data:{
+        roles: [],
+        requireLogin: true,
+      }
+    })
+    .state('students.edit', {
+      url: "/students/edit",
+
+      views: {
+        "students": { templateUrl: "/partials/students_edit.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -665,6 +794,9 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .controller('EditStaffCtrl', EditStaffCtrl)
   .controller('StaffListCtrl', StaffListCtrl)
 
+  .controller('NewStudentCtrl', NewStudentCtrl)
+  .controller('EditStudentCtrl', EditStudentCtrl)
+  .controller('StudentListCtrl', StudentListCtrl)
 
   .controller('NewClassCtrl', NewClassCtrl)
   .controller('EditClassCtrl', EditClassCtrl)
