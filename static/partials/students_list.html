@@ -1,30 +1,27 @@
-<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="StaffListCtrl">
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="StudentListCtrl">
   <div class="table-responsive" data-snap-ignore="true">
       <table class="table">
         <thead>
           <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Staff Type</th>
-            <th>Roles</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Class</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="s in staff">
+          <tr ng-repeat="s in students">
             <th scope="row">
                 <img src="{{ s.image }}" style="width:25px; height:25px" class="img-circle"/>
             </th>
-            <td>{{ s.name }}</td>
-            <td>{{ s.email }}</td>
-            <td>{{ s.phone }}</td>
-            <td>{{ s.type }}</td>
-            <td>{{ s.roles }}</td>
+            <td>{{ s.lastname }}</td>
+            <td>{{ s.firstname }}</td>
+            <td>{{ s.middlename }}</td>
+            <td>{{ s.class }}</td>
             <td>
               <button ng-click="edit(s)" >Edit</button>
-              <button>Change password</button>
 
             </td>
           </tr>

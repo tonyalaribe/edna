@@ -11,11 +11,7 @@
       <label for="parent_class">Parent Class</label>
       <select class="form-control" id="parent_class" ng-model="c.parent">
         <option>None</option>
-        <option>JSS 1</option>
-        <option>JSS 1A</option>
-        <option>JSS 1B</option>
-        <option>JSS 2</option>
-        <option>JSS 3</option>
+        <option ng-repeat="c in classes">{{c.name}}</option>
       </select>
     </div>
 

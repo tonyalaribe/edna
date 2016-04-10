@@ -14,10 +14,9 @@ import (
 
 // Class struct
 type Class struct {
-	ID       bson.ObjectId `json:"id" bson:"_id"`
-	Name     string        `json:"name"`
-	Parent   string        `json:"parent"`
-	Teachers []string      `json:"teachers"`
+	Name     string   `json:"name" bson:"_id"`
+	Parent   string   `json:"parent"`
+	Teachers []string `json:"teachers"`
 }
 
 //ClassCollection struct
@@ -53,7 +52,7 @@ func (r *ClassRepo) Create(class *Class) error {
 //Update adds a user to the database
 func (r *ClassRepo) Update(class *Class) error {
 
-	err := r.coll.UpdateId(class.ID, class)
+	err := r.coll.UpdateId(class.Name, class)
 	if err != nil {
 		log.Println(err)
 		return err
