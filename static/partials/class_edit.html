@@ -1,0 +1,40 @@
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="EditClassCtrl">
+
+  <form method="post">
+    <h3>Edit Class</h3>
+      <br/>
+    <div class="form-group edna-form-group ">
+      <label for="class_name">Class Name</label>
+      <input type="text" class="form-control" id="class_name"  name="class_name"  placeholder="JSS 1 A" ng-model="c.name"/>
+    </div>
+    <div class="form-group edna-form-group "  style="width:49%; display:inline-block">
+      <label for="parent_class">Parent Class</label>
+      <select class="form-control" id="parent_class" ng-model="c.parent">
+        <option>None</option>
+        <option>JSS 1</option>
+        <option>JSS 1A</option>
+        <option>JSS 1B</option>
+        <option>JSS 2</option>
+        <option>JSS 3</option>
+      </select>
+    </div>
+
+    <div class="form-group edna-form-group "  style="width:49%; display:inline-block">
+      <label for="parent_class">Class Teacher</label>
+      <select class="form-control" id="parent_class" ng-model="c.teachers[0]">
+        <option>None</option>
+        <option>JSS 1</option>
+        <option>JSS 1A</option>
+        <option>JSS 1B</option>
+        <option>JSS 2</option>
+        <option>JSS 3</option>
+      </select>
+    </div>
+
+
+    <br/>
+    <button type="submit" class="btn register-btn" style="padding: 8px 30px;"  ng-click="editclass(c)">Submit</button>
+    </form>
+
+  </section>
+<br/><br/><br/>

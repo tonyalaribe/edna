@@ -1,0 +1,24 @@
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="NewStudentCtrl">
+
+  <multi-step-container steps="steps" class="simple-prev-next">
+      <header>
+          <button ng-disabled="$isFirst()" class="btn btn-default" ng-click="$previousStep()">
+              <span class="fa fa-chevron-left"></span>
+              Previous
+          </button>
+          <strong style="text-align:center; " ng-bind-template="{{$getActiveIndex()}}. {{$getActiveStep().title}}"></strong>
+
+          <button ng-disabled="$isLast()" class="btn btn-default pull-right" ng-click="$nextStep()">
+              Next
+              <span class="fa fa-chevron-right"></span>
+          </button>
+          <div style="clear:both;"></div>
+      </header>
+      <br/><br/>
+      <main step-container></main>
+  </multi-step-container>
+
+
+{{student}}
+
+</section>

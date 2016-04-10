@@ -2,9 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 	"log"
 	"net/http"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -59,6 +62,51 @@ func contentTypeHandler(next http.Handler) http.Handler {
 			return
 		}
 
+		next.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(fn)
+}
+
+func dbsetter(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+
+		h := strings.Split(r.Host, ".")
+		log.Println(h[0])
+
+		session, err := mgo.Dial(MONGOSERVER)
+		defer session.Close()
+		if err != nil {
+			panic(err)
+			//log.Println(err)
+		}
+		session.SetMode(mgo.Monotonic, true)
+		col := session.DB(MONGODB).C("schools")
+		school := School{}
+
+		if strings.Contains(r.Host, ":8080") || h[0] == "www" {
+			err := col.Find(bson.M{
+				"_id": "unical",
+			}).One(&school)
+			if err != nil {
+				log.Println(err)
+			}
+			context.Set(r, "school", school)
+			if err != nil {
+				log.Println(err)
+			}
+		} else {
+			err = col.Find(bson.M{
+				"_id": h[0],
+			}).One(&school)
+			if err != nil {
+				log.Println(err)
+			}
+			context.Set(r, "school", school)
+			if err != nil {
+				log.Println(err)
+			}
+		}
 		next.ServeHTTP(w, r)
 	}
 

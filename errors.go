@@ -34,4 +34,6 @@ var (
 	ErrInternalServer       = &Error{"internal_server_error", 500, "Internal Server Error", "Something went wrong."}
 	ErrNoAuth               = &Error{"unauthorised", 401, "Unauthorised Access", "Not authenticated. Please login."}
 	ErrBadToken             = &Error{"unauthorised", 401, "Unauthorised Access", "Not authenticated. Invalid Token."}
+	ErrNotFound             = &Error{"not_found", 404, "Resource not Found", "Requested resource could not be found"}
+	ErrWrongPassword        = &Error{"wrong_password", http.StatusNotAcceptable, "Wrong Password", "Wrong Password"}
 )

@@ -1,0 +1,75 @@
+<div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_firstname">First Name</label>
+      <input type="text" class="form-control" id="student_firstname"  name="student_firstname"  placeholder="John" ng-model="student.firstname"/>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_middlename">Middle Name</label>
+      <input type="text" class="form-control" id="student_middlename"  name="student_middlename"  placeholder="Okon" ng-model="student.middlename"/>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student/lastname">Last Name</label>
+      <input type="text" class="form-control" id="student_lastname"  name="student_lastname"  placeholder="Etim" ng-model="student.lastname"/>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_dateofbirth">Date of Birth</label>
+      <input type="date" class="form-control" id="student_dateofbirth"  name="student_dateofbirth"  placeholder="Etim" ng-model="student.dateofbirth"/>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_gender">Gender</label>
+      <select class="form-control"  id="student_gender"  name="student_gender"  ng-model="student.gender">
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_bloodgroup">Blood Group</label>
+      <select class="form-control" ng-model="student.bloodgroup">
+        <option>AA</option>
+        <option>AS</option>
+        <option>SS</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_nationality">Nationality</label>
+      <input type="text" class="form-control" id="student_nationality"  name="student_nationality"  placeholder="Nigerian" ng-model="student.nationality"/>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group edna-form-group ">
+      <label for="student_stateoforigin">State of Origin</label>
+      <input type="text" class="form-control" id="student_stateoforigin"  name="student_stateoforigin"  placeholder="Cross River State" ng-model="student.stateoforigin"/>
+    </div>
+  </div>
+
+  <br/>
+    <div style="clear:both"></div>
+  <br/>
+
+  <button ng-disabled="$isLast()" class="btn btn-default pull-right" ng-click="$nextStep()">
+      Next
+      <span class="fa fa-chevron-right"></span>
+  </button>
+
+</div>

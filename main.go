@@ -5,9 +5,6 @@ import (
 	"net/http"
 	"os"
 
-	//	"github.com/gorilla/context"
-	//	"github.com/justinas/alice" //A middleware chaining library.
-
 	"github.com/gorilla/context"
 	"github.com/justinas/alice"
 	"github.com/rs/cors"
@@ -41,19 +38,43 @@ func init() {
 func main() {
 	//REDISADDR, REDISPW, MONGOSERVER, MONGODB, Public, Private, RootURL, AWSBucket := checks()
 
-	//config := generateConfig()
-
+	config := generateConfig()
+	defer config.MongoSession.Close()
 	commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
 	router := NewRouter()
 
 	//router.Post("/api/v0.1/auth", commonHandlers.ThenFunc(appC.authHandler))
+	router.Post("/api/auth/login", commonHandlers.Append(dbsetter).ThenFunc(config.LoginPost))
+
+	router.Post("/api/staff", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.createUserHandler))
+	router.Put("/api/staff", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.updateUserHandler))
+	router.Get("/api/staff", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getUsersHandler))
+
+	router.Post("/api/student", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.createStudentHandler))
+	router.Put("/api/student", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.putStudentHandler))
+	router.Get("/api/student", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getStudentsHandler))
+
+	router.Post("/api/class", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.createClassHandler))
+	router.Get("/api/class", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getClassesHandler))
+	router.Put("/api/class", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.putClassHandler))
+
+	router.Post("/api/subject", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.createSubjectHandler))
+	router.Get("/api/subject", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getSubjectsHandler))
+	router.Put("/api/subject", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.putSubjectHandler))
+
+	router.Get("/api/me", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getMeHandler))
+	router.Post("/register.html", commonHandlers.ThenFunc(config.NewSchool))
+	router.Get("/verify", commonHandlers.ThenFunc(config.VerifySchool))
+	router.Get("/", commonHandlers.Append(dbsetter).ThenFunc(config.RootHandler))
 
 	router.HandleMethodNotAllowed = false
 	router.NotFound = http.FileServer(http.Dir("./static")).ServeHTTP
 	//api routes for iparent
 	router.Get("/api/child", commonHandlers.ThenFunc(ChildHandler))
 	router.Get("/api/board", commonHandlers.ThenFunc(BoardHandler))
-	router.Post("/send", commonHandlers.ThenFunc(RegParent))
+	router.Get("/api/verify", commonHandlers.ThenFunc(config.AuthGuardianHandler))
+	router.Post("/send", commonHandlers.ThenFunc(config.VerifyGuardian))
+
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		log.Println("No Global port has been defined, using default port :8080")

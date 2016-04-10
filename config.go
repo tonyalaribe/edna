@@ -9,6 +9,11 @@ import (
 	"os"
 )
 
+var (
+	MONGOSERVER string
+	MONGODB     string
+)
+
 //Config struct is important, as all handlers will  be methods implementing
 //this struct.  THis technique will make it easy to pass common resources like a
 // database connection, between connections
@@ -28,17 +33,20 @@ type Config struct {
 func generateConfig() (config Config) {
 
 	config.MONGOSERVER = os.Getenv("MONGOLAB_URI")
+
 	if config.MONGOSERVER == "" {
 		log.Println("No mongo server address set, resulting to default address")
 		config.MONGOSERVER = "localhost:27017"
 	}
+	MONGOSERVER = config.MONGOSERVER
 	log.Println("MONGOSERVER is ", config.MONGOSERVER)
 
 	config.MONGODB = os.Getenv("MONGODB")
 	if config.MONGODB == "" {
 		log.Println("No Mongo database name set, resulting to default")
-		config.MONGODB = "oddjobz"
+		config.MONGODB = "edna"
 	}
+	MONGODB = config.MONGODB
 	log.Println("MONGODB is ", config.MONGODB)
 
 	session, err := mgo.Dial(config.MONGOSERVER)
@@ -46,7 +54,6 @@ func generateConfig() (config Config) {
 		panic(err)
 		//log.Println(err)
 	}
-	defer session.Close()
 	session.SetMode(mgo.Monotonic, true)
 
 	config.MongoSession = session
@@ -82,7 +89,7 @@ func generateConfig() (config Config) {
 
 	config.RootURL = os.Getenv("RootURL")
 	if config.RootURL == "" {
-		config.RootURL = "http://localhost:8080"
+		config.RootURL = "localhost:8080"
 	}
 
 	config.Token = "AccessToken"
