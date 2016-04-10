@@ -27,6 +27,7 @@ type Guardian struct {
 	Country    string `json:"country"`
 	State      string `json:"state"`
 	Pin2       string
+	True       string
 	Pin        []byte   `json:"-" bson:"pin"`
 	City       string   `json:"city"`
 	Schools    []string `json:"schools"`
@@ -132,20 +133,21 @@ func (r *GuardianRepo) Update(guardian *Guardian) error {
 	return nil
 }
 
-func (r *GuardianRepo) AuthGuardian(rr string, x *Guardian) error {
+func (r *GuardianRepo) AuthGuardian(rr string, x *Guardian) (Guardian, error) {
 	var guardian Guardian
 	err := r.coll.Find(bson.M{
 		"_id": rr,
 	}).One(&guardian)
 	if err != nil {
 		log.Println(err)
-		return err
+		return guardian, err
 	}
 	err = bcrypt.CompareHashAndPassword(guardian.Pin, []byte(x.Pin2))
 	if err != nil {
-		return err
+		return guardian, err
 	}
-	return nil
+	guardian.True = "true"
+	return guardian, nil
 }
 
 //Get gets a class's details from db
@@ -209,10 +211,15 @@ func (c *Config) AuthGuardianHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
-	err = u.AuthGuardian(tmp, &guardian)
+	guardian, err = u.AuthGuardian(tmp, &guardian)
 	if err != nil {
 		log.Println(err)
 	}
+
+	res, _ := json.Marshal(guardian)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(res)
+
 }
 
 //putGuardianHandler would create a class
