@@ -8,8 +8,9 @@ import (
 	//	"github.com/gorilla/context"
 	//	"github.com/justinas/alice" //A middleware chaining library.
 
+	"github.com/gorilla/context"
+	"github.com/justinas/alice"
 	"github.com/rs/cors"
-	"github.com/skratchdot/open-golang/open"
 )
 
 const (
@@ -22,8 +23,19 @@ const (
 	Cost int = 5
 )
 
+type Conf struct {
+	AuthToken string
+}
+
+var (
+	Token Conf
+)
+
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	Token = Conf{
+		AuthToken: "iBamebYJnnpXUCjP6tmeYpUkMw3HA57pdSs7c1qc.H92jTVMAg112xmPQnnwAH",
+	}
 }
 
 func main() {
@@ -31,14 +43,17 @@ func main() {
 
 	//config := generateConfig()
 
-	//commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
+	commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
 	router := NewRouter()
 
 	//router.Post("/api/v0.1/auth", commonHandlers.ThenFunc(appC.authHandler))
 
 	router.HandleMethodNotAllowed = false
 	router.NotFound = http.FileServer(http.Dir("./static")).ServeHTTP
-
+	//api routes for iparent
+	router.Get("/api/child", commonHandlers.ThenFunc(ChildHandler))
+	router.Get("/api/board", commonHandlers.ThenFunc(BoardHandler))
+	router.Post("/send", commonHandlers.ThenFunc(RegParent))
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		log.Println("No Global port has been defined, using default port :8080")
@@ -58,6 +73,6 @@ func main() {
 	}).Handler(router)
 	log.Println("serving ")
 
-	open.Run("http://localhost:" + PORT)
+	//open.Run("http://localhost:" + PORT)
 	log.Fatal(http.ListenAndServe(":"+PORT, handler))
 }
