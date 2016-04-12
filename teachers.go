@@ -12,8 +12,10 @@ import (
 func (r *UserRepo) GetAllTeachers() ([]User, error) {
 	var users []User
 	err := r.coll.Find(bson.M{
-		"$elemMatch": bson.M{
-			"$eq": "",
+		"roles": bson.M{
+			"$elemMatch": bson.M{
+				"$eq": "teacher",
+			},
 		},
 	}).All(&users)
 

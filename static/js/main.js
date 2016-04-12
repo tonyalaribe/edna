@@ -1,72 +1,3 @@
-function myOnLoadEvent(func) {
-    // assign any pre-defined functions on 'window.onload' to a variable
-    var oldOnLoad = window.onload;
-    // if there is not any function hooked to it
-    if (typeof window.onload != 'function') {
-        // you can hook your function with it
-        window.onload = func
-    } else { // someone already hooked a function
-        window.onload = function () {
-            // call the function hooked already
-            oldOnLoad();
-            // call your awesome function
-            func();
-        }
-    }
-}
-
-// pass the function you want to call at 'window.onload', in the function defined above
-myOnLoadEvent(function(){
-    // your awesome code to run on window.onload
-    //document.getElementById('navimage').addEventListener('click', function(){
-    //    console.log("snap");
-    //});
-    //console.log("window loaded");
-
-
-
-    document.getElementById('appOverlayMenu').style.top = '-100%';
-
-    var snapper = new Snap({
-      element: document.getElementById('content')
-    });
-
-
-    document.getElementById('navicon').addEventListener('click', function(){
-        console.log("snap");
-        if( snapper.state().state=="left" ){
-            snapper.close();
-        } else {
-            snapper.open('left');
-        }
-    });
-
-    document.getElementById('navimage').addEventListener('click', function(){
-        console.log("snap");
-        if( snapper.state().state=="left" ){
-            snapper.close();
-        } else {
-            snapper.open('left');
-        }
-
-    });
-
-    document.getElementById('rightNavToggle').addEventListener('click', function(){
-        console.log("snap");
-        if( snapper.state().state=="right" ){
-            snapper.close();
-        } else {
-            snapper.open('right');
-        }
-    });
-
-
-    var container = document.getElementById('leftMenu');
-    Ps.initialize(container);
-
-
-});
-
 
 function showNav(){
   snapper.open('left');
@@ -160,6 +91,9 @@ function authService($window) {
 
 function userService($http, API, auth) {
   var self = this;
+  self.user = null;
+  self.roles = [];
+
   self.details = function() {
     return $http.get(API + '/me')
   }
@@ -187,29 +121,20 @@ function userService($http, API, auth) {
 function RootCtrl(auth,user,$rootScope, $state) {
   var self = this;
   console.log("roor ctrl");
-  function handleRequest(res) {
-    console.log(res)
-    self.user = res.data;
-    document.getElementById('loader-wrapper').classList.add("loaded");
+
+
+
+
+  document.getElementById('loader-wrapper').classList.add("loaded");
+
+  self.logout = function() {
+    console.log("log out");
+    auth.logout && auth.logout();
+    $state.go("login")
   }
-
-  function handleError(err){
-    console.log("Error")
-    console.log(err)
-    document.getElementById('loader-wrapper').classList.add("loaded");
+  self.isAuthed = function() {
+    return auth.isAuthed ? auth.isAuthed() : false
   }
-
-
-  user.details().then(handleRequest, handleError)
-
-    self.logout = function() {
-      console.log("log out");
-      auth.logout && auth.logout();
-      $state.go("login")
-    }
-    self.isAuthed = function() {
-      return auth.isAuthed ? auth.isAuthed() : false
-    }
 }
 
 
@@ -226,7 +151,6 @@ function LoginCtrl(user, auth, $state, $rootScope) {
   function handleRequest2(res) {
     console.log(res)
     $rootScope.user = res.data;
-
   }
 
   function handleError2(err){
@@ -243,7 +167,8 @@ function LoginCtrl(user, auth, $state, $rootScope) {
     if(token) {
       console.log('JWT:', token);
       $state.go("root");
-      user.details().then(handleRequest2, handleError2);
+      location.reload();
+      //user.details().then(handleRequest2, handleError2);
     }
 
   }
@@ -278,6 +203,15 @@ function NewClassCtrl(API, $http, $scope) {
   $http.get(API + '/class').then(function(res) {
     console.log(res)
     $scope.classes = res.data.classes;
+
+  }, function(err){
+    console.log("Error")
+    console.log(err)
+  });
+
+  $http.get(API + '/teachers').then(function(res) {
+    console.log(res)
+    $scope.teachers = res.data.users;
 
   }, function(err){
     console.log("Error")
@@ -333,6 +267,16 @@ function ClassListCtrl(API, $scope, $http, $state, $rootScope) {
 function EditClassCtrl(API, $scope, $http, $state, $rootScope) {
   console.log("edit class ctrl");
   $scope.c = $rootScope.c;
+
+  $http.get(API + '/teachers').then(function(res) {
+    console.log(res)
+    $scope.teachers = res.data.users;
+
+  }, function(err){
+    console.log("Error")
+    console.log(err)
+  });
+
   function handleRequest(res) {
     console.log(res)
     $scope.c = {};
@@ -374,6 +318,15 @@ function NewSubjectCtrl(API, $http, $scope) {
   $scope.subject = {};
   $scope.subject.teachers = [];
 
+  $http.get(API + '/teachers').then(function(res) {
+    console.log(res)
+    $scope.teachers = res.data.users;
+
+  }, function(err){
+    console.log("Error")
+    console.log(err)
+  });
+
 
   $http.get(API + '/class').then(function(res) {
     console.log(res)
@@ -407,6 +360,10 @@ function NewSubjectCtrl(API, $http, $scope) {
 function SubjectListCtrl(API, $scope, $http, $state, $rootScope) {
   console.log("subject list ctrl");
   $scope.subject = $rootScope.subject;
+
+
+
+
   function handleRequest(res) {
     console.log(res)
     $scope.subjects = res.data.subjects;
@@ -433,6 +390,16 @@ function SubjectListCtrl(API, $scope, $http, $state, $rootScope) {
 function EditSubjectCtrl(API, $scope, $http, $state, $rootScope) {
   console.log("edit subject ctrl");
   $scope.subject = $rootScope.subject;
+
+
+  $http.get(API + '/teachers').then(function(res) {
+    console.log(res)
+    $scope.teachers = res.data.users;
+
+  }, function(err){
+    console.log("Error")
+    console.log(err)
+  });
 
   $http.get(API + '/class').then(function(res) {
     console.log(res)
@@ -697,6 +664,15 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         requireLogin: false,
       }
     })
+    .state('login', {
+      url: "/login",
+      views: {
+        "body": { templateUrl: "/partials/login.html" },
+      },data:{
+        roles: [],
+        requireLogin: false,
+      }
+    })
     .state('root', {
       url: "/",
       views: {
@@ -721,7 +697,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       views: {
         "content": { templateUrl: "/partials/staff/staff.html" },
       },data:{
-        roles: [],
+        roles: ["admin"],
         requireLogin: true,
       }
     })
@@ -729,36 +705,27 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       url: "/staff/new",
       views: {
         "staff": { templateUrl: "/partials/staff/staff_new.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('staff.list', {
       url: "/staff/list",
 
       views: {
         "staff": { templateUrl: "/partials/staff/staff_list.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('staff.edit', {
       url: "/staff/edit",
 
       views: {
         "staff": { templateUrl: "/partials/staff/staff_edit.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('students', {
       views: {
         "content": { templateUrl: "/partials/students/students.html" },
       },data:{
-        roles: [],
+        roles: ["admin"],
         requireLogin: true,
       }
     })
@@ -766,37 +733,28 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       url: "/students/new",
       views: {
         "students": { templateUrl: "/partials/students/students_new.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('students.list', {
       url: "/students/list",
 
       views: {
         "students": { templateUrl: "/partials/students/students_list.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('students.edit', {
       url: "/students/edit",
 
       views: {
         "students": { templateUrl: "/partials/students/students_edit.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('class', {
       url: "",
       views: {
         "content": { templateUrl: "/partials/class/class.html" },
       },data:{
-        roles: [],
+        roles: ["admin"],
         requireLogin: true,
       }
     })
@@ -804,65 +762,37 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       url: "/class/new",
       views: {
         "class": { templateUrl: "/partials/class/class_new.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('class.list', {
       url: "/class/list",
       views: {
         "class": { templateUrl: "/partials/class/class_list.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('class.edit', {
       url: "/class/edit",
       views: {
         "class": { templateUrl: "/partials/class/class_edit.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('class.subject_new', {
       url: "/class/subjects/new",
       views: {
         "class": { templateUrl: "/partials/subject/subject_new.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('class.subject_list', {
       url: "/class/subjects/list",
       views: {
         "class": { templateUrl: "/partials/subject/subject_list.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
+      },
     })
     .state('class.subject_edit', {
       url: "/class/subjects/edit",
       views: {
         "class": { templateUrl: "/partials/subject/subject_edit.html" },
-      },data:{
-        roles: [],
-        requireLogin: true,
-      }
-    })
-    .state('login', {
-      url: "/login",
-      views: {
-        "body": { templateUrl: "/partials/login.html" },
       },
-      data:{
-        roles: [],
-        requireLogin: false,
-      }
     });
   });
 
@@ -874,17 +804,56 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
   })
-  .run(function($rootScope, $state, auth){
-
+  .run(function($rootScope, $state, auth, user){
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
       console.log(auth.isAuthed())
       var requireLogin = toState.data.requireLogin;
+      var targetRoles = toState.data.roles;
+      console.log(targetRoles);
 
-      if (requireLogin && !auth.isAuthed()){
-        event.preventDefault();
-        $state.go('login')
+      var findOne = function (haystack, arr) {
+          return arr.some(function (v) {
+              return haystack.indexOf(v) >= 0;
+          });
+      };
+
+      console.log(user.user);
+
+      if (requireLogin && auth.isAuthed()){
+        if (user.user == null){
+          console.log("user object is empty");
+          user.details().then(function(res) {
+            console.log(res)
+            $rootScope.user = res.data;
+            user.user = res.data;
+            user.roles = res.data.roles;
+
+          }, function (err){
+            console.log("Error, user not authenticated")
+            console.log(err)
+            event.preventDefault();
+            $state.go('login');
+          })
+        }else{
+          console.log(user.roles);
+          console.log(findOne(user.roles,targetRoles));
+          if (findOne(user.roles,targetRoles) || targetRoles == [] ){
+            console.log("you can continue")
+
+          }else{
+            console.log("you are authenticated, but no required permissions");
+            event.preventDefault();
+            $state.go('404');
+          }
+
       }
+    }else if (requireLogin && !auth.isAuthed()){
+      event.preventDefault();
+      $state.go('login');
+    }
+
     })
+
   })
   .controller('LoginCtrl', LoginCtrl)
   .controller('RootCtrl', RootCtrl)

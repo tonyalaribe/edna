@@ -25,7 +25,7 @@
         </style>
         <!--<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>-->
     </head>
-    <body ng-app="edna" ng-controller="RootCtrl as root">
+    <body >
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -120,7 +120,7 @@
         top: 0;
         width: 51%;
         height: 100%;
-        background: #222222;
+        background: #fff;
         z-index: 1000;
         -webkit-transform: translateX(0);  /* Chrome, Opera 15+, Safari 3.1+ */
         -ms-transform: translateX(0);  /* IE 9 */
@@ -167,7 +167,7 @@
         </div>
 
 
-<section ui-view="body" >
+<section ng-app="edna" ng-controller="RootCtrl as root" ui-view="body" >
 
         <div class="snap-drawers">
                     <div class="snap-drawer snap-drawer-left page-sidebar" id="leftMenu">
@@ -664,6 +664,94 @@
                   <br/><br/>
 
                 </div>
+
+                <script>
+
+                console.log("about initializing")
+
+
+                function showNav(){
+                  snapper.open('left');
+                }
+
+
+
+                function myOnLoadEvent(func) {
+                    // assign any pre-defined functions on 'window.onload' to a variable
+                    var oldOnLoad = window.onload;
+                    // if there is not any function hooked to it
+                    if (typeof window.onload != 'function') {
+                        // you can hook your function with it
+                        window.onload = func
+                    } else { // someone already hooked a function
+                        window.onload = function () {
+                            // call the function hooked already
+                            oldOnLoad();
+                            // call your awesome function
+                            func();
+                        }
+                    }
+                }
+
+                initer = function(){
+
+                  document.getElementById('appOverlayMenu').style.top = '-100%';
+
+                  var snapper = new Snap({
+                    element: document.getElementById('content')
+                  });
+
+
+                  document.getElementById('navicon').addEventListener('click', function(){
+                      console.log("snap");
+                      if( snapper.state().state=="left" ){
+                          snapper.close();
+                      } else {
+                          snapper.open('left');
+                      }
+                  });
+
+                  document.getElementById('navimage').addEventListener('click', function(){
+                      console.log("snap");
+                      if( snapper.state().state=="left" ){
+                          snapper.close();
+                      } else {
+                          snapper.open('left');
+                      }
+
+                  });
+
+                  document.getElementById('rightNavToggle').addEventListener('click', function(){
+                      console.log("snap");
+                      if( snapper.state().state=="right" ){
+                          snapper.close();
+                      } else {
+                          snapper.open('right');
+                      }
+                  });
+
+
+                  var container = document.getElementById('leftMenu');
+                  Ps.initialize(container);
+
+
+                }
+
+                // pass the function you want to call at 'window.onload', in the function defined above
+                myOnLoadEvent(function(){
+                    // your awesome code to run on window.onload
+                    //document.getElementById('navimage').addEventListener('click', function(){
+                    //    console.log("snap");
+                    //});
+                    //console.log("window loaded");
+
+
+                    initer();
+
+
+                });
+
+                </script>
 
               </section>
   <!--      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
