@@ -1,38 +1,71 @@
-document.getElementById('appOverlayMenu').style.top = '-100%';
-
-var snapper = new Snap({
-  element: document.getElementById('content')
-});
-
-
-document.getElementById('navicon').addEventListener('click', function(){
-    console.log("snap");
-    if( snapper.state().state=="left" ){
-        snapper.close();
-    } else {
-        snapper.open('left');
+function myOnLoadEvent(func) {
+    // assign any pre-defined functions on 'window.onload' to a variable
+    var oldOnLoad = window.onload;
+    // if there is not any function hooked to it
+    if (typeof window.onload != 'function') {
+        // you can hook your function with it
+        window.onload = func
+    } else { // someone already hooked a function
+        window.onload = function () {
+            // call the function hooked already
+            oldOnLoad();
+            // call your awesome function
+            func();
+        }
     }
+}
+
+// pass the function you want to call at 'window.onload', in the function defined above
+myOnLoadEvent(function(){
+    // your awesome code to run on window.onload
+    //document.getElementById('navimage').addEventListener('click', function(){
+    //    console.log("snap");
+    //});
+    //console.log("window loaded");
+
+
+
+    document.getElementById('appOverlayMenu').style.top = '-100%';
+
+    var snapper = new Snap({
+      element: document.getElementById('content')
+    });
+
+
+    document.getElementById('navicon').addEventListener('click', function(){
+        console.log("snap");
+        if( snapper.state().state=="left" ){
+            snapper.close();
+        } else {
+            snapper.open('left');
+        }
+    });
+
+    document.getElementById('navimage').addEventListener('click', function(){
+        console.log("snap");
+        if( snapper.state().state=="left" ){
+            snapper.close();
+        } else {
+            snapper.open('left');
+        }
+
+    });
+
+    document.getElementById('rightNavToggle').addEventListener('click', function(){
+        console.log("snap");
+        if( snapper.state().state=="right" ){
+            snapper.close();
+        } else {
+            snapper.open('right');
+        }
+    });
+
+
+    var container = document.getElementById('leftMenu');
+    Ps.initialize(container);
+
+
 });
-
-document.getElementById('navimage').addEventListener('click', function(){
-    console.log("snap");
-    if( snapper.state().state=="left" ){
-        snapper.close();
-    } else {
-        snapper.open('left');
-    }
-
-});
-
-document.getElementById('rightNavToggle').addEventListener('click', function(){
-    console.log("snap");
-    if( snapper.state().state=="right" ){
-        snapper.close();
-    } else {
-        snapper.open('right');
-    }
-});
-
 
 
 function showNav(){
@@ -59,9 +92,6 @@ function dropExpandInline(e){
     document.getElementById(e).style.display = 'inline-block';
   }
 }
-
-var container = document.getElementById('leftMenu');
-Ps.initialize(container);
 
 
 /***********************************************************************

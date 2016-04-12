@@ -74,6 +74,10 @@ func (r *UserRepo) Create(user *User) error {
 	user.P = ""
 	user.Roles = []string{"staff"}
 
+	if user.Type == "Teaching Staff" {
+		user.Roles = append(user.Roles, "teacher")
+	}
+
 	avatars := []string{"/img/avatar.png", "/img/avatar2.jpg", "/img/avatar5.png"}
 	user.Image = avatars[rand.Intn(len(avatars))]
 
