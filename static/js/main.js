@@ -160,12 +160,13 @@ function RootCtrl(auth,user,$rootScope, $state) {
   function handleRequest(res) {
     console.log(res)
     self.user = res.data;
-
+    document.getElementById('loader-wrapper').classList.add("loaded");
   }
 
   function handleError(err){
     console.log("Error")
     console.log(err)
+    document.getElementById('loader-wrapper').classList.add("loaded");
   }
 
 
@@ -253,7 +254,7 @@ function NewClassCtrl(API, $http, $scope) {
     console.log(err)
   });
 
-  
+
   function handleRequest(res) {
     console.log(res)
     $scope.c = {};
@@ -442,27 +443,27 @@ function NewStudentCtrl(API, $http, $scope) {
 
   $scope.steps = [
     {
-        templateUrl: '/partials/students_new_official.html',
+        templateUrl: '/partials/students/students_new_official.html',
         title: 'Official Details',
         hasForm: true,
     },
     {
-        templateUrl: '/partials/students_new_personal.html',
+        templateUrl: '/partials/students/students_new_personal.html',
         title: 'Personal Details',
         hasForm: true,
     },
     {
-        templateUrl: '/partials/students_new_contacts.html',
+        templateUrl: '/partials/students/students_new_contacts.html',
         title: 'Contact Details',
         hasForm: true,
     },
     {
-        templateUrl: '/partials/students_new_guardians.html',
+        templateUrl: '/partials/students/students_new_guardians.html',
         title: 'Guardian Details',
         hasForm: true,
     },
     {
-        templateUrl: '/partials/students_new_previousqualification.html',
+        templateUrl: '/partials/students/students_new_previousqualification.html',
         title: 'Previous Qualification Details',
         hasForm: true,
 
@@ -523,27 +524,27 @@ function EditStudentCtrl(API, $scope, $http, $state, $rootScope) {
 
     $scope.steps = [
       {
-          templateUrl: '/partials/students_new_official.html',
+          templateUrl: '/partials/students/students_new_official.html',
           title: 'Official Details',
           hasForm: true,
       },
       {
-          templateUrl: '/partials/students_new_personal.html',
+          templateUrl: '/partials/students/students_new_personal.html',
           title: 'Personal Details',
           hasForm: true,
       },
       {
-          templateUrl: '/partials/students_new_contacts.html',
+          templateUrl: '/partials/students/students_new_contacts.html',
           title: 'Contact Details',
           hasForm: true,
       },
       {
-          templateUrl: '/partials/students_new_guardians.html',
+          templateUrl: '/partials/students/students_new_guardians.html',
           title: 'Guardian Details',
           hasForm: true,
       },
       {
-          templateUrl: '/partials/students_new_previousqualification.html',
+          templateUrl: '/partials/students/students_new_previousqualification.html',
           title: 'Previous Qualification Details',
           hasForm: true,
 
@@ -688,7 +689,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
     .state('staff', {
       views: {
-        "content": { templateUrl: "/partials/staff.html" },
+        "content": { templateUrl: "/partials/staff/staff.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -697,7 +698,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('staff.new', {
       url: "/staff/new",
       views: {
-        "staff": { templateUrl: "/partials/staff_new.html" },
+        "staff": { templateUrl: "/partials/staff/staff_new.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -707,7 +708,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       url: "/staff/list",
 
       views: {
-        "staff": { templateUrl: "/partials/staff_list.html" },
+        "staff": { templateUrl: "/partials/staff/staff_list.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -717,7 +718,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       url: "/staff/edit",
 
       views: {
-        "staff": { templateUrl: "/partials/staff_edit.html" },
+        "staff": { templateUrl: "/partials/staff/staff_edit.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -725,7 +726,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('students', {
       views: {
-        "content": { templateUrl: "/partials/students.html" },
+        "content": { templateUrl: "/partials/students/students.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -734,7 +735,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('students.new', {
       url: "/students/new",
       views: {
-        "students": { templateUrl: "/partials/students_new.html" },
+        "students": { templateUrl: "/partials/students/students_new.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -744,7 +745,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       url: "/students/list",
 
       views: {
-        "students": { templateUrl: "/partials/students_list.html" },
+        "students": { templateUrl: "/partials/students/students_list.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -754,7 +755,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       url: "/students/edit",
 
       views: {
-        "students": { templateUrl: "/partials/students_edit.html" },
+        "students": { templateUrl: "/partials/students/students_edit.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -763,7 +764,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('class', {
       url: "",
       views: {
-        "content": { templateUrl: "/partials/class.html" },
+        "content": { templateUrl: "/partials/class/class.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -772,7 +773,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('class.new', {
       url: "/class/new",
       views: {
-        "class": { templateUrl: "/partials/class_new.html" },
+        "class": { templateUrl: "/partials/class/class_new.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -781,7 +782,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('class.list', {
       url: "/class/list",
       views: {
-        "class": { templateUrl: "/partials/class_list.html" },
+        "class": { templateUrl: "/partials/class/class_list.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -790,7 +791,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('class.edit', {
       url: "/class/edit",
       views: {
-        "class": { templateUrl: "/partials/class_edit.html" },
+        "class": { templateUrl: "/partials/class/class_edit.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -799,7 +800,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('class.subject_new', {
       url: "/class/subjects/new",
       views: {
-        "class": { templateUrl: "/partials/subject_new.html" },
+        "class": { templateUrl: "/partials/subject/subject_new.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -808,7 +809,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('class.subject_list', {
       url: "/class/subjects/list",
       views: {
-        "class": { templateUrl: "/partials/subject_list.html" },
+        "class": { templateUrl: "/partials/subject/subject_list.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -817,7 +818,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('class.subject_edit', {
       url: "/class/subjects/edit",
       views: {
-        "class": { templateUrl: "/partials/subject_edit.html" },
+        "class": { templateUrl: "/partials/subject/subject_edit.html" },
       },data:{
         roles: [],
         requireLogin: true,
@@ -831,25 +832,6 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       data:{
         roles: [],
         requireLogin: false,
-      }
-    })
-
-    .state('state1.list', {
-      url: "/list",
-      templateUrl: "partials/state1.list.html",
-      controller: function($scope) {
-        $scope.items = ["A", "List", "Of", "Items"];
-      }
-    })
-    .state('state2', {
-      url: "/state2",
-      templateUrl: "partials/state2.html"
-    })
-    .state('state2.list', {
-      url: "/list",
-      templateUrl: "partials/state2.list.html",
-      controller: function($scope) {
-        $scope.things = ["A", "Set", "Of", "Things"];
       }
     });
   });

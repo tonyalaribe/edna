@@ -72,8 +72,8 @@ func main() {
 	//api routes for iparent
 	router.Get("/api/child", commonHandlers.ThenFunc(ChildHandler))
 	router.Get("/api/board", commonHandlers.ThenFunc(BoardHandler))
-	router.Get("/api/verify", commonHandlers.ThenFunc(config.AuthGuardianHandler))
-	router.Post("/send", commonHandlers.ThenFunc(config.VerifyGuardian))
+	router.Post("/api/verify", commonHandlers.ThenFunc(config.AuthGuardianHandler))
+	router.Post("/api/send", commonHandlers.ThenFunc(config.VerifyGuardian))
 
 	PORT := os.Getenv("PORT")
 	if PORT == "" {

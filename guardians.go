@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"net/url"
 
 	//	"github.com/gorilla/context"
 
+	"bytes"
 	"log"
-
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -26,7 +27,7 @@ type Guardian struct {
 	Address    string `json:"address"`
 	Country    string `json:"country"`
 	State      string `json:"state"`
-	Pin2       string
+	Pin2       string `json:"Pin2"`
 	True       string
 	Pin        []byte   `json:"-" bson:"pin"`
 	City       string   `json:"city"`
@@ -105,19 +106,19 @@ func (r *GuardianRepo) RequestPin(rr string) error {
 				"pin": user.Pin,
 			},
 		})
-		req, err := http.Get("http://api.clickatell.com/http/sendmsg?api_id=3596410&user=digitalforte&password=digitalforte9!!&to=" + user.Phone + "&text= Welcome to Edna Iparent Mobile App use the Pin below to sign in.  " + pin)
+		req, err := http.Get("http://api.clickatell.com/http/sendmsg?" + "api_id=3596410&user=digitalforte&password=digitalforte9!!&to=" + user.Phone + "&text=" + url.QueryEscape("Welcome to Edna Iparent Mobile App use the Pin below to sign in "+pin))
 		if err != nil {
 			fmt.Printf("%s", err)
 			return err
-		} else {
-			defer req.Body.Close()
-			contents, err := ioutil.ReadAll(req.Body)
-			if err != nil {
-				fmt.Printf("%s", err)
-				return err
-			}
-			fmt.Printf("%s\n", string(contents))
 		}
+		defer req.Body.Close()
+		contents, err := ioutil.ReadAll(req.Body)
+		if err != nil {
+			fmt.Printf("%s", err)
+			return err
+		}
+		fmt.Printf("%s\n", string(contents))
+
 	}
 	return nil
 }
@@ -196,6 +197,7 @@ func (c *Config) getGuardianHandler(w http.ResponseWriter, r *http.Request) {
 
 func (c *Config) VerifyGuardian(w http.ResponseWriter, r *http.Request) {
 	tmp := r.URL.Query().Get("no")
+	log.Println(tmp)
 	u := GuardianRepo{c.MongoSession.DB(c.MONGODB).C("guardians")}
 	err := u.RequestPin(tmp)
 	if err != nil {
@@ -207,16 +209,26 @@ func (c *Config) AuthGuardianHandler(w http.ResponseWriter, r *http.Request) {
 	tmp := r.URL.Query().Get("no")
 	u := GuardianRepo{c.MongoSession.DB(c.MONGODB).C("guardians")}
 	guardian := Guardian{}
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(r.Body)
+	s := buf.String()
+	log.Println(s)
+
 	err := json.NewDecoder(r.Body).Decode(&guardian)
 	if err != nil {
 		log.Println(err)
 	}
+
+	log.Println(guardian)
 	guardian, err = u.AuthGuardian(tmp, &guardian)
 	if err != nil {
 		log.Println(err)
 	}
 
-	res, _ := json.Marshal(guardian)
+	res, err := json.Marshal(guardian)
+	if err != nil {
+		log.Println(err)
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(res)
 
