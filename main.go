@@ -76,7 +76,8 @@ func main() {
 	router.Get("/api/board", commonHandlers.ThenFunc(BoardHandler))
 	router.Post("/api/verify", commonHandlers.ThenFunc(config.AuthGuardianHandler))
 	router.Post("/api/send", commonHandlers.ThenFunc(config.VerifyGuardian))
-
+	//validations
+	router.Get("/val/reg", commonHandlers.ThenFunc(config.ValidateRegHandler))
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		log.Println("No Global port has been defined, using default port :8080")
