@@ -122,10 +122,31 @@ function RootCtrl(auth,user,$rootScope, $state) {
   var self = this;
   console.log("roor ctrl");
 
-
-
-
   document.getElementById('loader-wrapper').classList.add("loaded");
+
+
+  function dropExpand(e){
+    var x = document.getElementById(e).style.display;
+    console.log(x)
+    if (x == 'block'){
+      document.getElementById(e).style.display = 'none';
+    } else{
+      document.getElementById(e).style.display = 'block';
+    }
+  }
+
+  function dropExpandInline(e){
+    var x = document.getElementById(e).style.display;
+    console.log(x)
+    if (x == 'inline-block'){
+      document.getElementById(e).style.display = 'none';
+    } else{
+      document.getElementById(e).style.display = 'inline-block';
+    }
+  }
+
+  self.dropExpand = dropExpand;
+  self.dropExpandInline = dropExpandInline;
 
   self.logout = function() {
     console.log("log out");
@@ -676,7 +697,13 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     .state('root', {
       url: "/",
       views: {
-        "content": { templateUrl: "/partials/dashboard.html" },
+        "content": {
+          templateUrl: "/partials/dashboard.html",
+          controller:function($rootScope, $sce){
+            console.log("in root controller")
+
+          },
+        },
       },data:{
         roles: [],
         requireLogin: true,
@@ -695,7 +722,13 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
     .state('staff', {
       views: {
-        "content": { templateUrl: "/partials/staff/staff.html" },
+        "content": {
+          templateUrl: "/partials/staff/staff.html",
+          controller:function($rootScope, $sce){
+            console.log("in staff area controller")
+
+          },
+         },
       },data:{
         roles: ["admin"],
         requireLogin: true,
@@ -804,7 +837,46 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
   })
-  .run(function($rootScope, $state, auth, user){
+  .run(function($rootScope, $state, auth, user, $sce){
+
+
+
+
+
+
+
+    var addonData1 = {
+      nested:true,
+      id:"Dashboard",
+      name:"Dashboard",
+      state: "root",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-home"></i>'),
+
+    };
+
+    var addonData2 = {
+      nested:true,
+      id:"Staff",
+      name:"Staff",
+      state: "",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      children:[{
+        id:"staff_new",
+        name:"New",
+        state:"staff.new",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"staff_list",
+        name:"List",
+        state:"staff.list",
+        thumbnail:$sce.trustAsHtml('li'),
+      }]
+
+
+    };
+
+    $rootScope.addons = [addonData1, addonData2];
+
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
       console.log(auth.isAuthed())
       var requireLogin = toState.data.requireLogin;

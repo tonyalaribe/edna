@@ -216,6 +216,7 @@
 
                       <div class="scroll-wrapper menu-items" style="position: relative; padding-top:30px;">
                         <ul class="menu-items scroll-content scroll-scrolly_visible" style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 618px;">
+                          {{$root.addons}}
                       <li class="m-t-30 ">
                       <a ui-sref="root" class="detailed side-a">
                       <span class="title">Dashboard</span>
@@ -226,21 +227,16 @@
 
                       </li>
 
-                      <li>
-                      <a class="side-a" href="javascript:;" onclick="dropExpand('sideNavStaff')">
-                        <span class="title">Staff</span>
+                      <li ng-repeat="x in $root.addons">
+                      <a class="side-a" href="javascript:;" ng-click="root.dropExpand('sideNav'+x.id)">
+                        <span class="title">{{x.name}}</span>
                         <span class=" arrow"></span>
                       </a>
-                      <a class="icon-thumbnail" onclick="dropExpand('sideNavStaff')">St</a>
-                      <ul class="sub-menu" id="sideNavStaff">
-                        <li class="">
-                          <a class="side-a" ui-sref="staff.new">New</a>
-                          <a class="icon-thumbnail pull-right" ui-sref="staff.new"><i class="fa fa-plus"></i></a>
-                          <div style="clear:both"></div>
-                        </li>
-                        <li class="">
-                          <a class="side-a" ui-sref="staff.list">List</a>
-                          <a class="icon-thumbnail pull-right" ui-sref="staff.list">li</a>
+                      <a class="icon-thumbnail" ng-click="root.dropExpand('sideNav'+x.id)" ng-bind-html="x.thumbnail"></a>
+                      <ul class="sub-menu" id="sideNav{{x.id}}">
+                        <li class="" ng-repeat="y in x.children">
+                          <a class="side-a" ui-sref="{{y.state}}">{{y.name}}</a>
+                          <a class="icon-thumbnail pull-right" ui-sref="{{y.state}}" ng-bind-html="y.thumbnail">  </a>
                           <div style="clear:both"></div>
                         </li>
 
