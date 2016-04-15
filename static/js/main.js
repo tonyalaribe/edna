@@ -89,7 +89,7 @@ function authService($window) {
   // Add JWT methods here
 }
 
-function userService($http, API, auth) {
+function userService($http, API, auth, $rootScope) {
   var self = this;
   self.user = null;
   self.roles = [];
@@ -188,7 +188,8 @@ function LoginCtrl(user, auth, $state, $rootScope) {
     if(token) {
       console.log('JWT:', token);
       $state.go("root");
-      location.reload();
+      //location.reload();
+      window.location.href="/";
       //user.details().then(handleRequest2, handleError2);
     }
 
@@ -837,28 +838,105 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
   })
+  .directive('restrict', function(user, $interpolate, $rootScope){
+    return{
+      restrict: 'A',
+      priority: 100000,
+      scope:true,
+      link: function(scope, element, attr, linker){
+
+        var findOne = function (haystack, arr) {
+            return arr.some(function (v) {
+                return haystack.indexOf(v) >= 0;
+            });
+        };
+
+        //console.log(scope.x);
+
+        var a = $interpolate(attr.access)(scope);
+        console.log( a.trim() == "");
+        if (a.trim() == ""){
+          var attributes = []
+        } else{
+          var attributes = a.trim().split(" ");
+        }
+
+        if (user.roles.length == 0){
+            user.details().then(function(res) {
+              console.log(res)
+              $rootScope.user = res.data;
+              user.user = res.data;
+              user.roles = res.data.roles;
+
+              var accessDenied = true;
+
+              console.log(res.data.roles);
+
+              console.log("vs");
+              console.log(attributes);
+              if (findOne(res.data.roles, attributes)||attributes.length == 0){
+                console.log("Access denied in directive");
+                accessDenied = false;
+              }
+
+              if (accessDenied){
+                try {
+                  element.children.remove();
+                }catch(err){
+                  console.log(err);
+                }
+
+                  console.log(element)
+                  console.log("remove element");
+                element.remove();
+              }
+            }, function (err){
+              console.log("Error, user not authenticated")
+              console.log(err)
+            })
+        }else{
+          var accessDenied = true;
+
+          console.log(user.roles);
+          console.log("vs");
+          console.log(attributes);
+          if (findOne(user.roles, attributes)||attributes.length == 0){
+            console.log("Access denied in directive");
+            accessDenied = false;
+          }
+
+          if (accessDenied){
+            try {
+              element.children.remove();
+            }catch(err){
+              console.log(err);
+            }
+
+            element.remove();
+          }
+        }
+      },
+    }
+  })
+
   .run(function($rootScope, $state, auth, user, $sce){
 
-
-
-
-
-
-
-    var addonData1 = {
-      nested:true,
+    var dashboard = {
+      nested:false,
       id:"Dashboard",
       name:"Dashboard",
       state: "root",
+      roles: "",
       thumbnail: $sce.trustAsHtml('<i class="fa fa-home"></i>'),
 
     };
 
-    var addonData2 = {
+    var staff = {
       nested:true,
       id:"Staff",
       name:"Staff",
       state: "",
+      roles:"admin",
       thumbnail: $sce.trustAsHtml('<i class="fa fa-plus"></i>'),
       children:[{
         id:"staff_new",
@@ -871,11 +949,60 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         state:"staff.list",
         thumbnail:$sce.trustAsHtml('li'),
       }]
-
-
+    };
+    var classesnsubjects = {
+      nested:true,
+      id:"classesnsubjects",
+      name:"Classes and Subjects",
+      state: "",
+      roles:"admin",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      children:[
+      {
+        id:"class_new",
+        name:"New Class",
+        state:"class.new",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"class_list",
+        name:"Classes",
+        state:"class.list",
+        thumbnail:$sce.trustAsHtml('li'),
+      },
+      {
+        id:"subject_new",
+        name:"New Subjects",
+        state:"class.subject_new",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"subject_list",
+        name:"Subjects",
+        state:"class.subject_list",
+        thumbnail:$sce.trustAsHtml('li'),
+      }]
     };
 
-    $rootScope.addons = [addonData1, addonData2];
+    var students = {
+      nested:true,
+      id:"Students",
+      name:"Students",
+      state: "",
+      roles:"admin",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      children:[{
+        id:"students_new",
+        name:"New",
+        state:"students.new",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"students_list",
+        name:"List",
+        state:"students.list",
+        thumbnail:$sce.trustAsHtml('li'),
+      }]
+    };
+
+    $rootScope.addons = [dashboard, staff, classesnsubjects, students];
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
       console.log(auth.isAuthed())
@@ -909,7 +1036,9 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         }else{
           console.log(user.roles);
           console.log(findOne(user.roles,targetRoles));
-          if (findOne(user.roles,targetRoles) || targetRoles == [] ){
+
+          console.log(targetRoles);
+          if (findOne(user.roles,targetRoles) || targetRoles.length == 0 ){
             console.log("you can continue")
 
           }else{

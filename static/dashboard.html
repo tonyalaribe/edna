@@ -216,94 +216,33 @@
 
                       <div class="scroll-wrapper menu-items" style="position: relative; padding-top:30px;">
                         <ul class="menu-items scroll-content scroll-scrolly_visible" style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 618px;">
-                          {{$root.addons}}
-                      <li class="m-t-30 ">
-                      <a ui-sref="root" class="detailed side-a">
-                      <span class="title">Dashboard</span>
-                      <span class="details">12 New notifications</span>
-                      </a>
 
-                      <a class="icon-thumbnail b-danger pull-right" ui-sref="root" ><i class="fa fa-home"></i></a>
+<section ng-repeat="x in $root.addons" >
+                      <li class="menu-items-li"   data-restrict access="{{x.roles}}">
 
-                      </li>
+                            <a ng-if="!x.nested" ui-sref="{{x.state}}" class="detailed side-a">
+                              <span class="title">{{x.name}}</span>
+                            </a>
 
-                      <li ng-repeat="x in $root.addons">
-                      <a class="side-a" href="javascript:;" ng-click="root.dropExpand('sideNav'+x.id)">
-                        <span class="title">{{x.name}}</span>
-                        <span class=" arrow"></span>
-                      </a>
-                      <a class="icon-thumbnail" ng-click="root.dropExpand('sideNav'+x.id)" ng-bind-html="x.thumbnail"></a>
-                      <ul class="sub-menu" id="sideNav{{x.id}}">
-                        <li class="" ng-repeat="y in x.children">
-                          <a class="side-a" ui-sref="{{y.state}}">{{y.name}}</a>
-                          <a class="icon-thumbnail pull-right" ui-sref="{{y.state}}" ng-bind-html="y.thumbnail">  </a>
-                          <div style="clear:both"></div>
-                        </li>
+                            <a ng-if="!x.nested" class="icon-thumbnail b-danger pull-right" ui-sref="root"  ng-bind-html="x.thumbnail"></a>
 
-                      </ul>
-                      </li>
-
-                      <li>
-                        <a class="side-a" onclick="dropExpand('sideNavClass')">
-                          <span class="title">Classes and Subjects </span>
-                          <span class=" arrow"></span>
-                          <div style="clear:both"></div>
-
-                        </a>
-
-                        <a onclick="dropExpand('sideNavClass')" class="icon-thumbnail"><i class="fa fa-group"></i></a>
-
-                        <ul class="sub-menu" id="sideNavClass">
-                          <li class="">
-                            <a class="side-a" ui-sref="class.new">New Class</a>
-                            <a class="icon-thumbnail pull-right" ui-sref="class.new"><i class="fa fa-plus"></i></a>
-                            <div style="clear:both"></div>
-                          </li>
-                          <li class="">
-                            <a class="side-a" ui-sref="class.list">Classes</a>
-                            <a class="icon-thumbnail pull-right" ui-sref="class.list">li</a>
-                            <div style="clear:both"></div>
-                          </li>
-                          <li class="">
-                            <a class="side-a" ui-sref="class.subject_new">New Subject</a>
-                            <a class="icon-thumbnail pull-right" ui-sref="class.subject_new"><i class="fa fa-plus"></i></a>
-                            <div style="clear:both"></div>
-                          </li>
-                          <li class="">
-                            <a class="side-a" ui-sref="class.subject_list">Subjects</a>
-                            <a class="icon-thumbnail pull-right" ui-sref="class.subject_list">li</a>
-                            <div style="clear:both"></div>
-                          </li>
+                          <a ng-if="x.nested" class="side-a" href="javascript:;" ng-click="root.dropExpand('sideNav'+x.id)">
+                            <span class="title">{{x.name}}</span>
+                            <span class=" arrow"></span>
+                          </a>
+                          <a ng-if="x.nested" class="icon-thumbnail" ng-click="root.dropExpand('sideNav'+x.id)" ng-bind-html="x.thumbnail"></a>
+                          <ul ng-if="x.nested" class="sub-menu" id="sideNav{{x.id}}">
+                            <li class="" ng-repeat="y in x.children">
+                              <a class="side-a" ui-sref="{{y.state}}">{{y.name}}</a>
+                              <a class="icon-thumbnail pull-right" ui-sref="{{y.state}}" ng-bind-html="y.thumbnail">  </a>
+                              <div style="clear:both"></div>
+                            </li>
 
                           </ul>
+
                       </li>
 
-                      <li>
-                        <a class="side-a" onclick="dropExpand('sideNavStudent')">
-                          <span class="title">Students </span>
-                          <span class=" arrow"></span>
-                          <div style="clear:both"></div>
-
-                        </a>
-
-                        <a onclick="dropExpand('sideNavStudent')" class="icon-thumbnail"><i class="fa fa-group"></i></a>
-
-                        <ul class="sub-menu" id="sideNavStudent">
-
-                          <li class="">
-                            <a class="side-a" ui-sref="students.new">New</a>
-                            <a class="icon-thumbnail pull-right" ui-sref="students.new"><i class="fa fa-plus"></i></a>
-                            <div style="clear:both"></div>
-                          </li>
-                          <li class="">
-                            <a class="side-a" ui-sref="students.list">List</a>
-                            <a class="icon-thumbnail pull-right" ui-sref="students.list">li</a>
-                            <div style="clear:both"></div>
-                          </li>
-
-                          </ul>
-                      </li>
-
+</section>
                       </ul>
                       <div class="scroll-element scroll-x scroll-scrolly_visible"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="width: 89px;"></div></div></div><div class="scroll-element scroll-y scroll-scrolly_visible"><div class="scroll-element_outer"><div class="scroll-element_size"></div><div class="scroll-element_track"></div><div class="scroll-bar" style="height: 406px; top: 0px;"></div></div></div></div>
                       <div class="clearfix"></div>
@@ -628,7 +567,7 @@
                              </div>
                           </li>
                           <li class="dropdown">
-                            <a href="#" onclick="dropExpandInline('nav-dropdown')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding:5px;">
+                            <a onclick="dropExpandInline('nav-dropdown')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding:5px;">
                               <span class="hidden-xs" ng-bind="$root.user.name"></span> <img src="{{ $root.user.image || 'img/avatar.png' }}" class=" img-circle img-thumbnail edna-nav-avatar" /> <span class="caret"></span></a>
                             <ul class="dropdown-menu" id="nav-dropdown">
                               <li><a href="#"><i class="fa fa-gears "></i>&nbsp;&nbsp;Settings</a></li>
