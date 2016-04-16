@@ -200,6 +200,7 @@ function LoginCtrl(user, auth, $state, $rootScope) {
   }
 
   self.login = function() {
+    console.log("here");
     user.login(self.username, self.password, self.remember)
       .then(handleRequest, handleError)
   }

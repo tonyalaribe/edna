@@ -63,6 +63,17 @@
         xhttp.send();
         }
 
+        function textChangeEmail(){
+        var txt = document.getElementById("admin_email").value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+          document.getElementById("response2").innerHTML = xhttp.responseText;
+          console.log(xhttp.responseText);
+        };
+        xhttp.open("GET", "/val/email?id="+txt);
+        xhttp.send();
+        }
+
         </script>
     </head>
     <body style="padding-top:0" onload="init()">
@@ -118,7 +129,10 @@
 
                   <div class="form-group edna-form-group ">
                     <label for="admin_email">Email</label>
-                    <input type="text" class="form-control" id="admin_email" name="admin_email" placeholder="We will send occassional information "/>
+                    <input type="text" class="form-control" id="admin_email" oninput="textChangeEmail()" name="admin_email" placeholder="We will send occassional information "/>
+                  </div>
+                  <div id="response2">
+
                   </div>
 
                   <div class="g-recaptcha" data-sitekey="6Lf5yBsTAAAAAH-uoGcV-dcXx9SqAPzCx925Q2Ii"></div>

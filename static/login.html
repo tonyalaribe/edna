@@ -48,6 +48,9 @@
                 <form id="login_form" >
                   <p>Sign into your edna account</p>
                   <br/>
+                  <div id="errorDiv">
+
+                  </div>
                   <div class="form-group edna-form-group">
                     <label for="username" >LOGIN</label>
                     <input type="text" class="form-control" id="username" name="username" placeholder="User Name">
@@ -85,33 +88,37 @@
         <script src="js/main.js"></script>
 -->
         <script>
-          function login(e){
+    function login(e){
             e.preventDefault();
-            console.log("login");
+            console.log("here");
 
             var data = {}
 
             data.username = document.getElementById("username").value;
             data.password = document.getElementById("password").value;
-            console.log(data);
+//            console.log(data);
+              errorDiv.innerHTML = "";
+              httpRequest = new XMLHttpRequest()
 
-            httpRequest = new XMLHttpRequest()
+              if(!httpRequest){
+                console.log("could not creaate XMLHttpRequest instance");
+                return false;
+              }
+              httpRequest.onreadystatechange = handle;
 
-            if(!httpRequest){
-              console.log("could not creaate XMLHttpRequest instance");
-              return false;
-            }
-            httpRequest.onreadystatechange = handle;
+              httpRequest.open("GET", "/login");
+              httpRequest.setRequestHeader('Content-Type', 'application/json');
+              httpRequest.send();
+            
 
-            httpRequest.open("GET", "/login");
-            httpRequest.setRequestHeader('Content-Type', 'application/json');
-            httpRequest.send();
+
 
 
           }
 
           function handle(){
-              try{
+            console.log("here");
+            try{
               if (httpRequest.readyState === XMLHttpRequest.DONE){
                 if (httpRequest.status === 200){
                   console.log(JSON.parse(httpRequest.responseText));
@@ -121,6 +128,7 @@
               }
             } catch(e){
               console.log(e)
+
             }
           }
           document.getElementById("login_form").addEventListener("submit", login, false)

@@ -207,6 +207,29 @@ func (r *SchoolRepo) ValidateReg(schoolID string) (string, error) {
 	return htm, err
 }
 
+func (r *SchoolRepo) CheckEmail(email string) (string, error) {
+	var htm string
+	school := School{}
+	err := r.coll.Find(bson.M{
+		"adminemail": email,
+	}).One(&school)
+	if err != nil {
+		htm = ""
+		return htm, err
+	}
+	htm = "<p class='text-danger'>This Email is already associated with another account  " + school.ID + "+</p>"
+	return htm, err
+}
+func (c *Config) CheckEmailHandler(w http.ResponseWriter, r *http.Request) {
+	email := r.URL.Query().Get("id")
+	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
+	msg, err := x.CheckEmail(email)
+	if err != nil {
+		log.Println(err)
+
+	}
+	w.Write([]byte(msg))
+}
 func (c *Config) ValidateRegHandler(w http.ResponseWriter, r *http.Request) {
 	schoolID := r.URL.Query().Get("id")
 	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
