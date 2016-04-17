@@ -9,7 +9,6 @@ import (
 
 	//	"github.com/gorilla/context"
 
-	"bytes"
 	"log"
 	"net/http"
 
@@ -209,17 +208,17 @@ func (c *Config) AuthGuardianHandler(w http.ResponseWriter, r *http.Request) {
 	tmp := r.URL.Query().Get("no")
 	u := GuardianRepo{c.MongoSession.DB(c.MONGODB).C("guardians")}
 	guardian := Guardian{}
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(r.Body)
-	s := buf.String()
-	log.Println(s)
+	//buf := new(bytes.Buffer)
+	//buf.ReadFrom(r.Body)
+	//s := buf.String()
+	//log.Println(s)
 
 	err := json.NewDecoder(r.Body).Decode(&guardian)
 	if err != nil {
 		log.Println(err)
 	}
 
-	log.Println(guardian)
+	log.Println(guardian.Pin2)
 	guardian, err = u.AuthGuardian(tmp, &guardian)
 	if err != nil {
 		log.Println(err)

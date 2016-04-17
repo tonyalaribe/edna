@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"log"
+
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"log"
 	//"net"
 	"net/http"
 	//"net/smtp"
@@ -29,7 +30,7 @@ type School struct {
 }
 
 type recacptchaResponse struct {
-	Success     bool   `json "success"`
+	Success     bool   `json:"success"`
 	ChallengeTs string `json:"challenge_ts"` // timestamp of the challenge load (ISO format yyyy-MM-dd'T'HH:mm:ssZZ)
 	Hostname    string `json:"hostname"`
 }
@@ -190,6 +191,54 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, "/success.html", http.StatusFound)
+}
+
+func (r *SchoolRepo) ValidateReg(schoolID string) (string, error) {
+	var htm string
+	school := School{}
+	err := r.coll.Find(bson.M{
+		"_id": schoolID,
+	}).One(&school)
+	if err != nil {
+		htm = "<p class='text-success'>School Id is Available</p>"
+		return htm, err
+	}
+	htm = "<p class='text-danger'>This School Id already exists</p>"
+	return htm, err
+}
+
+func (r *SchoolRepo) CheckEmail(email string) (string, error) {
+	var htm string
+	school := School{}
+	err := r.coll.Find(bson.M{
+		"adminemail": email,
+	}).One(&school)
+	if err != nil {
+		htm = ""
+		return htm, err
+	}
+	htm = "<p class='text-danger'>This Email is already associated with another account  " + school.ID + "+</p>"
+	return htm, err
+}
+func (c *Config) CheckEmailHandler(w http.ResponseWriter, r *http.Request) {
+	email := r.URL.Query().Get("id")
+	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
+	msg, err := x.CheckEmail(email)
+	if err != nil {
+		log.Println(err)
+
+	}
+	w.Write([]byte(msg))
+}
+func (c *Config) ValidateRegHandler(w http.ResponseWriter, r *http.Request) {
+	schoolID := r.URL.Query().Get("id")
+	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
+	school, err := x.ValidateReg(schoolID)
+	if err != nil {
+		log.Println(err)
+
+	}
+	w.Write([]byte(school))
 }
 
 //VerifySchool handles verifying users who follow a link sent to their email upon registration
