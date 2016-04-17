@@ -1,0 +1,55 @@
+
+              <style>
+                .edna-sub-nav .highlight>a{
+                  background-color: transparent;
+                  color:#000 !important;
+                }
+              </style>
+
+              <div class="jumbotron" style="margin:0">
+
+                <div class="container">
+                  <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li class="active">Data</li>
+                  </ol>
+                  <div>
+                    <img src="http://placehold.it/400x400" class="img-responsive col-sm-6"/>
+                    <div class="col-sm-6">
+                      <h1>Class and Subject Area</h1>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                      <p><a class="btn btn-danger btn-lg" href="#" role="button">Documentation</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <nav class="navbar navbar-default edna-sub-nav" style="height:auto">
+                  <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+
+                    <!-- Collect the nav links, forms, and other content for toggling
+                    <div style="text-align:center; " class="nav-centered-group">-->
+
+                      <ul class="nav navbar-nav " style="display:inline-block; margin:0;">
+
+
+
+                        <li><a ui-sref="class.new"><i class="fa fa-plus"></i>&nbsp;<span>New Class</span></a></li>
+                        <li><a ui-sref="class.list"><i class="fa fa-group"></i>&nbsp;<span>Classes</span></a></li>
+
+
+                      <div style="clear:both"></div>
+                      </ul>
+
+
+                    <!--</div> /.navbar-collapse -->
+                    <div style="clear:both"></div>
+                  </div><!-- /.container-fluid -->
+                  <div style="clear:both"></div>
+                </nav>
+
+              <section ui-view="teacher">
+
+              </section>

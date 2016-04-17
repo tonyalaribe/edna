@@ -695,6 +695,21 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         requireLogin: false,
       }
     })
+
+    .state('teacher', {
+      views: {
+        "content": { templateUrl: "/partials/teacher/teacher.html" },
+      },data:{
+        roles: ['teacher'],
+        requireLogin: false,
+      }
+    })
+    .state('teacher.list', {
+      url: "/teacher/list",
+      views: {
+        "teacher": { templateUrl: "/partials/teacher/teacher_list.html" },
+      },
+    })
     .state('root', {
       url: "/",
       views: {
@@ -863,19 +878,19 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
         if (user.roles.length == 0){
             user.details().then(function(res) {
-              console.log(res)
+              //console.log(res)
               $rootScope.user = res.data;
               user.user = res.data;
               user.roles = res.data.roles;
 
               var accessDenied = true;
 
-              console.log(res.data.roles);
+              //console.log(res.data.roles);
 
-              console.log("vs");
-              console.log(attributes);
+              //console.log("vs");
+              //console.log(attributes);
               if (findOne(res.data.roles, attributes)||attributes.length == 0){
-                console.log("Access denied in directive");
+                //console.log("Access denied in directive");
                 accessDenied = false;
               }
 
@@ -886,8 +901,8 @@ edna.config(function($stateProvider, $urlRouterProvider) {
                   console.log(err);
                 }
 
-                  console.log(element)
-                  console.log("remove element");
+                  //console.log(element)
+                  //console.log("remove element");
                 element.remove();
               }
             }, function (err){
@@ -897,9 +912,9 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         }else{
           var accessDenied = true;
 
-          console.log(user.roles);
-          console.log("vs");
-          console.log(attributes);
+          //console.log(user.roles);
+          //console.log("vs");
+          //console.log(attributes);
           if (findOne(user.roles, attributes)||attributes.length == 0){
             console.log("Access denied in directive");
             accessDenied = false;
@@ -1002,10 +1017,31 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       }]
     };
 
-    $rootScope.addons = [dashboard, staff, classesnsubjects, students];
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
+    var teacher = {
+      nested:true,
+      id:"AssignedClasses",
+      name:"Classes",
+      state: "",
+      roles:"teacher",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      children:[{
+        id:"teacher_list",
+        name:"New",
+        state:"teacher_list",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"teacher_list",
+        name:"List",
+        state:"teacher.list",
+        thumbnail:$sce.trustAsHtml('li'),
+      }]
+    };
+
+    $rootScope.addons = [dashboard, staff, classesnsubjects, students, teacher];
+
       console.log(auth.isAuthed())
+      $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
       var requireLogin = toState.data.requireLogin;
       var targetRoles = toState.data.roles;
       console.log(targetRoles);
