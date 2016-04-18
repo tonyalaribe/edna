@@ -698,40 +698,30 @@ body{
 //box-shadow
 
 .box {
-  position: relative;
   display: inline-block;
-  width: 100px;
-  height: 100px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.box::after {
-  content: "";
-  //border-radius: 5px;
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  //width: 100%;
-  //height: 100%;
-  //box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  background-color: #fff !important;
+  color:#fff;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=39, Direction=225, Color=#000000)";/*IE 8*/
+  -moz-box-shadow: 1px -1px 39px -12px rgba(0,0,0,0.5);/*FF 3.5+*/
+  -webkit-box-shadow: 1px -1px 39px -12px rgba(0,0,0,0.5);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  box-shadow: 1px -1px 39px -12px rgba(0,0,0,0.5);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=39, Direction=135, Color=#000000); /*IE 5.5-7*/
+  -webkit-transition: all 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 2s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .box:hover {
-  -webkit-transform: scale(1.05, 1.05);
-  transform: scale(1.05, 1.05);
+
+  -webkit-transition: all 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=17, Direction=96, Color=#000000)";/*IE 8*/
+  -moz-box-shadow: 1px 10px 17px -4px rgba(0,0,0,0.2);/*FF 3.5+*/
+  -webkit-box-shadow: 1px 10px 17px -4px rgba(0,0,0,0.2);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  box-shadow: 1px 10px 17px -4px rgba(0,0,0,0.2);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=17, Direction=135, Color=#000000); /*IE 5.5-7*/
 }
 
-.box:hover::after {
-    opacity: 1;
-}
 
 //loader

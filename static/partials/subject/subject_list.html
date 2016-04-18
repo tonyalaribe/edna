@@ -17,7 +17,7 @@
             </th>
             <td>{{ s.name }}</td>
             <td>{{ s.parent }}</td>
-            <td>{{ s.teachers }}</td>
+            <td><span ng-repeat="t in s.teachers" > {{t.name}}; </span></td>
             <td>
               <button ng-click="edit(s)">Edit</button>
 

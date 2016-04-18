@@ -264,9 +264,34 @@ function NewClassCtrl(API, $http, $scope) {
 function ClassListCtrl(API, $scope, $http, $state, $rootScope) {
   console.log("class list ctrl");
   $scope.c = $rootScope.c;
-  function handleRequest(res) {
+
+  var teachers = [];
+
+  $http.get(API + '/teachers').then(function(res) {
     console.log(res)
-    $scope.classes = res.data.classes;
+    teachers = res.data.users;
+
+  }, function(err){
+    console.log("Error getting teachers")
+    console.log(err)
+  });
+
+  function handleRequest(res) {
+    var x = res.data.classes;
+
+    for (i = 0; i < x.length; i++){
+      var t = x[i].teachers;
+      var t2 = [];
+      for (y = 0; y < t.length; y++){
+
+        var elmpos = teachers.map(function(x){ console.log(x); return x.id;}).indexOf(t[y])
+        t2.push(teachers[elmpos]);
+      }
+
+      x[i].teachers = t2;
+    }
+
+    $scope.classes = x;
 
   }
 
@@ -901,14 +926,13 @@ edna.config(function($stateProvider, $urlRouterProvider) {
                 }catch(err){
                   console.log(err);
                 }
-
                   //console.log(element)
                   //console.log("remove element");
                 element.remove();
               }
             }, function (err){
-              console.log("Error, user not authenticated")
-              console.log(err)
+              console.log("Error, user not authenticated");
+              console.log(err);
             })
         }else{
           var accessDenied = true;
