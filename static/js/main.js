@@ -410,12 +410,36 @@ function SubjectListCtrl(API, $scope, $http, $state, $rootScope) {
   $scope.subject = $rootScope.subject;
 
 
+  var teachers = [];
+
+  $http.get(API + '/teachers').then(function(res) {
+    console.log(res)
+    teachers = res.data.users;
+
+  }, function(err){
+    console.log("Error getting teachers")
+    console.log(err)
+  });
+
 
 
   function handleRequest(res) {
     console.log(res)
-    $scope.subjects = res.data.subjects;
+    var x = res.data.subjects;
 
+    for (i = 0; i < x.length; i++){
+      var t = x[i].teachers;
+      var t2 = [];
+      for (y = 0; y < t.length; y++){
+
+        var elmpos = teachers.map(function(x){ console.log(x); return x.id;}).indexOf(t[y])
+        t2.push(teachers[elmpos]);
+      }
+
+      x[i].teachers = t2;
+    }
+
+    $scope.subjects = x;
   }
 
   function handleError(err){
