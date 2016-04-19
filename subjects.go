@@ -17,7 +17,7 @@ type Subject struct {
 	ID       bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
 	Name     string        `json:"name"`
 	Parent   string        `json:"parent"`
-	Teachers []string        `json:"teachers"`
+	Teachers []string      `json:"teachers"`
 }
 
 //SubjectCollection struct
@@ -80,6 +80,26 @@ func (r *SubjectRepo) Get(slug string) (Subject, error) {
 func (r *SubjectRepo) GetAll() ([]Subject, error) {
 	var subjects []Subject
 	err := r.coll.Find(bson.M{}).All(&subjects)
+
+	if err != nil {
+		log.Println(err)
+		return subjects, err
+	}
+
+	return subjects, nil
+}
+
+//GetAllAssignedToTeacher gets all user from db
+func (r *SubjectRepo) GetAllAssignedToTeacher(teacher string) ([]Subject, error) {
+	var subjects []Subject
+	err := r.coll.Find(bson.M{
+		"teachers": bson.M{
+			"$elemMatch": bson.M{
+				"$eq": teacher,
+			},
+		},
+	}).All(&subjects)
+	log.Println(subjects)
 
 	if err != nil {
 		log.Println(err)

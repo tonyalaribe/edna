@@ -64,6 +64,8 @@ func main() {
 	router.Get("/api/subject", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getSubjectsHandler))
 	router.Put("/api/subject", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.putSubjectHandler))
 
+	router.Get("/api/teacher/assignedto", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getTeacherAssignmentsHandler))
+
 	router.Get("/api/me", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getMeHandler))
 	router.Post("/register.html", commonHandlers.ThenFunc(config.NewSchool))
 	router.Get("/verify", commonHandlers.ThenFunc(config.VerifySchool))

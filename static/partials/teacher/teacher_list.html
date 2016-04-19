@@ -1,22 +1,21 @@
-<section class="container"  ng-controller="StaffListCtrl">
+<section class="container"  ng-controller="TeacherAssignedToCtrl">
 
+<h2>Subjects Assigned to You</h2>
 
+    <a class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;" ng-repeat="x in AsSubjectTeacher" ui-sref="teacher.subject_list({id: x.id })" >
+      <div style="background-color:#fff; color:#000; padding:20px;" class="box">
+        <strong>Type</strong> Class Teacher<br/>
+        <strong>Class ID: {{x.name}}</strong><br/>
+        <h4>Assessments</h4>
+        <ol>
+          <li>1st Form order</li>
+          <li>2nd Form order</li>
+          <li>Exams</li>
+        </ol>
+      </div>
+    </a>
 
-          <a href="#" class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;">
-            <div style="background-color:#fff; color:#000; padding:20px;" class="box">
-              <strong>Type</strong> Class Teacher<br/>
-              <strong>Class ID: JSS-1-A</strong><br/>
-              <span>Class Name: JSS 1A</span><br/>
-              <span>Population: 22</span><br/>
-              <h4>Assessments</h4>
-              <ol>
-                <li>1st Form order</li>
-                <li>2nd Form order</li>
-                <li>Exams</li>
-              </ol>
-            </div>
-          </a>
-
+<h2>Classes Assigned to You</h2>
           <a href="#" class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;">
             <div style="background-color:#fff; color:#000; padding:20px;" class="box">
               <strong>Type</strong> Class Teacher<br/>
