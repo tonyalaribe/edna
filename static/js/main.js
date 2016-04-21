@@ -447,7 +447,7 @@ function SubjectListCtrl(API, $scope, $http, $state, $rootScope) {
   }
 
 
-  $http.get(API + '/subject').then(handleRequest, handleError);
+  $http.get(API + '/subjects').then(handleRequest, handleError);
 
   $scope.edit = function(sub){
     console.log("edit");
@@ -752,6 +752,39 @@ function TeacherAssignedToCtrl(API, $scope, $http ){
 
 }
 
+function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
+  console.log('/studentsinclass?class='+encodeURI($stateParams.class))
+  $scope.students = [];
+  $http.get(API + '/studentsinclass?class='+encodeURI($stateParams.class)).then(function(res){
+      console.log(res.data)
+      $scope.students = res.data.students;
+    },function(err){
+      console.log(err)
+    }
+  );
+}
+
+function TeacherAssignedToSubjectOverviewCtrl(API, $http, $scope, $stateParams){
+  $scope.overview = {};
+
+  $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
+      console.log(res.data)
+      $scope.overview = res.data.subject;
+    },function(err){
+      console.log(err)
+    }
+  );
+
+  $scope.newAssessment = function(assessment){
+    $http.post(API + '/createassessment?id='+encodeURI($stateParams.id), assessment).then(function(res){
+        console.log(res.data)
+        //$scope.asessments.push(assessment);
+      },function(err){
+        console.log(err)
+      }
+    );
+  }
+}
 
 var edna = angular.module('edna', ['ui.router', 'multiStepForm']);
 edna.config(function($stateProvider, $urlRouterProvider) {
@@ -795,13 +828,13 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       },
     })
     .state('teacher.subject_overview', {
-      url: "/teacher/subject/:id/overview",
+      url: "/teacher/subject/:id/:class/overview",
       views: {
         "teacher": { templateUrl: "/partials/teacher/teacher_subject.html" },
       },
     })
     .state('teacher.subject_list', {
-      url: "/teacher/subject/:id/list",
+      url: "/teacher/subject/:id/:class/list",
       views: {
         "teacher": { templateUrl: "/partials/teacher/teacher_subject_list.html" },
       },
@@ -1206,6 +1239,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .controller('EditSubjectCtrl', EditSubjectCtrl)
   .controller('SubjectListCtrl', SubjectListCtrl)
 
-  .controller('TeacherAssignedToCtrl', TeacherAssignedToCtrl);
-
+  .controller('TeacherAssignedToCtrl', TeacherAssignedToCtrl)
+  .controller('TeacherAssignedToSubjectCtrl', TeacherAssignedToSubjectCtrl)
+  .controller('TeacherAssignedToSubjectOverviewCtrl', TeacherAssignedToSubjectOverviewCtrl);
 })();

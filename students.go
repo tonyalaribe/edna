@@ -123,6 +123,53 @@ func (r *StudentRepo) GetAll() ([]Student, error) {
 	return student, nil
 }
 
+//GetAllStudentsInClass gets all user from db
+func (r *StudentRepo) GetAllStudentsInClass(class string) ([]Student, error) {
+	var student []Student
+	err := r.coll.Find(bson.M{
+		"class": class,
+	}).All(&student)
+
+	if err != nil {
+		log.Println(err)
+		return student, err
+	}
+
+	return student, nil
+}
+
+//GetAllStudentsInParentClass gets all students in all clases under a parent
+func (r *StudentRepo) GetAllStudentsInParentClass(class string) ([]Student, error) {
+	students := []Student{}
+	students, err := r.GetAllStudentsInClass(class)
+	if err != nil {
+		log.Println(err)
+		return students, err
+	}
+
+	classes := []Class{}
+	err = r.coll.Find(bson.M{
+		"parent": class,
+	}).All(&classes)
+	if err != nil {
+		log.Println(err)
+		return students, err
+	}
+
+	for _, c := range classes {
+		s, err := r.GetAllStudentsInClass(c.Name)
+		if err != nil {
+			log.Println(err)
+			return students, err
+		}
+
+		students = append(students, s...)
+
+	}
+
+	return students, nil
+}
+
 /***************
 handlers
 ***************/
@@ -200,6 +247,22 @@ func (c *Config) putStudentHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	err = u.Update(&student)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+//getStudentsHandler would create a student
+func (c *Config) getStudentsInClassHandler(w http.ResponseWriter, r *http.Request) {
+	school := context.Get(r, "school").(School)
+
+	class := r.URL.Query().Get("class")
+	u := StudentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_students")}
+	students, err := u.GetAllStudentsInParentClass(class)
+	if err != nil {
+		log.Println(err)
+	}
+	err = json.NewEncoder(w).Encode(StudentCollection{students})
 	if err != nil {
 		log.Println(err)
 	}

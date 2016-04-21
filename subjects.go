@@ -14,10 +14,11 @@ import (
 
 // Subject struct
 type Subject struct {
-	ID       bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
-	Name     string        `json:"name"`
-	Parent   string        `json:"parent"`
-	Teachers []string      `json:"teachers"`
+	ID          bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
+	Name        string        `json:"name"`
+	Parent      string        `json:"parent"`
+	Teachers    []string      `json:"teachers"`
+	Assessments []Assessment  `json:"assessments"`
 }
 
 //SubjectCollection struct
@@ -64,15 +65,15 @@ func (r *SubjectRepo) Update(subject *Subject) error {
 //Get gets a class's details from db
 func (r *SubjectRepo) Get(slug string) (Subject, error) {
 	var subject Subject
+	log.Println(slug)
 	err := r.coll.Find(bson.M{
-		"slug": slug,
+		"_id": bson.ObjectIdHex(slug),
 	}).One(&subject)
 
 	if err != nil {
 		log.Println(err)
 		return subject, err
 	}
-
 	return subject, nil
 }
 
@@ -135,6 +136,21 @@ func (c *Config) getSubjectsHandler(w http.ResponseWriter, r *http.Request) {
 	subjects, err := u.GetAll()
 
 	err = json.NewEncoder(w).Encode(SubjectCollection{subjects})
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+//getSubjectHandler would get a subbject
+func (c *Config) getSubjectHandler(w http.ResponseWriter, r *http.Request) {
+	school := context.Get(r, "school").(School)
+
+	name := r.URL.Query().Get("id")
+
+	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
+	subject, err := u.Get(name)
+
+	err = json.NewEncoder(w).Encode(SubjectData{subject})
 	if err != nil {
 		log.Println(err)
 	}

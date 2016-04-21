@@ -2,7 +2,7 @@
 
 <h2>Subjects Assigned to You</h2>
 
-    <a class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;" ng-repeat="x in AsSubjectTeacher" ui-sref="teacher.subject_list({id: x.id })" >
+    <a class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;" ng-repeat="x in AsSubjectTeacher" ui-sref="teacher.subject_overview({id: x.id, class: x.parent })" >
       <div style="background-color:#fff; color:#000; padding:20px;" class="box">
         <strong>Type</strong> Class Teacher<br/>
         <strong>Class ID: {{x.name}}</strong><br/>
