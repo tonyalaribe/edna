@@ -77,9 +77,22 @@ func (r *ClassRepo) Get(slug string) (Class, error) {
 
 //GetAll gets all user from db
 func (r *ClassRepo) GetAll() ([]Class, error) {
-	var classes []Class
+	classes := []Class{}
 	err := r.coll.Find(bson.M{}).All(&classes)
+	if err != nil {
+		log.Println(err)
+		return classes, err
+	}
 
+	return classes, nil
+}
+
+//GetAllChildClasses gets all user from db
+func (r *ClassRepo) GetAllChildClasses(parent string) ([]Class, error) {
+	classes := []Class{}
+	err := r.coll.Find(bson.M{
+		"parent": parent,
+	}).All(&classes)
 	if err != nil {
 		log.Println(err)
 		return classes, err
@@ -112,7 +125,6 @@ func (c *Config) getClassesHandler(w http.ResponseWriter, r *http.Request) {
 
 	u := ClassRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_classes")}
 	classes, err := u.GetAll()
-
 	err = json.NewEncoder(w).Encode(ClassCollection{classes})
 	if err != nil {
 		log.Println(err)

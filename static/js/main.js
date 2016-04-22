@@ -89,7 +89,7 @@ function authService($window) {
   // Add JWT methods here
 }
 
-function userService($http, API, auth) {
+function userService($http, API, auth, $rootScope) {
   var self = this;
   self.user = null;
   self.roles = [];
@@ -189,7 +189,8 @@ $scope.err = "";
     if(token) {
       console.log('JWT:', token);
       $state.go("root");
-      location.reload();
+      //location.reload();
+      window.location.href="/";
       //user.details().then(handleRequest2, handleError2);
     }
 
@@ -265,9 +266,33 @@ function NewClassCtrl(API, $http, $scope) {
 function ClassListCtrl(API, $scope, $http, $state, $rootScope) {
   console.log("class list ctrl");
   $scope.c = $rootScope.c;
-  function handleRequest(res) {
+
+  var teachers = [];
+
+  $http.get(API + '/teachers').then(function(res) {
     console.log(res)
-    $scope.classes = res.data.classes;
+    teachers = res.data.users;
+
+  }, function(err){
+    console.log("Error getting teachers")
+    console.log(err)
+  });
+
+  function handleRequest(res) {
+    var x = res.data.classes;
+
+    for (i = 0; i < x.length; i++){
+      var t = x[i].teachers;
+      var t2 = [];
+      for (y = 0; y < t.length; y++){
+
+        var elmpos = teachers.map(function(x){ console.log(x); return x.id;}).indexOf(t[y])
+        t2.push(teachers[elmpos]);
+      }
+
+      x[i].teachers = t2;
+    }
+    $scope.classes = x;
 
   }
 
@@ -386,12 +411,36 @@ function SubjectListCtrl(API, $scope, $http, $state, $rootScope) {
   $scope.subject = $rootScope.subject;
 
 
+  var teachers = [];
+
+  $http.get(API + '/teachers').then(function(res) {
+    console.log(res)
+    teachers = res.data.users;
+
+  }, function(err){
+    console.log("Error getting teachers")
+    console.log(err)
+  });
+
 
 
   function handleRequest(res) {
     console.log(res)
-    $scope.subjects = res.data.subjects;
+    var x = res.data.subjects;
 
+    for (i = 0; i < x.length; i++){
+      var t = x[i].teachers;
+      var t2 = [];
+      for (y = 0; y < t.length; y++){
+
+        var elmpos = teachers.map(function(x){ console.log(x); return x.id;}).indexOf(t[y])
+        t2.push(teachers[elmpos]);
+      }
+
+      x[i].teachers = t2;
+    }
+
+    $scope.subjects = x;
   }
 
   function handleError(err){
@@ -400,7 +449,7 @@ function SubjectListCtrl(API, $scope, $http, $state, $rootScope) {
   }
 
 
-  $http.get(API + '/subject').then(handleRequest, handleError);
+  $http.get(API + '/subjects').then(handleRequest, handleError);
 
   $scope.edit = function(sub){
     console.log("edit");
@@ -491,6 +540,16 @@ function NewStudentCtrl(API, $http, $scope) {
     }
 ];
 
+$http.get(API + '/class').then(function(res) {
+  console.log(res)
+  $scope.classes = res.data.classes;
+
+}, function(err){
+  console.log("Error")
+  console.log(err)
+});
+
+
   $scope.student = {};
   function handleRequest(res) {
     console.log(res)
@@ -572,6 +631,14 @@ function EditStudentCtrl(API, $scope, $http, $state, $rootScope) {
       }
   ];
 
+  $http.get(API + '/class').then(function(res) {
+    console.log(res)
+    $scope.classes = res.data.classes;
+
+  }, function(err){
+    console.log("Error")
+    console.log(err)
+  });
 
 
 
@@ -672,6 +739,70 @@ function EditStaffCtrl(API, $scope, $http, $state, $rootScope) {
 }
 
 
+//TEACHER TTERRITORY
+function TeacherAssignedToCtrl(API, $scope, $http ){
+
+    $scope.AsSubjectTeacher = [];
+    $scope.AsClassTeacher = [];
+    $http.get(API + '/teacher/assignedto').then(function(res){
+        console.log(res.data)
+        $scope.AsSubjectTeacher = res.data.subjects;
+      },function(err){
+        console.log(err)
+      }
+    );
+
+
+}
+
+function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
+
+  $scope.overview = {};
+
+  $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
+      console.log(res.data)
+      $scope.overview = res.data.subject;
+    },function(err){
+      console.log(err)
+    }
+  );
+
+  
+
+  console.log('/studentsinclass?class='+encodeURI($stateParams.class))
+  $scope.students = [];
+  //$http.get(API + '/studentsinclass?class='+encodeURI($stateParams.class)).then(function(res){
+  $http.get(API + '/studentsinclass?class=JSS+1+B').then(function(res){
+      console.log(res.data)
+      $scope.students = res.data;
+    },function(err){
+      console.log(err)
+    }
+  );
+}
+
+function TeacherAssignedToSubjectOverviewCtrl(API, $http, $scope, $stateParams){
+  $scope.overview = {};
+
+  $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
+      console.log(res.data)
+      $scope.overview = res.data.subject;
+    },function(err){
+      console.log(err)
+    }
+  );
+
+  $scope.newAssessment = function(assessment){
+    $http.post(API + '/createassessment?id='+encodeURI($stateParams.id), assessment).then(function(res){
+        console.log(res.data)
+        //$scope.asessments.push(assessment);
+      },function(err){
+        console.log(err)
+      }
+    );
+  }
+}
+
 var edna = angular.module('edna', ['ui.router', 'multiStepForm']);
 edna.config(function($stateProvider, $urlRouterProvider) {
   //
@@ -697,6 +828,33 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         roles: [],
         requireLogin: false,
       }
+    })
+
+    .state('teacher', {
+      views: {
+        "content": { templateUrl: "/partials/teacher/teacher.html" },
+      },data:{
+        roles: ['teacher'],
+        requireLogin: false,
+      }
+    })
+    .state('teacher.list', {
+      url: "/teacher/list",
+      views: {
+        "teacher": { templateUrl: "/partials/teacher/teacher_list.html" },
+      },
+    })
+    .state('teacher.subject_overview', {
+      url: "/teacher/subject/:id/:class/overview",
+      views: {
+        "teacher": { templateUrl: "/partials/teacher/teacher_subject.html" },
+      },
+    })
+    .state('teacher.subject_list', {
+      url: "/teacher/subject/:id/:class/list",
+      views: {
+        "teacher": { templateUrl: "/partials/teacher/teacher_subject_list.html" },
+      },
     })
     .state('root', {
       url: "/",
@@ -841,28 +999,104 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
   })
+  .directive('restrict', function(user, $interpolate, $rootScope){
+    return{
+      restrict: 'A',
+      priority: 100000,
+      scope:true,
+      link: function(scope, element, attr, linker){
+
+        var findOne = function (haystack, arr) {
+            return arr.some(function (v) {
+                return haystack.indexOf(v) >= 0;
+            });
+        };
+
+        //console.log(scope.x);
+
+        var a = $interpolate(attr.access)(scope);
+        console.log( a.trim() == "");
+        if (a.trim() == ""){
+          var attributes = []
+        } else{
+          var attributes = a.trim().split(" ");
+        }
+
+        if (user.roles.length == 0){
+            user.details().then(function(res) {
+              //console.log(res)
+              $rootScope.user = res.data;
+              user.user = res.data;
+              user.roles = res.data.roles;
+
+              var accessDenied = true;
+
+              //console.log(res.data.roles);
+
+              //console.log("vs");
+              //console.log(attributes);
+              if (findOne(res.data.roles, attributes)||attributes.length == 0){
+                //console.log("Access denied in directive");
+                accessDenied = false;
+              }
+
+              if (accessDenied){
+                try {
+                  element.children.remove();
+                }catch(err){
+                  console.log(err);
+                }
+                  //console.log(element)
+                  //console.log("remove element");
+                element.remove();
+              }
+            }, function (err){
+              console.log("Error, user not authenticated");
+              console.log(err);
+            })
+        }else{
+          var accessDenied = true;
+
+          //console.log(user.roles);
+          //console.log("vs");
+          //console.log(attributes);
+          if (findOne(user.roles, attributes)||attributes.length == 0){
+            console.log("Access denied in directive");
+            accessDenied = false;
+          }
+
+          if (accessDenied){
+            try {
+              element.children.remove();
+            }catch(err){
+              console.log(err);
+            }
+
+            element.remove();
+          }
+        }
+      },
+    }
+  })
+
   .run(function($rootScope, $state, auth, user, $sce){
 
-
-
-
-
-
-
-    var addonData1 = {
-      nested:true,
+    var dashboard = {
+      nested:false,
       id:"Dashboard",
       name:"Dashboard",
       state: "root",
+      roles: "",
       thumbnail: $sce.trustAsHtml('<i class="fa fa-home"></i>'),
 
     };
 
-    var addonData2 = {
+    var staff = {
       nested:true,
       id:"Staff",
       name:"Staff",
       state: "",
+      roles:"admin",
       thumbnail: $sce.trustAsHtml('<i class="fa fa-plus"></i>'),
       children:[{
         id:"staff_new",
@@ -875,14 +1109,84 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         state:"staff.list",
         thumbnail:$sce.trustAsHtml('li'),
       }]
-
-
+    };
+    var classesnsubjects = {
+      nested:true,
+      id:"classesnsubjects",
+      name:"Classes and Subjects",
+      state: "",
+      roles:"admin",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      children:[
+      {
+        id:"class_new",
+        name:"New Class",
+        state:"class.new",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"class_list",
+        name:"Classes",
+        state:"class.list",
+        thumbnail:$sce.trustAsHtml('li'),
+      },
+      {
+        id:"subject_new",
+        name:"New Subjects",
+        state:"class.subject_new",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"subject_list",
+        name:"Subjects",
+        state:"class.subject_list",
+        thumbnail:$sce.trustAsHtml('li'),
+      }]
     };
 
-    $rootScope.addons = [addonData1, addonData2];
+    var students = {
+      nested:true,
+      id:"Students",
+      name:"Students",
+      state: "",
+      roles:"admin",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      children:[{
+        id:"students_new",
+        name:"New",
+        state:"students.new",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"students_list",
+        name:"List",
+        state:"students.list",
+        thumbnail:$sce.trustAsHtml('li'),
+      }]
+    };
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
+
+    var teacher = {
+      nested:true,
+      id:"AssignedClasses",
+      name:"Classes",
+      state: "",
+      roles:"teacher",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      children:[{
+        id:"teacher_list",
+        name:"New",
+        state:"teacher_list",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"teacher_list",
+        name:"List",
+        state:"teacher.list",
+        thumbnail:$sce.trustAsHtml('li'),
+      }]
+    };
+
+    $rootScope.addons = [dashboard, staff, classesnsubjects, students, teacher];
+
       console.log(auth.isAuthed())
+      $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
       var requireLogin = toState.data.requireLogin;
       var targetRoles = toState.data.roles;
       console.log(targetRoles);
@@ -913,7 +1217,9 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         }else{
           console.log(user.roles);
           console.log(findOne(user.roles,targetRoles));
-          if (findOne(user.roles,targetRoles) || targetRoles == [] ){
+
+          console.log(targetRoles);
+          if (findOne(user.roles,targetRoles) || targetRoles.length == 0 ){
             console.log("you can continue")
 
           }else{
@@ -948,6 +1254,9 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
   .controller('NewSubjectCtrl', NewSubjectCtrl)
   .controller('EditSubjectCtrl', EditSubjectCtrl)
-  .controller('SubjectListCtrl', SubjectListCtrl);
+  .controller('SubjectListCtrl', SubjectListCtrl)
 
+  .controller('TeacherAssignedToCtrl', TeacherAssignedToCtrl)
+  .controller('TeacherAssignedToSubjectCtrl', TeacherAssignedToSubjectCtrl)
+  .controller('TeacherAssignedToSubjectOverviewCtrl', TeacherAssignedToSubjectOverviewCtrl);
 })();

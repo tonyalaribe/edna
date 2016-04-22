@@ -1,0 +1,27 @@
+<section class="container" style="" ng-controller="TeacherAssignedToSubjectOverviewCtrl">
+
+  <div style="padding:20px;">
+    <h3>Assessments</h3>
+    <ol>
+      <li ng-repeat="x in overview.assessments"> {{x.name}} </li>
+    </ol>
+
+    <div>
+      <div class="form-group edna-form-group ">
+        <label for="assessment_name">Assessment Name</label>
+        <input type="text" class="form-control" id="assessment_name"  name="assessment_name"  placeholder="First Test" ng-model="assessment.name"/>
+      </div>
+      <div class="form-group edna-form-group ">
+        <label for="assessment_upper_limit">Upper Limit</label>
+        <input type="text" class="form-control" id="assessment_upper_limit"  name="assessment_upper_limit"  placeholder="100" ng-model="assessment.upperlimit"/>
+      </div>
+      <div class="form-group edna-form-group ">
+        <label for="assessment_percentage">Percentage of Total Assessment (%)</label>
+        <input type="text" class="form-control" id="assessment_upper_limit"  name="assessment_upper_limit"  placeholder="20" ng-model="assessment.percentage"/>
+      </div>
+      <button class="btn register-btn" style="padding: 8px 30px;"  ng-click="newAssessment(assessment)">Add Assessment</button>
+    </div>
+  </div>
+
+  </section>
+<br/><br/><br/>

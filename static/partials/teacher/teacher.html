@@ -1,0 +1,51 @@
+
+              <style>
+                .edna-sub-nav .highlight>a{
+                  background-color: transparent;
+                  color:#000 !important;
+                }
+              </style>
+
+              <div class="jumbotron" style="margin:0">
+
+                <div class="container">
+                  <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li class="active">Data</li>
+                  </ol>
+                  <div style="text-align:center">
+                    <h1>Assigned Classes</h1>
+
+                  </div>
+                </div>
+              </div>
+
+              <nav class="navbar navbar-default edna-sub-nav" style="height:auto">
+                  <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+
+                    <!-- Collect the nav links, forms, and other content for toggling
+                    <div style="text-align:center; " class="nav-centered-group">-->
+
+                      <ul class="nav navbar-nav " style="display:inline-block; margin:0;">
+
+
+
+                        <li><a ui-sref="teacher.subject_overview({id: x.id, class: x.parent })"><i class="fa fa-plus"></i>&nbsp;<span>Overview</span></a></li>
+                        <li><a ui-sref="teacher.subject_list({id: x.id, class: x.parent })"><i class="fa fa-group"></i>&nbsp;<span>Class List</span></a></li>
+
+
+                      <div style="clear:both"></div>
+                      </ul>
+
+
+                    <!--</div> /.navbar-collapse -->
+                    <div style="clear:both"></div>
+                  </div><!-- /.container-fluid -->
+                  <div style="clear:both"></div>
+                </nav>
+
+              <section ui-view="teacher">
+
+              </section>
