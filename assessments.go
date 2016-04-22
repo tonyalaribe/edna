@@ -19,11 +19,11 @@ type Assessment struct {
 }
 
 type StudentAssessments struct {
-	ID          string `json:"id"`
-	StudentID   string `json:"studentID"`
-	Name        string `json:"name"`
-	Subject     string `json:"subject"`
-	Class       string `json:"class"`
+	ID          bson.ObjectId `json:"id" bson:"_id"`
+	StudentID   string        `json:"studentid"`
+	Name        string        `json:"name"`
+	Subject     string        `json:"subject"`
+	Class       string        `json:"class"`
 	Assessments []struct {
 		ID    bson.ObjectId `json:"name" bson:"_id"`
 		Name  string        `json:"name"`
@@ -124,7 +124,9 @@ func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http
 		log.Println(err)
 	}
 
-	students, err := StudentRepo.GetAllStudentsInParentClass("JSS 1")
+	class := r.URL.Query().Get("class")
+	//subject := r.URL.Query().Get("subject")
+	students, err := StudentRepo.GetAllStudentsInParentClass(class)
 	if err != nil {
 		log.Println(err)
 	}
@@ -136,15 +138,16 @@ func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http
 		s := StudentAssessments{}
 
 		s.Name = student.FirstName + " " + student.LastName
-		s.ID = student.ID.Hex()
+		log.Println(s.Name)
+		s.StudentID = student.ID.Hex()
 
 		//as := assessments.Assessments
 
 		for i, a := range assessments {
 			log.Println(a.ID)
-			//log.Println(student.ID)
+			log.Println(student.ID)
 			if a.StudentID == student.ID.Hex() {
-				s.Assessments = a.Assessments
+				s.Assessments = append(s.Assessments, a.Assessments...)
 				assessments[i] = assessments[len(assessments)-1]
 				assessments = assessments[:len(assessments)-1]
 			}
@@ -152,12 +155,13 @@ func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http
 		}
 
 		returnStudents = append(returnStudents, s)
+		//log.Println(s)
 	}
 
-	log.Println(assessments)
-	log.Println(students)
+	log.Println(returnStudents)
+	//log.Println(students)
 
-	err = json.NewEncoder(w).Encode(assessments)
+	err = json.NewEncoder(w).Encode(returnStudents)
 	if err != nil {
 		log.Println(err)
 	}

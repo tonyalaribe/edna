@@ -87,6 +87,20 @@ func (r *ClassRepo) GetAll() ([]Class, error) {
 	return classes, nil
 }
 
+//GetAllChildClasses gets all user from db
+func (r *ClassRepo) GetAllChildClasses(parent string) ([]Class, error) {
+	classes := []Class{}
+	err := r.coll.Find(bson.M{
+		"parent": parent,
+	}).All(&classes)
+	if err != nil {
+		log.Println(err)
+		return classes, err
+	}
+
+	return classes, nil
+}
+
 /***************
 handlers
 ***************/

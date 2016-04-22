@@ -49,7 +49,7 @@ func (c *Config) getTeachersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (c *Config) getTeacherAssignmentsHandler(w http.ResponseWriter, r *http.Request) {
+func (c *Config) getClassesAssignedToTeacherHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
 
 	user, err := userget(r)
@@ -63,14 +63,38 @@ func (c *Config) getTeacherAssignmentsHandler(w http.ResponseWriter, r *http.Req
 		log.Println(err)
 	}
 
-	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
+	sRepo := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
 
-	subjects, err := u.GetAllAssignedToTeacher(me_data.ID.Hex())
+	subjects, err := sRepo.GetAllAssignedToTeacher(me_data.ID.Hex())
 	if err != nil {
 		log.Println(err)
 	}
 
-	err = json.NewEncoder(w).Encode(TeacherAssignmentCollection{subjects})
+	cRepo := ClassRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_classes")}
+
+	returnSubjects := []Subject{}
+
+	for _, s := range subjects {
+		childClasses, err := cRepo.GetAllChildClasses(s.Parent)
+		if err != nil {
+			log.Println(err)
+		}
+
+		for _, cc := range childClasses {
+			subj := Subject{}
+			subj.ID = s.ID
+			subj.Name = s.Name
+			subj.Parent = s.Parent
+			subj.Class = cc.Name
+			subj.Teachers = s.Teachers
+			subj.Assessments = s.Assessments
+
+			returnSubjects = append(returnSubjects, subj)
+		}
+
+	}
+
+	err = json.NewEncoder(w).Encode(TeacherAssignmentCollection{returnSubjects})
 	if err != nil {
 		log.Println(err)
 	}

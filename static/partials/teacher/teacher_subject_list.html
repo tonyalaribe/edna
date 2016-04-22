@@ -5,8 +5,7 @@
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Parent Class</th>
-            <th>Class Teachers</th>
+            <th ng-repeat="x in overview.assessments">{{x.name}}</th>
 
           </tr>
         </thead>
@@ -15,8 +14,7 @@
             <th scope="row">
               {{ i }}
             </th>
-            <td>{{ s.lastname }}, {{ s.firstname}} {{ s.middlename}}</td>
-            <td>{{ s.parent }}</td>
+            <td>{{ s.name}}</td>
             <td><span ng-repeat="t in s.teachers" > {{t.name}}; </span></td>
 
           </tr>

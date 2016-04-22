@@ -17,6 +17,7 @@ type Subject struct {
 	ID          bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
 	Name        string        `json:"name"`
 	Parent      string        `json:"parent"`
+	Class       string        `json:"class"`
 	Teachers    []string      `json:"teachers"`
 	Assessments []Assessment  `json:"assessments"`
 }

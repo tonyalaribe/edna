@@ -753,11 +753,25 @@ function TeacherAssignedToCtrl(API, $scope, $http ){
 }
 
 function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
+
+  $scope.overview = {};
+
+  $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
+      console.log(res.data)
+      $scope.overview = res.data.subject;
+    },function(err){
+      console.log(err)
+    }
+  );
+
+  
+
   console.log('/studentsinclass?class='+encodeURI($stateParams.class))
   $scope.students = [];
-  $http.get(API + '/studentsinclass?class='+encodeURI($stateParams.class)).then(function(res){
+  //$http.get(API + '/studentsinclass?class='+encodeURI($stateParams.class)).then(function(res){
+  $http.get(API + '/studentsinclass?class=JSS+1+B').then(function(res){
       console.log(res.data)
-      $scope.students = res.data.students;
+      $scope.students = res.data;
     },function(err){
       console.log(err)
     }

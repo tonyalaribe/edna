@@ -56,7 +56,7 @@ func main() {
 	router.Put("/api/student", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.putStudentHandler))
 	router.Get("/api/student", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getStudentsHandler))
 
-	router.Get("/api/studentsinclass", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getStudentsInClassHandler))
+	router.Get("/api/studentsinclass", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getStudentsAndAssessmentsHandler))
 	router.Post("/api/addstudentassessment", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.addStudentAssessmentsHandler))
 
 	router.Post("/api/createassessment", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.newAssessmentHandler))
@@ -70,7 +70,7 @@ func main() {
 	router.Get("/api/subject", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getSubjectHandler))
 	router.Put("/api/subject", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.putSubjectHandler))
 
-	router.Get("/api/teacher/assignedto", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getTeacherAssignmentsHandler))
+	router.Get("/api/teacher/assignedto", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getClassesAssignedToTeacherHandler))
 
 	router.Get("/api/me", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getMeHandler))
 	router.Post("/register.html", commonHandlers.ThenFunc(config.NewSchool))
