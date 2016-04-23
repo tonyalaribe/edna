@@ -224,7 +224,7 @@
                               <span class="title">{{x.name}}</span>
                             </a>
 
-                            <a ng-if="!x.nested" class="icon-thumbnail  pull-right" ui-sref="root"  ng-bind-html="x.thumbnail"></a>
+                            <a ng-if="!x.nested" class="icon-thumbnail  pull-right" ui-sref="{{x.state}}"  ng-bind-html="x.thumbnail"></a>
 
                           <a ng-if="x.nested" class="side-a" href="javascript:;" ng-click="root.dropExpand('sideNav'+x.id)">
                             <span class="title">{{x.name}}</span>
