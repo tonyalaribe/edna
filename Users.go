@@ -2,15 +2,16 @@ package main
 
 import (
 	"encoding/json"
+	"log"
+	"math/rand"
+	"net/http"
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"log"
-	"math/rand"
-	"net/http"
-	"time"
 )
 
 // User struct holds information about each users skills, aids in marshalling to json and storing on the database
@@ -243,6 +244,7 @@ func (c *Config) createUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+
 }
 
 //updateUserHandler would create a user/staff

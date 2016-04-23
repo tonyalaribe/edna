@@ -1,6 +1,9 @@
 <section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="NewClassCtrl">
 
   <form method="post">
+    <div>
+  <h4>  {{err}} </h4>
+    </div>
     <h3>New Class</h3>
       <br/>
     <div class="form-group edna-form-group ">
@@ -25,6 +28,8 @@
     <br/>
     <button type="submit" class="btn register-btn" style="padding: 8px 30px;"  ng-click="newclass(c)">Submit</button>
     </form>
-{{c}}
+<div>
+  {{suc}}
+</div>
   </section>
 <br/><br/><br/>

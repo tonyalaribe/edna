@@ -223,8 +223,9 @@ Class
 function NewClassCtrl(API, $http, $scope) {
   console.log("new class");
   $scope.c = {};
+  $scope.err = "";
+  $scope.suc = "";
   $scope.c.teachers = [];
-
   $http.get(API + '/class').then(function(res) {
     console.log(res)
     $scope.classes = res.data.classes;
@@ -235,7 +236,7 @@ function NewClassCtrl(API, $http, $scope) {
   });
 
   $http.get(API + '/teachers').then(function(res) {
-    console.log(res)
+    console.log(res);
     $scope.teachers = res.data.users;
 
   }, function(err){
@@ -247,6 +248,7 @@ function NewClassCtrl(API, $http, $scope) {
   function handleRequest(res) {
     console.log(res)
     $scope.c = {};
+    $scope.suc = "New Class Added Succesfully";
 
   }
 
@@ -257,8 +259,15 @@ function NewClassCtrl(API, $http, $scope) {
 
 
   $scope.newclass = function(c){
-    console.log(c);
-    $http.post(API + '/class', c).then(handleRequest, handleError)
+    if(c.name){
+      $scope.err = "";
+      console.log(c);
+      $scope.c = {};
+      $http.post(API + '/class', c).then(handleRequest, handleError)
+    }else {
+      $scope.err = "Fill in Required Fields";
+    }
+
   }
 }
 
@@ -508,7 +517,7 @@ function EditSubjectCtrl(API, $scope, $http, $state, $rootScope) {
 staff
 **********************************************************/
 
-function NewStudentCtrl(API, $http, $scope) {
+function NewStudentCtrl(API, $http, $scope, $location) {
   console.log("new staff");
 
   $scope.steps = [
@@ -555,6 +564,7 @@ $http.get(API + '/class').then(function(res) {
     console.log(res)
     $scope.student = {};
     $scope.submittedStudent = false;
+    $location.path("/students/list");
   }
 
   function handleError(err){
@@ -673,9 +683,12 @@ staff
 function NewStaffCtrl(API, $http, $scope) {
   console.log("new staff");
   $scope.newstaff = {};
+  $scope.res = "";
+  $scope.ress = "";
   function handleRequest(res) {
     console.log(res)
     $scope.newstaff = {};
+    $scope.ress = "New Staff Data Added";
 
   }
 
@@ -687,7 +700,14 @@ function NewStaffCtrl(API, $http, $scope) {
 
 
   $scope.newstaffx = function(staff){
-    $http.post(API + '/staff', staff).then(handleRequest, handleError)
+    if(staff.name && staff.type && staff.email && staff.phone && staff.password){
+      $scope.res = "";
+      $http.post(API + '/staff', staff).then(handleRequest, handleError);
+    }else{
+      $scope.res = "Please fill empty fields";
+    console.log("error");
+    }
+
   }
 }
 
@@ -767,7 +787,7 @@ function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
     }
   );
 
-  
+
 
   console.log('/studentsinclass?class='+encodeURI($stateParams.class))
   $scope.students = [];
