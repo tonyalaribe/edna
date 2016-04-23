@@ -162,7 +162,8 @@ function RootCtrl(auth,user,$rootScope, $state) {
 /**************************************
 LoginCtrl
 ***************************************/
-function LoginCtrl(user, auth, $state, $rootScope) {
+function LoginCtrl(user, auth, $state, $rootScope, $scope) {
+$scope.err = "";
   var self = this;
   self.remember = false;
   console.log("login ");
@@ -197,6 +198,7 @@ function LoginCtrl(user, auth, $state, $rootScope) {
 
   function handleError(err){
     console.log("Error")
+    $scope.err = "incorrect username or password";
     console.log(err)
   }
 
@@ -676,6 +678,7 @@ function NewStaffCtrl(API, $http, $scope) {
     $scope.newstaff = {};
 
   }
+
 
   function handleError(err){
     console.log("Error")
