@@ -12,23 +12,39 @@ import (
 	"net/http"
 )
 
+//Assessment is
 type Assessment struct {
 	Name       string `json:"name"`
 	Upperlimit string `json:"upperlimit"`
 	Percentage string `json:"percentage"`
 }
 
+//StudentAssessments is
 type StudentAssessments struct {
-	ID          bson.ObjectId `json:"id" bson:"_id"`
-	StudentID   string        `json:"studentid"`
-	Name        string        `json:"name"`
-	Subject     string        `json:"subject"`
-	Class       string        `json:"class"`
-	Assessments []struct {
-		ID    bson.ObjectId `json:"name" bson:"_id"`
-		Name  string        `json:"name"`
-		Score string        `json:"score"`
-	}
+	ID          bson.ObjectId       `json:"id,omitempty" bson:"_id,omitempty"`
+	StudentID   string              `json:"studentid"`
+	Name        string              `json:"name"` //Student Name
+	Subject     string              `json:"subject"`
+	Class       string              `json:"class"`
+	Assessments []StudentAssessment `json:"assessments" bson:",omitempty"`
+}
+
+//StudentAssessment is
+type StudentAssessment struct {
+	ID    bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
+	Name  string        `json:"name"`
+	Score int           `json:"score"`
+}
+
+//SingleStudentAssessment for  retrieving sudent assesment from api, and to aid json marshalling
+type SingleStudentAssessment struct {
+	ID             bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
+	StudentID      string        `json:"studentid"`
+	Name           string        `json:"name"`
+	Subject        string        `json:"subject"`
+	Class          string        `json:"class"`
+	AssessmentName string        `json:"assessmentname"`
+	Score          int           `json:"score"`
 }
 
 //StudentAssessmentCollection struct
@@ -46,6 +62,7 @@ type StudentAssessmentRepo struct {
 	coll *mgo.Collection
 }
 
+//CreateAssessment is for creating assessments on a subject
 func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) error {
 	err := r.coll.Update(bson.M{
 		"_id": bson.ObjectIdHex(subjectid),
@@ -62,24 +79,72 @@ func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) 
 	return nil
 }
 
-func (r *StudentAssessmentRepo) UpsertStudentAssessmentData(s StudentAssessments) error {
-	_, err := r.coll.Upsert(bson.M{
-		"studentid": s.StudentID,
-		"class":     s.Class,
-		"subject":   s.Subject,
-	}, bson.M{
-		"$push": bson.M{
+func (r *StudentAssessmentRepo) UpsertStudentAssessmentData(s SingleStudentAssessment) error {
+
+	log.Println(s)
+
+	assessment := StudentAssessment{}
+	assessment.Name = s.AssessmentName
+	assessment.Score = s.Score
+
+	/*
+		_, err := r.coll.Upsert(bson.M{
+			"studentid": s.StudentID,
+			"class":     s.Class,
+			"subject":   s.Subject,
+		}, bson.M{
 			"$addToSet": bson.M{
 				"assessments": bson.M{
-					"$each": s.Assessments,
+					"name":  assessment.Name,
+					"score": assessment.Score,
 				},
 			},
+
+			"$setOnInsert": bson.M{
+				"studentid": s.StudentID,
+				"class":     s.Class,
+				"subject":   s.Subject,
+				"name":      s.Name,
+			},
+		})
+
+	*/
+
+	err := r.coll.Update(bson.M{
+		"studentid":        s.StudentID,
+		"class":            s.Class,
+		"subject":          s.Subject,
+		"assessments.name": assessment.Name,
+	}, bson.M{
+		"$set": bson.M{
+			"assessments.$.score": assessment.Score,
 		},
-		"$setOnInsert": s,
 	})
+
 	if err != nil {
 		log.Println(err)
-		return err
+
+		_, err := r.coll.Upsert(bson.M{
+			"studentid": s.StudentID,
+			"class":     s.Class,
+			"subject":   s.Subject,
+		}, bson.M{
+			"$push": bson.M{
+				"assessments": assessment,
+			},
+			"$setOnInsert": bson.M{
+				"studentid": s.StudentID,
+				"class":     s.Class,
+				"subject":   s.Subject,
+			},
+		},
+		)
+
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+
 	}
 	return nil
 }
@@ -112,7 +177,6 @@ func (c *Config) newAssessmentHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
-
 }
 
 func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http.Request) {
@@ -134,28 +198,32 @@ func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http
 	returnStudents := []StudentAssessments{}
 
 	for _, student := range students {
-		log.Println(student)
+		//log.Println(student)
 		s := StudentAssessments{}
 
 		s.Name = student.FirstName + " " + student.LastName
-		log.Println(s.Name)
+		//log.Println(s.Name)
 		s.StudentID = student.ID.Hex()
 
 		//as := assessments.Assessments
 
-		for i, a := range assessments {
-			log.Println(a.ID)
-			log.Println(student.ID)
+		for _, a := range assessments {
+			//log.Println(a.ID)
+			//log.Println(student.ID)
 			if a.StudentID == student.ID.Hex() {
 				s.Assessments = append(s.Assessments, a.Assessments...)
-				assessments[i] = assessments[len(assessments)-1]
-				assessments = assessments[:len(assessments)-1]
+
+				//assessments[i] = assessments[len(assessments)-1]
+				//assessments = assessments[:len(assessments)-1]
 			}
 
 		}
 
+		if len(s.Assessments) < 1 {
+			s.Assessments = []StudentAssessment{}
+		}
+		//log.Println(s.Assessments)
 		returnStudents = append(returnStudents, s)
-		//log.Println(s)
 	}
 
 	log.Println(returnStudents)
@@ -172,9 +240,7 @@ func (c *Config) addStudentAssessmentsHandler(w http.ResponseWriter, r *http.Req
 	school := context.Get(r, "school").(School)
 	sRepo := StudentAssessmentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_assessments")}
 
-	log.Println(sRepo)
-
-	s := StudentAssessments{}
+	s := SingleStudentAssessment{}
 	err := json.NewDecoder(r.Body).Decode(&s)
 	if err != nil {
 		log.Println(err)

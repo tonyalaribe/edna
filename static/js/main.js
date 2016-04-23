@@ -782,6 +782,71 @@ function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
   $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
       console.log(res.data)
       $scope.overview = res.data.subject;
+      $scope.overview.class = $stateParams.class;
+      $scope.assessments = res.data.subject.assessments;
+      $scope.students = [];
+      $http.get(API + '/studentsinclass?class='+encodeURI($stateParams.class)).then(function(res){
+      //$http.get(API + '/studentsinclass?class=JSS+1+B').then(function(res){
+          console.log(res.data)
+          var assessmentLength = $scope.overview.assessments.length;
+
+          students = res.data;
+          /*for (j=0; j<students.length; j++){
+            for (i=0; i<$scope.overview.assessments.length; i++){
+
+              //console.log(students[j])
+              //console.log(students[j].assessments[i])
+
+              if(!students[j].assessments[i]){
+                students[j].assessments[i] = {}
+                students[j].assessments[i].name = $scope.overview.assessments[i].name
+                students[j].assessments[i].score = 0
+              }
+            }
+
+          }
+          */
+
+
+          var overviewA = $scope.overview.assessments;
+
+          for (jj=0; jj<students.length; jj++){
+            var studentA = students[jj].assessments;
+            console.log(studentA)
+            var returnStudentA;
+            var returnArray = [];
+            for (i=0; i<overviewA.length; i++){
+
+              for (j=0; j<studentA.length; j++){
+                if (overviewA[i].name==studentA[j].name){
+                  studentA[j].upperlimit = overviewA[i].upperlimit
+                  returnArray[i] = studentA[j]
+                }
+              }
+
+
+              if(!returnArray[i]){
+                var  asStudent = {}
+                asStudent.name = overviewA[i].name
+                asStudent.upperlimit = overviewA[i].upperlimit
+                asStudent.score = 0
+                returnArray[i] = asStudent
+              }
+
+            }
+
+            console.log(returnArray);
+
+            students[jj].assessments = returnArray;
+        }
+
+        $scope.students = students
+        },function(err){
+          console.log(err)
+        }
+      );
+
+
     },function(err){
       console.log(err)
     }
@@ -789,21 +854,36 @@ function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
 
 
 
-  console.log('/studentsinclass?class='+encodeURI($stateParams.class))
-  $scope.students = [];
-  //$http.get(API + '/studentsinclass?class='+encodeURI($stateParams.class)).then(function(res){
-  $http.get(API + '/studentsinclass?class=JSS+1+B').then(function(res){
-      console.log(res.data)
-      $scope.students = res.data;
-    },function(err){
-      console.log(err)
-    }
-  );
+
+  $scope.updateAssessment = function(s, a){
+
+    var assessment = {}
+    //console.log($scope.overview)
+    console.log(a)
+    assessment.studentid = s.studentid
+    assessment.name = s.name
+    assessment.subject = $scope.overview.name
+    assessment.class = $scope.overview.class
+    assessment.assessmentname = a.name
+    console.log(a.score)
+    assessment.score = parseInt(a.score)
+
+    console.log(assessment)
+
+    $http.post(API + '/addstudentassessment', assessment).then(function(res){
+        console.log(res.data)
+        //$scope.asessments.push(assessment);
+      },function(err){
+        console.log(err)
+      }
+    );
+  }
+
 }
 
 function TeacherAssignedToSubjectOverviewCtrl(API, $http, $scope, $stateParams){
   $scope.overview = {};
-
+console.log($scope.$parent.$stateParams)
   $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
       console.log(res.data)
       $scope.overview = res.data.subject;
@@ -850,32 +930,6 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       }
     })
 
-    .state('teacher', {
-      views: {
-        "content": { templateUrl: "/partials/teacher/teacher.html" },
-      },data:{
-        roles: ['teacher'],
-        requireLogin: false,
-      }
-    })
-    .state('teacher.list', {
-      url: "/teacher/list",
-      views: {
-        "teacher": { templateUrl: "/partials/teacher/teacher_list.html" },
-      },
-    })
-    .state('teacher.subject_overview', {
-      url: "/teacher/subject/:id/:class/overview",
-      views: {
-        "teacher": { templateUrl: "/partials/teacher/teacher_subject.html" },
-      },
-    })
-    .state('teacher.subject_list', {
-      url: "/teacher/subject/:id/:class/list",
-      views: {
-        "teacher": { templateUrl: "/partials/teacher/teacher_subject_list.html" },
-      },
-    })
     .state('root', {
       url: "/",
       views: {
@@ -901,6 +955,53 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         requireLogin: true,
       }
     })
+
+
+
+
+        .state('teacher_list', {
+          url: "/teacher/list",
+          data:{
+            roles: ['teacher'],
+            requireLogin: true,
+          },
+          views: {
+            "content": { templateUrl: "/partials/teacher/teacher_list.html" },
+          },
+        })
+
+        .state('teacher', {
+          abstract: true,
+          url: "/teacher/subject/:id/:class",
+          views: {
+            "content": {
+              templateUrl: "/partials/teacher/teacher.html",
+              controller:function($scope, $stateParams){
+                console.log($stateParams)
+                $scope.$stateParams = $stateParams;
+                console.log("in teacher assessment area controller")
+
+              },
+             },
+          },
+          data:{
+            roles: ['teacher'],
+            requireLogin: true,
+          }
+        })
+        .state('teacher.subject_overview', {
+          url: "/overview",
+          views: {
+            "teacher": { templateUrl: "/partials/teacher/teacher_subject.html" },
+          },
+        })
+        .state('teacher.subject_list', {
+          url: "/list",
+          views: {
+            "teacher": { templateUrl: "/partials/teacher/teacher_subject_list.html" },
+          },
+        })
+
 
     .state('staff', {
       views: {
@@ -1018,6 +1119,34 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .constant('API', '/api')
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
+  })
+  .filter('assessmentsTotalFilter', function() {
+    return function(studentA, overviewA ) {
+      console.log(studentA);
+      console.log(overviewA)
+      var total = 0;
+      for (i=0; i<studentA.length; i++){
+
+        var upperLimit
+        var percentage
+
+        for (j=0; j<overviewA.length; j++){
+          if (overviewA[i].name == studentA[i].name){
+            upperLimit = overviewA[i].upperlimit
+            percentage = overviewA[i].percentage
+            break;
+          }
+        }
+
+
+        //total = total + studentA[i].score
+
+        xxx = (studentA[i].score /upperLimit)*(percentage)
+        total = total + xxx
+
+      }
+      return total
+    };
   })
   .directive('restrict', function(user, $interpolate, $rootScope){
     return{
@@ -1184,23 +1313,12 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
 
     var teacher = {
-      nested:true,
+      nested:false,
       id:"AssignedClasses",
       name:"Classes",
-      state: "",
+      state:"teacher_list",
       roles:"teacher",
       thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
-      children:[{
-        id:"teacher_list",
-        name:"New",
-        state:"teacher_list",
-        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
-      },{
-        id:"teacher_list",
-        name:"List",
-        state:"teacher.list",
-        thumbnail:$sce.trustAsHtml('li'),
-      }]
     };
 
     $rootScope.addons = [dashboard, staff, classesnsubjects, students, teacher];
@@ -1209,7 +1327,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
       var requireLogin = toState.data.requireLogin;
       var targetRoles = toState.data.roles;
-      console.log(targetRoles);
+
 
       var findOne = function (haystack, arr) {
           return arr.some(function (v) {
