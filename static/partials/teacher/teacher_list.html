@@ -2,7 +2,7 @@
 <br/><br/><br/><br/>
 <h2>Subjects Assigned to You</h2>
 
-    <a class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;" ng-repeat="x in AsSubjectTeacher" ui-sref="teacher.subject_overview({id: x.id, class: x.class })" >
+    <a class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;" ng-repeat="x in AsSubjectTeacher" ui-sref="subjectTeacher.overview({id: x.id, class: x.class })" >
       <div style="background-color:#fff; color:#000; padding:20px;" class="box">
         <strong>Type</strong> Subject Teacher<br/>
         <strong>Subject: {{x.name}}</strong><br/>
@@ -12,7 +12,7 @@
 <div style="clear:both"></div>
 <br/><br/>
     <h2>Classes Assigned to You</h2>
-          <a class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;" ng-repeat="x in AsClassTeacher">
+          <a class="col-sm-6 col-md-4 card" style="padding-top:20px;padding-bottom:20px;" ng-repeat="x in AsClassTeacher" ui-sref="classTeacher.overview({id: x.name})">
             <div style="background-color:#fff; color:#000; padding:20px;" class="box">
               <strong>Type</strong> Class Teacher<br/>
               <span>Class Name: {{x.name}}</span><br/>

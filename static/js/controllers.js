@@ -1,0 +1,795 @@
+
+  function RootCtrl(auth,user,$rootScope, $state) {
+    var self = this;
+    console.log("roor ctrl");
+
+    document.getElementById('loader-wrapper').classList.add("loaded");
+
+
+    function dropExpand(e){
+      var x = document.getElementById(e).style.display;
+      console.log(x)
+      if (x == 'block'){
+        document.getElementById(e).style.display = 'none';
+      } else{
+        document.getElementById(e).style.display = 'block';
+      }
+    }
+
+    function dropExpandInline(e){
+      var x = document.getElementById(e).style.display;
+      console.log(x)
+      if (x == 'inline-block'){
+        document.getElementById(e).style.display = 'none';
+      } else{
+        document.getElementById(e).style.display = 'inline-block';
+      }
+    }
+
+    self.dropExpand = dropExpand;
+    self.dropExpandInline = dropExpandInline;
+
+    self.logout = function() {
+      console.log("log out");
+      auth.logout && auth.logout();
+      $state.go("login")
+    }
+    self.isAuthed = function() {
+      return auth.isAuthed ? auth.isAuthed() : false
+    }
+  }
+
+
+  /**************************************
+  LoginCtrl
+  ***************************************/
+  function LoginCtrl(user, auth, $state, $rootScope, $scope) {
+  $scope.err = "";
+    var self = this;
+    self.remember = false;
+    console.log("login ");
+
+
+
+    function handleRequest2(res) {
+      console.log(res)
+      $rootScope.user = res.data;
+    }
+
+    function handleError2(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+
+
+    function handleRequest(res) {
+      console.log(res)
+      var token = res.data.token ? res.data.token : null;
+      if(token) {
+        console.log('JWT:', token);
+        $state.go("root");
+        //location.reload();
+        window.location.href="/";
+        //user.details().then(handleRequest2, handleError2);
+      }
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      $scope.err = "incorrect username or password";
+      console.log(err)
+    }
+
+    self.login = function() {
+      console.log("here");
+      user.login(self.username, self.password, self.remember)
+        .then(handleRequest, handleError)
+    }
+
+    self.logout = function() {
+      auth.logout && auth.logout()
+    }
+    self.isAuthed = function() {
+      return auth.isAuthed ? auth.isAuthed() : false
+    }
+  }
+
+  /****
+  Class
+  ****/
+
+  function NewClassCtrl(API, $http, $scope) {
+    console.log("new class");
+    $scope.c = {};
+    $scope.err = "";
+    $scope.suc = "";
+    $scope.c.teachers = [];
+    $http.get(API + '/class').then(function(res) {
+      console.log(res)
+      $scope.classes = res.data.classes;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+    $http.get(API + '/teachers').then(function(res) {
+      console.log(res);
+      $scope.teachers = res.data.users;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+
+    function handleRequest(res) {
+      console.log(res)
+      $scope.c = {};
+      $scope.suc = "New Class Added Succesfully";
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $scope.newclass = function(c){
+      if(c.name){
+        $scope.err = "";
+        console.log(c);
+        $scope.c = {};
+        $http.post(API + '/class', c).then(handleRequest, handleError)
+      }else {
+        $scope.err = "Fill in Required Fields";
+      }
+
+    }
+  }
+
+
+  function ClassListCtrl(API, $scope, $http, $state, $rootScope) {
+    console.log("class list ctrl");
+    $scope.c = $rootScope.c;
+
+    var teachers = [];
+
+    $http.get(API + '/teachers').then(function(res) {
+      console.log(res)
+      teachers = res.data.users;
+
+    }, function(err){
+      console.log("Error getting teachers")
+      console.log(err)
+    });
+
+    function handleRequest(res) {
+      var x = res.data.classes;
+
+      for (i = 0; i < x.length; i++){
+        var t = x[i].teachers;
+        var t2 = [];
+        for (y = 0; y < t.length; y++){
+
+          var elmpos = teachers.map(function(x){ console.log(x); return x.id;}).indexOf(t[y])
+          t2.push(teachers[elmpos]);
+        }
+
+        x[i].teachers = t2;
+      }
+      $scope.classes = x;
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $http.get(API + '/class').then(handleRequest, handleError);
+
+    $scope.edit = function(cl){
+      console.log("edit");
+      console.log(cl);
+      $rootScope.c = cl;
+      $state.go("class.edit")
+    }
+  }
+
+
+  function EditClassCtrl(API, $scope, $http, $state, $rootScope) {
+    console.log("edit class ctrl");
+    $scope.c = $rootScope.c;
+
+    $http.get(API + '/teachers').then(function(res) {
+      console.log(res)
+      $scope.teachers = res.data.users;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+    function handleRequest(res) {
+      console.log(res)
+      $scope.c = {};
+      $state.go("class.list")
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $scope.editclass = function(c){
+      console.log(c);
+      $http.put(API + '/class', c).then(handleRequest, handleError)
+    }
+
+
+    $http.get(API + '/class').then(function(res) {
+      console.log(res)
+      $scope.classes = res.data.classes;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+  }
+
+
+
+  /****************************************************
+  Subject
+  *****************************************************/
+
+  function NewSubjectCtrl(API, $http, $scope) {
+    console.log("new subject");
+    $scope.subject = {};
+    $scope.subject.teachers = [];
+
+    $http.get(API + '/teachers').then(function(res) {
+      console.log(res)
+      $scope.teachers = res.data.users;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+
+    $http.get(API + '/class').then(function(res) {
+      console.log(res)
+      $scope.classes = res.data.classes;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+
+    function handleRequest(res) {
+      console.log(res)
+      $scope.subject = {};
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $scope.newsubject = function(c){
+      console.log(c);
+      $http.post(API + '/subject', c).then(handleRequest, handleError)
+    }
+  }
+
+
+  function SubjectListCtrl(API, $scope, $http, $state, $rootScope) {
+    console.log("subject list ctrl");
+    $scope.subject = $rootScope.subject;
+
+
+    var teachers = [];
+
+    $http.get(API + '/teachers').then(function(res) {
+      console.log(res)
+      teachers = res.data.users;
+
+    }, function(err){
+      console.log("Error getting teachers")
+      console.log(err)
+    });
+
+
+
+    function handleRequest(res) {
+      console.log(res)
+      var x = res.data.subjects;
+
+      for (i = 0; i < x.length; i++){
+        var t = x[i].teachers;
+        var t2 = [];
+        for (y = 0; y < t.length; y++){
+
+          var elmpos = teachers.map(function(x){ console.log(x); return x.id;}).indexOf(t[y])
+          t2.push(teachers[elmpos]);
+        }
+
+        x[i].teachers = t2;
+      }
+
+      $scope.subjects = x;
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $http.get(API + '/subjects').then(handleRequest, handleError);
+
+    $scope.edit = function(sub){
+      console.log("edit");
+      console.log(sub);
+      $rootScope.subject = sub;
+      $state.go("class.subject_edit")
+    }
+  }
+
+
+  function EditSubjectCtrl(API, $scope, $http, $state, $rootScope) {
+    console.log("edit subject ctrl");
+    $scope.subject = $rootScope.subject;
+
+
+    $http.get(API + '/teachers').then(function(res) {
+      console.log(res)
+      $scope.teachers = res.data.users;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+    $http.get(API + '/class').then(function(res) {
+      console.log(res)
+      $scope.classes = res.data.classes;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+
+    function handleRequest(res) {
+      console.log(res)
+      $scope.subject = {};
+      $state.go("class.subject_list")
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $scope.editsubject = function(subject){
+      console.log(subject);
+      $http.put(API + '/subject', subject).then(handleRequest, handleError)
+    }
+  }
+
+
+  /**********************************************************
+  staff
+  **********************************************************/
+
+  function NewStudentCtrl(API, $http, $scope, $location) {
+    console.log("new staff");
+
+    $scope.steps = [
+      {
+          templateUrl: '/partials/students/students_new_official.html',
+          title: 'Official Details',
+          hasForm: true,
+      },
+      {
+          templateUrl: '/partials/students/students_new_personal.html',
+          title: 'Personal Details',
+          hasForm: true,
+      },
+      {
+          templateUrl: '/partials/students/students_new_contacts.html',
+          title: 'Contact Details',
+          hasForm: true,
+      },
+      {
+          templateUrl: '/partials/students/students_new_guardians.html',
+          title: 'Guardian Details',
+          hasForm: true,
+      },
+      {
+          templateUrl: '/partials/students/students_new_previousqualification.html',
+          title: 'Previous Qualification Details',
+          hasForm: true,
+
+      }
+  ];
+
+  $http.get(API + '/class').then(function(res) {
+    console.log(res)
+    $scope.classes = res.data.classes;
+
+  }, function(err){
+    console.log("Error")
+    console.log(err)
+  });
+
+
+    $scope.student = {};
+    function handleRequest(res) {
+      console.log(res)
+      $scope.student = {};
+      $scope.submittedStudent = false;
+      $location.path("/students/list");
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+      $scope.submittedStudent = false;
+    }
+
+
+    $scope.newstudent = function(student){
+      $scope.submittedStudent = true;
+      $http.post(API + '/student', student).then(handleRequest, handleError)
+    }
+  }
+
+  function StudentListCtrl(API, $scope, $rootScope, $state, $http) {
+    console.log("students list ctrl");
+    function handleRequest(res) {
+      console.log(res)
+
+      var students = res.data.students;
+      $scope.students = students;
+
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $http.get(API + '/students').then(handleRequest, handleError)
+
+    $scope.edit = function(student){
+      console.log("edit");
+      console.log(student);
+      $rootScope.student = student;
+      $state.go("students.edit", {id:student.id})
+    }
+  }
+
+
+  function EditStudentCtrl(API, $scope, $http, $state, $rootScope, $stateParams) {
+    console.log("edit staff ctrl");
+
+
+      $scope.steps = [
+        {
+            templateUrl: '/partials/students/students_new_official.html',
+            title: 'Official Details',
+            hasForm: true,
+        },
+        {
+            templateUrl: '/partials/students/students_new_personal.html',
+            title: 'Personal Details',
+            hasForm: true,
+        },
+        {
+            templateUrl: '/partials/students/students_new_contacts.html',
+            title: 'Contact Details',
+            hasForm: true,
+        },
+        {
+            templateUrl: '/partials/students/students_new_guardians.html',
+            title: 'Guardian Details',
+            hasForm: true,
+        },
+        {
+            templateUrl: '/partials/students/students_new_previousqualification.html',
+            title: 'Previous Qualification Details',
+            hasForm: true,
+
+        }
+    ];
+
+    $http.get(API + '/class').then(function(res) {
+      console.log(res)
+      $scope.classes = res.data.classes;
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+    console.log($stateParams.id);
+    //$scope.student = $rootScope.student;
+    //$scope.student.dateofbirth = new Date($scope.student.dateofbirth);
+    //$scope.student.signupdate = new Date($scope.student.signupdate);
+
+    $http.get(API + '/student?id='+$stateParams.id).then(function(res) {
+      console.log(res)
+      $scope.student = res.data.student;
+      $scope.student.dateofbirth = new Date($scope.student.dateofbirth);
+      $scope.student.signupdate = new Date($scope.student.signupdate);
+
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
+
+
+    $scope.savestudent = function(student){
+      console.log(student);
+      $http.put(API + '/student', student).then(function(res) {
+          console.log(res)
+          $scope.student = {};
+          $state.go("students.list")
+
+        }, function (err){
+            console.log("Error")
+            console.log(err)
+          }
+        )
+    }
+  }
+
+
+  /**********************************************************
+  staff
+  **********************************************************/
+
+  function NewStaffCtrl(API, $http, $scope) {
+    console.log("new staff");
+    $scope.newstaff = {};
+    $scope.res = "";
+    $scope.ress = "";
+    function handleRequest(res) {
+      console.log(res)
+      $scope.newstaff = {};
+      $scope.ress = "New Staff Data Added";
+
+    }
+
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $scope.newstaffx = function(staff){
+      if(staff.name && staff.type && staff.email && staff.phone && staff.password){
+        $scope.res = "";
+        $http.post(API + '/staff', staff).then(handleRequest, handleError);
+      }else{
+        $scope.res = "Please fill empty fields";
+      console.log("error");
+      }
+
+    }
+  }
+
+  function StaffListCtrl(API, $scope, $rootScope, $state, $http) {
+    console.log("staff list ctrl");
+    function handleRequest(res) {
+      console.log(res)
+      $scope.staff = res.data.users;
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $http.get(API + '/staff').then(handleRequest, handleError)
+
+    $scope.edit = function(staff){
+      console.log("edit");
+      console.log(staff);
+      $rootScope.staff = staff;
+      $state.go("staff.edit")
+    }
+  }
+
+
+  function EditStaffCtrl(API, $scope, $http, $state, $rootScope) {
+    console.log("edit staff ctrl");
+    $scope.staff = $rootScope.staff;
+    function handleRequest(res) {
+      console.log(res)
+      $scope.staff = {};
+      $state.go("staff.list")
+
+    }
+
+    function handleError(err){
+      console.log("Error")
+      console.log(err)
+    }
+
+
+    $scope.editstaff = function(staff){
+      console.log(staff);
+      $http.put(API + '/staff', staff).then(handleRequest, handleError)
+    }
+  }
+
+
+  //TEACHER TERRITORY
+  function TeacherAssignedToCtrl(API, $scope, $http ){
+      $scope.AsSubjectTeacher = [];
+      $scope.AsClassTeacher = [];
+      $http.get(API + '/teacher/assignedto').then(function(res){
+          console.log(res.data)
+          $scope.AsSubjectTeacher = res.data.subjects;
+          $scope.AsClassTeacher = res.data.classes;
+        },function(err){
+          console.log(err)
+        }
+      );
+
+
+  }
+
+  function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
+
+    $scope.overview = {};
+
+    $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
+        console.log(res.data)
+        $scope.overview = res.data.subject;
+        $scope.overview.class = $stateParams.class;
+        $scope.assessments = res.data.subject.assessments;
+        $scope.students = [];
+        $http.get(API + '/studentsinclass?class='+encodeURI($stateParams.class)).then(function(res){
+            var assessmentLength = $scope.overview.assessments.length;
+
+            students = res.data;
+            var overviewA = $scope.overview.assessments;
+
+            for (jj=0; jj<students.length; jj++){
+              var studentA = students[jj].assessments;
+              console.log(studentA)
+              var returnStudentA;
+              var returnArray = [];
+              for (i=0; i<overviewA.length; i++){
+
+                for (j=0; j<studentA.length; j++){
+                  if (overviewA[i].name==studentA[j].name){
+                    studentA[j].upperlimit = overviewA[i].upperlimit
+                    returnArray[i] = studentA[j]
+                  }
+                }
+
+
+                if(!returnArray[i]){
+                  var  asStudent = {}
+                  asStudent.name = overviewA[i].name
+                  asStudent.upperlimit = overviewA[i].upperlimit
+                  asStudent.score = 0
+                  returnArray[i] = asStudent
+                }
+
+              }
+
+              console.log(returnArray);
+
+              students[jj].assessments = returnArray;
+          }
+
+          $scope.students = students
+          },function(err){
+            console.log(err)
+          }
+        );
+
+
+      },function(err){
+        console.log(err)
+      }
+    );
+
+
+
+
+    $scope.updateAssessment = function(s, a){
+
+      var assessment = {}
+      //console.log($scope.overview)
+      console.log(a)
+      assessment.studentid = s.studentid
+      assessment.name = s.name
+      assessment.subject = $scope.overview.name
+      assessment.class = $scope.overview.class
+      assessment.assessmentname = a.name
+      console.log(a.score)
+      assessment.score = parseInt(a.score)
+
+      console.log(assessment)
+
+      $http.post(API + '/addstudentassessment', assessment).then(function(res){
+          console.log(res.data)
+          //$scope.asessments.push(assessment);
+        },function(err){
+          console.log(err)
+        }
+      );
+    }
+
+  }
+
+  function TeacherAssignedToSubjectOverviewCtrl(API, $http, $scope, $stateParams){
+    $scope.overview = {};
+    //console.log($scope.$parent.$stateParams)
+    $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
+        console.log(res.data)
+        $scope.overview = res.data.subject;
+      },function(err){
+        console.log(err)
+      }
+    );
+
+    $scope.newAssessment = function(assessment){
+      $http.post(API + '/createassessment?id='+encodeURI($stateParams.id), assessment).then(function(res){
+          console.log(res.data)
+          //$scope.asessments.push(assessment);
+        },function(err){
+          console.log(err)
+        }
+      );
+    }
+  }
+
+
+  function TeacherAssignedToClassCtrl(API, $scope, $http, $stateParams ){
+
+    $scope.overview = {};
+    console.log($stateParams)
+
+    $scope.students = [];
+    $http.get(API + '/studentsinclass?class='+encodeURI($stateParams.id)).then(function(res){
+      console.log(res)
+      $scope.students = res.data;
+      },function(err){
+        console.log(err)
+      }
+    );
+
+
+  }
+
+  function TeacherAssignedToClassOverviewCtrl(API, $http, $scope, $stateParams){
+
+  }
