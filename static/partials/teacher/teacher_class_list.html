@@ -1,0 +1,29 @@
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="TeacherAssignedToSubjectCtrl">
+  <div class="table-responsive" data-snap-ignore="true">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th ng-repeat="x in overview.assessments" style="text-align:center; ">{{x.name}} ( x/{{x.upperlimit}} )</th>
+            <th style="text-align:center; " >Total (%)</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i, s) in students track by $index">
+            <th scope="row">
+              {{ i }}
+            </th>
+            <td>{{ s.name}}</td>
+            <td ng-repeat="t in s.assessments "  style="text-align:center; ">
+              <input style="max-width: 100px; text-align:left; display:inline-block;" type="number" class="form-control input-sm" ng-model="t.score"  max="{{t.upperlimit}}" ng-blur="updateAssessment(s, t)"/>
+            </td>
+            <th style="text-align:center;">{{ s.assessments | assessmentsTotalFilter:overview.assessments }}</th>
+            <th><button class="btn btn-default ">Save</button></th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</section>
+<br/><br/><br/>

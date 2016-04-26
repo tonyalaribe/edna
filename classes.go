@@ -101,6 +101,25 @@ func (r *ClassRepo) GetAllChildClasses(parent string) ([]Class, error) {
 	return classes, nil
 }
 
+//GetClassesAssignedToTeacher getss all classess assigned to a teacher
+func (r *ClassRepo) GetClassesAssignedToTeacher(teacher string) ([]Class, error) {
+	classes := []Class{}
+	err := r.coll.Find(bson.M{
+		"teachers": bson.M{
+			"$elemMatch": bson.M{
+				"$eq": teacher,
+			},
+		},
+	}).All(&classes)
+
+	if err != nil {
+		log.Println(err)
+		return classes, err
+	}
+
+	return classes, nil
+}
+
 /***************
 handlers
 ***************/

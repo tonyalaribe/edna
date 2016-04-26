@@ -759,14 +759,14 @@ function EditStaffCtrl(API, $scope, $http, $state, $rootScope) {
 }
 
 
-//TEACHER TTERRITORY
+//TEACHER TERRITORY
 function TeacherAssignedToCtrl(API, $scope, $http ){
-
     $scope.AsSubjectTeacher = [];
     $scope.AsClassTeacher = [];
     $http.get(API + '/teacher/assignedto').then(function(res){
         console.log(res.data)
         $scope.AsSubjectTeacher = res.data.subjects;
+        $scope.AsClassTeacher = res.data.classes;
       },function(err){
         console.log(err)
       }
@@ -786,28 +786,9 @@ function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
       $scope.assessments = res.data.subject.assessments;
       $scope.students = [];
       $http.get(API + '/studentsinclass?class='+encodeURI($stateParams.class)).then(function(res){
-      //$http.get(API + '/studentsinclass?class=JSS+1+B').then(function(res){
-          console.log(res.data)
           var assessmentLength = $scope.overview.assessments.length;
 
           students = res.data;
-          /*for (j=0; j<students.length; j++){
-            for (i=0; i<$scope.overview.assessments.length; i++){
-
-              //console.log(students[j])
-              //console.log(students[j].assessments[i])
-
-              if(!students[j].assessments[i]){
-                students[j].assessments[i] = {}
-                students[j].assessments[i].name = $scope.overview.assessments[i].name
-                students[j].assessments[i].score = 0
-              }
-            }
-
-          }
-          */
-
-
           var overviewA = $scope.overview.assessments;
 
           for (jj=0; jj<students.length; jj++){
@@ -883,7 +864,7 @@ function TeacherAssignedToSubjectCtrl(API, $scope, $http, $stateParams ){
 
 function TeacherAssignedToSubjectOverviewCtrl(API, $http, $scope, $stateParams){
   $scope.overview = {};
-console.log($scope.$parent.$stateParams)
+  //console.log($scope.$parent.$stateParams)
   $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
       console.log(res.data)
       $scope.overview = res.data.subject;
