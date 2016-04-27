@@ -314,6 +314,16 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         requireLogin: true,
       }
     })
+    .state('students.viewresult', {
+      url: "/students/:id/result",
+
+      views: {
+        "students": { templateUrl: "/partials/students/students_result.html" },
+      },data:{
+        roles: ["admin", "teacher"],
+        requireLogin: true,
+      }
+    })
     .state('class', {
       url: "",
       views: {
@@ -361,7 +371,6 @@ edna.config(function($stateProvider, $urlRouterProvider) {
     });
   });
 
-
   edna.factory('authInterceptor', authInterceptor)
   .service('user', userService)
   .service('auth', authService)
@@ -381,20 +390,49 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
         for (j=0; j<overviewA.length; j++){
           if (overviewA[i].name == studentA[i].name){
-            upperLimit = overviewA[i].upperlimit
-            percentage = overviewA[i].percentage
+            upperLimit = parseInt(overviewA[i].upperlimit)
+            percentage = parseInt(overviewA[i].percentage)
             break;
           }
         }
 
 
         //total = total + studentA[i].score
+        console.log(studentA[i].score)
+        console.log(upperLimit)
 
         xxx = (studentA[i].score /upperLimit)*(percentage)
         total = total + xxx
 
       }
       return total
+    };
+  })
+  .filter('resultTotalFilter', function() {
+    return function(studentA, overviewA ) {
+      var total = 0;
+      for (i=0; i<studentA.length; i++){
+
+        var upperLimit
+        var percentage
+
+        for (j=0; j<overviewA.length; j++){
+            upperLimit = parseInt(overviewA[i].upperlimit)
+            percentage = parseInt(overviewA[i].percentage)
+            break;
+
+        }
+
+
+        //total = total + studentA[i].score
+        console.log(studentA[i].score)
+        console.log(upperLimit)
+
+        xxx = (studentA[i].score /upperLimit)*(percentage)
+        total = total + xxx
+
+      }
+      return Math.round(total)
     };
   })
   .directive('restrict', function(user, $interpolate, $rootScope){
@@ -633,6 +671,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .controller('NewStudentCtrl', NewStudentCtrl)
   .controller('EditStudentCtrl', EditStudentCtrl)
   .controller('StudentListCtrl', StudentListCtrl)
+  .controller('StudentResultCtrl', StudentResultCtrl)
 
   .controller('NewClassCtrl', NewClassCtrl)
   .controller('EditClassCtrl', EditClassCtrl)
@@ -645,7 +684,6 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .controller('TeacherAssignedToCtrl', TeacherAssignedToCtrl)
   .controller('TeacherAssignedToSubjectCtrl', TeacherAssignedToSubjectCtrl)
   .controller('TeacherAssignedToSubjectOverviewCtrl', TeacherAssignedToSubjectOverviewCtrl)
-
 
   .controller('TeacherAssignedToClassCtrl', TeacherAssignedToClassCtrl)
   .controller('TeacherAssignedToClassOverviewCtrl', TeacherAssignedToClassOverviewCtrl);

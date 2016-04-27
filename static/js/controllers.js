@@ -401,84 +401,73 @@
   function NewStudentCtrl(API, $http, $scope, $location) {
     console.log("new staff");
 
-    $scope.steps = [
-      {
-          templateUrl: '/partials/students/students_new_official.html',
-          title: 'Official Details',
-          hasForm: true,
-      },
-      {
-          templateUrl: '/partials/students/students_new_personal.html',
-          title: 'Personal Details',
-          hasForm: true,
-      },
-      {
-          templateUrl: '/partials/students/students_new_contacts.html',
-          title: 'Contact Details',
-          hasForm: true,
-      },
-      {
-          templateUrl: '/partials/students/students_new_guardians.html',
-          title: 'Guardian Details',
-          hasForm: true,
-      },
-      {
-          templateUrl: '/partials/students/students_new_previousqualification.html',
-          title: 'Previous Qualification Details',
-          hasForm: true,
+      $scope.steps = [
+        {
+            templateUrl: '/partials/students/students_new_official.html',
+            title: 'Official Details',
+            hasForm: true,
+        },
+        {
+            templateUrl: '/partials/students/students_new_personal.html',
+            title: 'Personal Details',
+            hasForm: true,
+        },
+        {
+            templateUrl: '/partials/students/students_new_contacts.html',
+            title: 'Contact Details',
+            hasForm: true,
+        },
+        {
+            templateUrl: '/partials/students/students_new_guardians.html',
+            title: 'Guardian Details',
+            hasForm: true,
+        },
+        {
+            templateUrl: '/partials/students/students_new_previousqualification.html',
+            title: 'Previous Qualification Details',
+            hasForm: true,
 
-      }
-  ];
+        }
+    ];
 
-  $http.get(API + '/class').then(function(res) {
-    console.log(res)
-    $scope.classes = res.data.classes;
+    $http.get(API + '/class').then(function(res) {
+      console.log(res)
+      $scope.classes = res.data.classes;
 
-  }, function(err){
-    console.log("Error")
-    console.log(err)
-  });
+    }, function(err){
+      console.log("Error")
+      console.log(err)
+    });
 
 
     $scope.student = {};
-    function handleRequest(res) {
-      console.log(res)
-      $scope.student = {};
-      $scope.submittedStudent = false;
-      $location.path("/students/list");
-    }
-
-    function handleError(err){
-      console.log("Error")
-      console.log(err)
-      $scope.submittedStudent = false;
-    }
-
-
     $scope.newstudent = function(student){
       $scope.submittedStudent = true;
-      $http.post(API + '/student', student).then(handleRequest, handleError)
+      $http.post(API + '/student', student).then(
+        function (res) {
+          console.log(res)
+          $scope.student = {};
+          $scope.submittedStudent = false;
+          $location.path("/students/list");
+        }, function (err){
+          console.log("Error")
+          console.log(err)
+          $scope.submittedStudent = false;
+        }
+      )
     }
   }
 
   function StudentListCtrl(API, $scope, $rootScope, $state, $http) {
-    console.log("students list ctrl");
-    function handleRequest(res) {
-      console.log(res)
-
-      var students = res.data.students;
-      $scope.students = students;
-
-
-    }
-
-    function handleError(err){
-      console.log("Error")
-      console.log(err)
-    }
-
-
-    $http.get(API + '/students').then(handleRequest, handleError)
+    $http.get(API + '/students').then(
+      function (res) {
+        console.log(res)
+        var students = res.data.students;
+        $scope.students = students;
+      }, function(err){
+        console.log("Error")
+        console.log(err)
+      })
 
     $scope.edit = function(student){
       console.log("edit");
@@ -486,6 +475,54 @@
       $rootScope.student = student;
       $state.go("students.edit", {id:student.id})
     }
+  }
+
+  function StudentResultCtrl(API, $scope, $rootScope, $state, $http, $stateParams) {
+    $http.get(API + '/student?id='+$stateParams.id).then(
+      function (res) {
+        console.log(res)
+        $scope.student = res.data.student;
+      },function (err) {
+      }
+    )
+    $http.get(API + '/student/result?id='+$stateParams.id).then(
+      function (res) {
+        console.log(res)
+        var assessments = res.data;
+        nassessment = []
+
+        for (ii=0; ii<assessments.length; ii++){
+          var objassess = assessments[ii].subjectinfo.assessments
+          var stuassess = assessments[ii].assessments
+          var returnArray = [];
+          for (i=0; i<objassess.length; i++){
+
+            for (j=0; j<stuassess.length; j++){
+              if (objassess[i].name==stuassess[j].name){
+                stuassess[j].upperlimit = objassess[i].upperlimit
+                returnArray[i] = stuassess[j]
+              }
+            }
+
+
+            if(!returnArray[i]){
+              var  asStudent = {}
+              asStudent.name = objassess[i].name
+              asStudent.upperlimit = objassess[i].upperlimit
+              asStudent.score = 0
+              returnArray[i] = asStudent
+            }
+
+          }
+
+          assessments[ii].assessments = returnArray
+        }
+        $scope.assessments = assessments;
+      }, function(err){
+        console.log("Error")
+        console.log(err)
+      })
+
   }
 
 
@@ -562,6 +599,7 @@
         )
     }
   }
+
 
 
   /**********************************************************

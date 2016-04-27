@@ -64,11 +64,24 @@ func (r *SubjectRepo) Update(subject *Subject) error {
 }
 
 //Get gets a class's details from db
-func (r *SubjectRepo) Get(slug string) (Subject, error) {
+func (r *SubjectRepo) Get(id string) (Subject, error) {
 	var subject Subject
-	log.Println(slug)
 	err := r.coll.Find(bson.M{
-		"_id": bson.ObjectIdHex(slug),
+		"_id": bson.ObjectIdHex(id),
+	}).One(&subject)
+
+	if err != nil {
+		log.Println(err)
+		return subject, err
+	}
+	return subject, nil
+}
+
+//GetByName gets a class's details from db
+func (r *SubjectRepo) GetByName(name string) (Subject, error) {
+	var subject Subject
+	err := r.coll.Find(bson.M{
+		"name": name,
 	}).One(&subject)
 
 	if err != nil {
