@@ -281,7 +281,7 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 		client := s3.New(auth, aws.USWest2)
-		bucket := client.Bucket("yellowpagesng")
+		bucket := client.Bucket(c.BucketName)
 
 		byt, err := base64.StdEncoding.DecodeString(strings.Split(user.UpdateImage, "base64,")[1])
 		if err != nil {
@@ -290,16 +290,16 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 
 		meta := strings.Split(user.UpdateImage, "base64,")[0]
 		newmeta := strings.Replace(strings.Replace(meta, "data:", "", -1), ";", "", -1)
-		imagename := randSeq(10)
+		imagename := randSeq(30)
 
 		err = bucket.Put(imagename, byt, newmeta, s3.PublicReadWrite)
 		if err != nil {
 			log.Println(err)
 		}
 
-		log.Println(bucket.URL(imagename))
+		log.Println(bucket.URL(school.ID + "/" + imagename))
 
-		user.Image = bucket.URL(imagename)
+		user.Image = bucket.URL(school.ID + "/" + imagename)
 	}
 	err = u.Update(&user)
 	if err != nil {
