@@ -283,6 +283,16 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         "staff": { templateUrl: "/partials/staff/staff_edit.html" },
       },
     })
+    .state('staff_settings', {
+      url: "/staff/settings",
+
+      views: {
+        "content": { templateUrl: "/partials/staff/staff_settings.html" },
+      },data:{
+        roles: [],
+        requireLogin: true,
+      }
+    })
     .state('students', {
       views: {
         "content": { templateUrl: "/partials/students/students.html" },
@@ -667,6 +677,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .controller('NewStaffCtrl', NewStaffCtrl)
   .controller('EditStaffCtrl', EditStaffCtrl)
   .controller('StaffListCtrl', StaffListCtrl)
+  .controller('StaffSettingsCtrl', StaffSettingsCtrl)
 
   .controller('NewStudentCtrl', NewStudentCtrl)
   .controller('EditStudentCtrl', EditStudentCtrl)

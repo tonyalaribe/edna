@@ -196,6 +196,7 @@ func (ac *Config) frontAuthHandler(next http.Handler) http.Handler {
 			}
 
 			context.Set(r, "User", token.Claims["User"])
+			context.Set(r, "UserID", token.Claims["UserID"])
 			next.ServeHTTP(w, r)
 
 		case *jwt.ValidationError: // something was wrong during the validation

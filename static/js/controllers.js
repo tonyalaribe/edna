@@ -684,8 +684,46 @@
     }
   }
 
+function StaffSettingsCtrl($scope, API, $http, $state, auth){
 
+  $http.get(API + '/me').then(
+    function(res){
+      console.log(res.data);
+      $scope.staff = res.data;
+      $scope.f = res.data.image;
+    }, function(err){console.log(err)})
+
+    $scope.UpdateImage = function(file){
+      var reader = new FileReader();
+      reader.onload = function(u){
+            $scope.$apply(function($scope) {
+              $scope.f = u.target.result;
+              $scope.staff.updateimage = u.target.result;
+              //console.log(u.target.result);
+            });
+      };
+      reader.readAsDataURL(file);
+
+    };
+
+    $scope.updateStaff = function(staff){
+      $http.put(API + '/staff', staff).then(
+        function(res){
+          console.log(res)
+          console.log("log out");
+          auth.logout && auth.logout();
+          $state.go("login")
+        },
+        function(err){
+          console.log(err);
+        });
+    }
+}
+
+
+/*******************************************************************
   //TEACHER TERRITORY
+*******************************************************************/
   function TeacherAssignedToCtrl(API, $scope, $http ){
       $scope.AsSubjectTeacher = [];
       $scope.AsClassTeacher = [];

@@ -570,7 +570,7 @@
                             <a onclick="dropExpandInline('nav-dropdown')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding:5px;">
                               <span class="hidden-xs" ng-bind="$root.user.name"></span> <img src="{{ $root.user.image || 'img/avatar.png' }}" class=" img-circle img-thumbnail edna-nav-avatar" /> <span class="caret"></span></a>
                             <ul class="dropdown-menu" id="nav-dropdown">
-                              <li><a href="#"><i class="fa fa-gears "></i>&nbsp;&nbsp;Settings</a></li>
+                              <li><a ui-sref="staff_settings"><i class="fa fa-gears "></i>&nbsp;&nbsp;Settings</a></li>
                               <li><a href="#"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Help</a></li>
                               <li role="separator" class="divider"></li>
                               <li><a ng-click="root.logout()">Logout<i class=" pull-right fa fa-power-off"></i></a></li>
