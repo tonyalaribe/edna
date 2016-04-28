@@ -1,0 +1,24 @@
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="TeacherAssignedToClassCtrl">
+  <div class="table-responsive" data-snap-ignore="true">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i, s) in students track by $index">
+            <th scope="row">
+              {{ i }}
+            </th>
+            <td>{{ s.name}}</td>
+
+            <th><a class="btn btn-default " ui-sref="students.edit({id: s.studentid})">Edit</a> <a class="btn btn-default " ui-sref="students.viewresult({id: s.studentid})">View Results</a></th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</section>
+<br/><br/><br/>

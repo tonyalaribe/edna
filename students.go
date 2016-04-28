@@ -95,11 +95,11 @@ func (r *StudentRepo) Update(student *Student) error {
 	return nil
 }
 
-//Get gets a class's details from db
-func (r *StudentRepo) Get(slug string) (Student, error) {
+//Get gets a student's details from db
+func (r *StudentRepo) Get(id string) (Student, error) {
 	var student Student
 	err := r.coll.Find(bson.M{
-		"slug": slug,
+		"_id": bson.ObjectIdHex(id),
 	}).One(&student)
 
 	if err != nil {
@@ -224,7 +224,7 @@ func (c *Config) createStudentHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//getStudentsHandler would create a student
+//getStudentsHandler would return students
 func (c *Config) getStudentsHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
 
@@ -232,6 +232,20 @@ func (c *Config) getStudentsHandler(w http.ResponseWriter, r *http.Request) {
 	students, err := u.GetAll()
 
 	err = json.NewEncoder(w).Encode(StudentCollection{students})
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+//getStudentHandler will return a student
+func (c *Config) getStudentHandler(w http.ResponseWriter, r *http.Request) {
+	school := context.Get(r, "school").(School)
+	id := r.URL.Query().Get("id")
+
+	u := StudentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_students")}
+	student, err := u.Get(id)
+	log.Println(student)
+	err = json.NewEncoder(w).Encode(StudentData{student})
 	if err != nil {
 		log.Println(err)
 	}

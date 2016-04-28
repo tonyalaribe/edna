@@ -25,6 +25,7 @@ type StudentAssessments struct {
 	StudentID   string              `json:"studentid"`
 	Name        string              `json:"name"` //Student Name
 	Subject     string              `json:"subject"`
+	SubjectInfo Subject             `json:"subjectinfo"`
 	Class       string              `json:"class"`
 	Assessments []StudentAssessment `json:"assessments" bson:",omitempty"`
 }
@@ -159,6 +160,18 @@ func (r *StudentAssessmentRepo) GetAssessments() ([]StudentAssessments, error) {
 	return result, nil
 }
 
+func (r *StudentAssessmentRepo) GetAssessmentsOfAStudent(student string) ([]StudentAssessments, error) {
+	result := []StudentAssessments{}
+	err := r.coll.Find(bson.M{
+		"studentid": student,
+	}).All(&result)
+	if err != nil {
+		log.Println(err)
+		return result, err
+	}
+	return result, nil
+}
+
 //func RecordAssessment(studentid, Assessment)
 
 //newAssessmentHandler would create an assessment
@@ -251,4 +264,29 @@ func (c *Config) addStudentAssessmentsHandler(w http.ResponseWriter, r *http.Req
 		log.Println(err)
 	}
 
+}
+func (c *Config) GetAssessmentsOfAStudentHandler(w http.ResponseWriter, r *http.Request) {
+	school := context.Get(r, "school").(School)
+	sRepo := StudentAssessmentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_assessments")}
+	subjectRepo := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
+
+	studentID := r.URL.Query().Get("id")
+
+	assessments, err := sRepo.GetAssessmentsOfAStudent(studentID)
+	if err != nil {
+		log.Println(err)
+	}
+
+	for i := range assessments {
+		subject, err := subjectRepo.GetByName(assessments[i].Subject)
+		if err != nil {
+			log.Println(err)
+		}
+		assessments[i].SubjectInfo = subject
+	}
+
+	err = json.NewEncoder(w).Encode(assessments)
+	if err != nil {
+		log.Println(err)
+	}
 }

@@ -14,6 +14,10 @@
                     <li><a href="#">Library</a></li>
                     <li class="active">Data</li>
                   </ol>
+                  <div style="text-align:center">
+                    <h1>Assigned Classes</h1>
+
+                  </div>
                 </div>
               </div>
 
@@ -28,8 +32,9 @@
 
 
 
-                        <li><a data-restrict access="admin" ui-sref="students.new"><i class="fa fa-plus"></i>&nbsp;<span>New Student</span></a></li>
-                        <li><a data-restrict access="admin" ui-sref="students.list"><i class="fa fa-group"></i>&nbsp;<span>Students List</span></a></li>
+
+                        <li><a ui-sref="classTeacher.overview({id: $stateParams.id})"><i class="fa fa-plus"></i>&nbsp;<span>Overview</span></a></li>
+                        <li><a ui-sref="classTeacher.list({id: $stateParams.id})"><i class="fa fa-group"></i>&nbsp;<span>Class List</span></a></li>
 
 
                       <div style="clear:both"></div>
@@ -42,6 +47,6 @@
                   <div style="clear:both"></div>
                 </nav>
 
-              <section ui-view="students">
+              <section ui-view="teacher">
 
               </section>

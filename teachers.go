@@ -11,6 +11,7 @@ import (
 //TeacherAssignmentCollection struct
 type TeacherAssignmentCollection struct {
 	Subjects []Subject `json:"subjects"`
+	Classes  []Class   `json:"classes"`
 }
 
 //GetAllTeachers gets all user from db
@@ -58,14 +59,14 @@ func (c *Config) getClassesAssignedToTeacherHandler(w http.ResponseWriter, r *ht
 	}
 
 	me := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
-	me_data, err := me.Get(user.Phone)
+	meData, err := me.Get(user.Phone)
 	if err != nil {
 		log.Println(err)
 	}
 
 	sRepo := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
 
-	subjects, err := sRepo.GetAllAssignedToTeacher(me_data.ID.Hex())
+	subjects, err := sRepo.GetAllAssignedToTeacher(meData.ID.Hex())
 	if err != nil {
 		log.Println(err)
 	}
@@ -94,7 +95,13 @@ func (c *Config) getClassesAssignedToTeacherHandler(w http.ResponseWriter, r *ht
 
 	}
 
-	err = json.NewEncoder(w).Encode(TeacherAssignmentCollection{returnSubjects})
+	classes, err := cRepo.GetClassesAssignedToTeacher(meData.ID.Hex())
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = json.NewEncoder(w).Encode(TeacherAssignmentCollection{returnSubjects, classes})
 	if err != nil {
 		log.Println(err)
 	}
