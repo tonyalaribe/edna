@@ -720,6 +720,31 @@ function StaffSettingsCtrl($scope, API, $http, $state, auth){
     }
 }
 
+/********************************************************
+/***********Settings**********************************/
+/******************************************************/
+function InstitutionSettingsCtrl(API, $scope, $http ){
+  $http.get(API + '/school').then(function(res){
+      console.log(res.data)
+      $scope.institution = res.data;
+    },function(err){
+      console.log(err)
+    }
+  );
+
+
+  $scope.updateInstitution = function(institution){
+
+    $http.put(API + '/school', institution).then(
+      function(res){
+        console.log(res)
+      }, function(err){
+        console.log(err)
+      }
+    );
+  }
+}
+
 
 /*******************************************************************
   //TEACHER TERRITORY

@@ -378,6 +378,16 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       views: {
         "class": { templateUrl: "/partials/subject/subject_edit.html" },
       },
+    })
+
+    .state('settings_institution', {
+      url: "/settings/institution",
+      views: {
+        "content": { templateUrl: "/partials/settings/institution_settings.html" },
+      },data:{
+        roles: ["admin"],
+        requireLogin: true,
+      }
     });
   });
 
@@ -617,7 +627,27 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
     };
 
-    $rootScope.addons = [dashboard, staff, classesnsubjects, students, teacher];
+    var SchoolSettings = {
+      nested:true,
+      id:"Settings",
+      name:"Settings",
+      state: "",
+      roles:"admin",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      children:[{
+        id:"settings_new",
+        name:"Institution Settings",
+        state:"settings_institution",
+        thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      },{
+        id:"settings_list",
+        name:"Session Settings",
+        state:"settings.list",
+        thumbnail:$sce.trustAsHtml('li'),
+      }]
+    };
+
+    $rootScope.addons = [dashboard, staff, classesnsubjects, students, teacher, SchoolSettings];
 
       console.log(auth.isAuthed())
       $rootScope.$on('$stateChangeStart', function(event, toState, toParams){
@@ -691,6 +721,9 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .controller('NewSubjectCtrl', NewSubjectCtrl)
   .controller('EditSubjectCtrl', EditSubjectCtrl)
   .controller('SubjectListCtrl', SubjectListCtrl)
+
+  .controller('InstitutionSettingsCtrl', InstitutionSettingsCtrl)
+
 
   .controller('TeacherAssignedToCtrl', TeacherAssignedToCtrl)
   .controller('TeacherAssignedToSubjectCtrl', TeacherAssignedToSubjectCtrl)

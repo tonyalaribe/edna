@@ -75,18 +75,24 @@ func main() {
 
 	router.Get("/api/teacher/assignedto", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getClassesAssignedToTeacherHandler))
 
+	router.Put("/api/school", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.UpdateSchoolHandler))
+	router.Get("/api/school", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.GetSchoolHandler))
+
 	router.Get("/api/me", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getMeHandler))
 	router.Post("/register.html", commonHandlers.ThenFunc(config.NewSchool))
 	router.Get("/verify", commonHandlers.ThenFunc(config.VerifySchool))
+
 	router.Get("/", commonHandlers.Append(dbsetter).ThenFunc(config.RootHandler))
 
 	router.HandleMethodNotAllowed = false
 	router.NotFound = http.FileServer(http.Dir("./static")).ServeHTTP
+
 	//api routes for iparent
 	router.Get("/api/child", commonHandlers.ThenFunc(ChildHandler))
 	router.Get("/api/board", commonHandlers.ThenFunc(BoardHandler))
 	router.Post("/api/verify", commonHandlers.ThenFunc(config.AuthGuardianHandler))
 	router.Post("/api/send", commonHandlers.ThenFunc(config.VerifyGuardian))
+
 	//validations
 	router.Get("/val/reg", commonHandlers.ThenFunc(config.ValidateRegHandler))
 	router.Get("/val/email", commonHandlers.ThenFunc(config.CheckEmailHandler))

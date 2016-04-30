@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log"
 
+	"github.com/gorilla/context"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -19,12 +20,13 @@ import (
 type School struct {
 	ID              string `json:"id,omitempty" bson:"_id,omitempty"`
 	Name            string `json:"name"`
+	Address         string `json:"address"`
 	Domain          string `json:"domain"`
-	AdminPhone      string `json:"adminPhone"`
-	AdminName       string `json:"adminName"`
-	AdminEmail      string `json:"adminEmail"`
+	AdminPhone      string `json:"adminphone"`
+	AdminName       string `json:"adminname"`
+	AdminEmail      string `json:"adminemail"`
 	Password        string `json:"password"`
-	AdminPassword   []byte `json:"adminPassword"`
+	AdminPassword   []byte `json:"adminpassword"`
 	VerificationKey string `json:"verificationKey"`
 	Verified        bool   `json:"verified"`
 }
@@ -71,6 +73,25 @@ func (r *SchoolRepo) Create(school *School) error {
 		return err
 	}
 
+	return nil
+}
+
+//Update updates a school in the database
+func (r *SchoolRepo) Update(school *School) error {
+
+	err := r.coll.UpdateId(school.ID, bson.M{
+		"$set": bson.M{
+			"name":       school.Name,
+			"address":    school.Address,
+			"adminname":  school.AdminName,
+			"adminemail": school.AdminEmail,
+			"adminphone": school.AdminPhone,
+		},
+	})
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 	return nil
 }
 
@@ -193,6 +214,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/success.html", http.StatusFound)
 }
 
+//ValidateReg validates registration
 func (r *SchoolRepo) ValidateReg(schoolID string) (string, error) {
 	var htm string
 	school := School{}
@@ -207,6 +229,7 @@ func (r *SchoolRepo) ValidateReg(schoolID string) (string, error) {
 	return htm, err
 }
 
+//CheckEmail checcks email
 func (r *SchoolRepo) CheckEmail(email string) (string, error) {
 	var htm string
 	school := School{}
@@ -220,6 +243,8 @@ func (r *SchoolRepo) CheckEmail(email string) (string, error) {
 	htm = "<p class='text-danger'>This Email is already associated with another account  " + school.ID + "+</p>"
 	return htm, err
 }
+
+//CheckEmailHandler checks email
 func (c *Config) CheckEmailHandler(w http.ResponseWriter, r *http.Request) {
 	email := r.URL.Query().Get("id")
 	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
@@ -230,6 +255,8 @@ func (c *Config) CheckEmailHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write([]byte(msg))
 }
+
+//ValidateRegHandler validates registration
 func (c *Config) ValidateRegHandler(w http.ResponseWriter, r *http.Request) {
 	schoolID := r.URL.Query().Get("id")
 	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
@@ -264,4 +291,27 @@ func (c *Config) VerifySchool(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(school.Domain)
 	http.Redirect(w, r, "http://"+school.Domain, http.StatusFound)
+}
+
+//UpdateSchoolHandler updates the school details
+func (c *Config) UpdateSchoolHandler(w http.ResponseWriter, r *http.Request) {
+
+	school := School{}
+	json.NewDecoder(r.Body).Decode(&school)
+	x := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
+	err := x.Update(&school)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+//GetSchoolHandler updates the school details
+func (c *Config) GetSchoolHandler(w http.ResponseWriter, r *http.Request) {
+
+	school := context.Get(r, "school").(School)
+	err := json.NewEncoder(w).Encode(school)
+	if err != nil {
+		log.Println(err)
+	}
+
 }
