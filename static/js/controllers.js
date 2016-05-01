@@ -256,6 +256,8 @@
     console.log("new subject");
     $scope.subject = {};
     $scope.subject.teachers = [];
+    $scope.err = "";
+    $scope.suc = "";
 
     $http.get(API + '/teachers').then(function(res) {
       console.log(res)
@@ -280,6 +282,7 @@
     function handleRequest(res) {
       console.log(res)
       $scope.subject = {};
+      $scope.suc = "New Subject Added Succesfully";
 
     }
 
@@ -290,8 +293,14 @@
 
 
     $scope.newsubject = function(c){
-      console.log(c);
-      $http.post(API + '/subject', c).then(handleRequest, handleError)
+      if(c.name){
+        console.log(c);
+        $scope.err = "";
+        $http.post(API + '/subject', c).then(handleRequest, handleError)
+      }else {
+        $scope.err = "Fill in Required Fields";
+      }
+
     }
   }
 
