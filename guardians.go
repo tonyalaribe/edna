@@ -52,7 +52,7 @@ type GuardianRepo struct {
 called by the handlers, in a bid to keep  handlers simple and less bulky.
 */
 func randSe(n int) string {
-	letters := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+	letters := []rune("abcdefghij123klmnop890qrstuvwxyz4567")
 	b := make([]rune, n)
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
@@ -133,7 +133,7 @@ func (r *GuardianRepo) Update(guardian *Guardian) error {
 	return nil
 }
 
-func (r *GuardianRepo) AuthGuardian(rr string, x *Guardian) (Guardian, error) {
+func (r *GuardianRepo) AuthGuardian(rr string, x string) (Guardian, error) {
 	var guardian Guardian
 	err := r.coll.Find(bson.M{
 		"_id": rr,
@@ -142,7 +142,7 @@ func (r *GuardianRepo) AuthGuardian(rr string, x *Guardian) (Guardian, error) {
 		log.Println(err)
 		return guardian, err
 	}
-	err = bcrypt.CompareHashAndPassword(guardian.Pin, []byte(x.Pin2))
+	err = bcrypt.CompareHashAndPassword(guardian.Pin, []byte(x))
 	if err != nil {
 		return guardian, err
 	}
@@ -207,19 +207,21 @@ func (c *Config) VerifyGuardian(w http.ResponseWriter, r *http.Request) {
 func (c *Config) AuthGuardianHandler(w http.ResponseWriter, r *http.Request) {
 	tmp := r.URL.Query().Get("no")
 	u := GuardianRepo{c.MongoSession.DB(c.MONGODB).C("guardians")}
-	guardian := Guardian{}
+	//guardian := Guardian{}
 	//buf := new(bytes.Buffer)
 	//buf.ReadFrom(r.Body)
 	//s := buf.String()
 	//log.Println(s)
 
-	err := json.NewDecoder(r.Body).Decode(&guardian)
-	if err != nil {
-		log.Println(err)
-	}
+	/*	err := json.NewDecoder(r.Body).Decode(&guardian)
+		if err != nil {
+			log.Println(err)
+		}
+	*/
 
-	log.Println(guardian.Pin2)
-	guardian, err = u.AuthGuardian(tmp, &guardian)
+	//log.Println(guardian.Pin2)
+	log.Println(r.FormValue("Pin2"))
+	guardian, err := u.AuthGuardian(tmp, r.FormValue("Pin2"))
 	if err != nil {
 		log.Println(err)
 	}
