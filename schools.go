@@ -19,6 +19,7 @@ import (
 // School struct holds information about each users skills, aids in marshalling to json and storing on the database
 type School struct {
 	ID              string `json:"id,omitempty" bson:"_id,omitempty"`
+	Session         string `json:"session"`
 	Name            string `json:"name"`
 	Address         string `json:"address"`
 	Domain          string `json:"domain"`
@@ -86,6 +87,7 @@ func (r *SchoolRepo) Update(school *School) error {
 			"adminname":  school.AdminName,
 			"adminemail": school.AdminEmail,
 			"adminphone": school.AdminPhone,
+			"session":    school.Session,
 		},
 	})
 	if err != nil {

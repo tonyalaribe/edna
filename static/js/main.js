@@ -388,6 +388,15 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         roles: ["admin"],
         requireLogin: true,
       }
+    })
+    .state('settings_session', {
+      url: "/settings/session",
+      views: {
+        "content": { templateUrl: "/partials/settings/session_settings.html" },
+      },data:{
+        roles: ["admin"],
+        requireLogin: true,
+      }
     });
   });
 
@@ -635,14 +644,14 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       roles:"admin",
       thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
       children:[{
-        id:"settings_new",
+        id:"settings_institution",
         name:"Institution Settings",
         state:"settings_institution",
         thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
       },{
-        id:"settings_list",
+        id:"settings_session",
         name:"Session Settings",
-        state:"settings.list",
+        state:"settings_session",
         thumbnail:$sce.trustAsHtml('li'),
       }]
     };
@@ -723,6 +732,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
   .controller('SubjectListCtrl', SubjectListCtrl)
 
   .controller('InstitutionSettingsCtrl', InstitutionSettingsCtrl)
+  .controller('SessionSettingsCtrl', SessionSettingsCtrl)
 
 
   .controller('TeacherAssignedToCtrl', TeacherAssignedToCtrl)

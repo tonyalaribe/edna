@@ -724,6 +724,14 @@ function StaffSettingsCtrl($scope, API, $http, $state, auth){
 /***********Settings**********************************/
 /******************************************************/
 function InstitutionSettingsCtrl(API, $scope, $http ){
+
+  $http.get(API + '/sessions').then(function(res){
+      console.log(res.data)
+      $scope.sessions = res.data;
+    },function(err){
+      console.log(err)
+    }
+  );
   $http.get(API + '/school').then(function(res){
       console.log(res.data)
       $scope.institution = res.data;
@@ -736,6 +744,29 @@ function InstitutionSettingsCtrl(API, $scope, $http ){
   $scope.updateInstitution = function(institution){
 
     $http.put(API + '/school', institution).then(
+      function(res){
+        console.log(res)
+      }, function(err){
+        console.log(err)
+      }
+    );
+  }
+}
+
+function SessionSettingsCtrl(API, $scope, $http ){
+  $http.get(API + '/sessions').then(function(res){
+      console.log(res.data)
+      $scope.sessions = res.data;
+    },function(err){
+      console.log(err)
+    }
+  );
+
+
+  $scope.AddSession = function(session){
+    session.id = session.start.getFullYear() + "/" + session.end.getFullYear()
+    console.log(session)
+    $http.post(API + '/session', session).then(
       function(res){
         console.log(res)
       }, function(err){
