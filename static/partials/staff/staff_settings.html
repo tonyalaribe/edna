@@ -1,0 +1,39 @@
+<br/><br/><br/><br/>
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="StaffSettingsCtrl">
+
+  <form method="post">
+      <br/>
+
+      <div class="form-group" style="text-align:center;">
+        <div >
+          <a class=" ">
+            <img src="{{f}}" class="img img-circle img-thumbnail" style="width:150px; height:150px; "/>
+          </a>
+          <div style="clear:both"></div>
+        </div>
+        <label for="InputFile" class="btn btn-default"><i class="fa fa-camera"></i>&nbsp;Upload New Image</label>
+        <input style="display:none" type="file" id="InputFile" ng-model="file" class="input-lg" onchange="angular.element(this).scope().UpdateImage(this.files[0])" />
+      </div>
+
+
+    <div class="form-group edna-form-group ">
+      <label for="staff_name">Your Name</label>
+      <input type="text" class="form-control" id="staff_name"  name="staff_name"  placeholder="John Etim" ng-model="staff.name"/>
+    </div>
+
+    <div class="form-group edna-form-group "  style="width:49%; display:inline-block">
+      <label for="staff_email">Email</label>
+      <input type="text" class="form-control" ng-model="staff.email" id="staff_email" name="staff_email" placeholder="john.etim@example.com"/>
+    </div>
+
+    <div class="form-group edna-form-group " style="width:49%; display:inline-block">
+      <label for="staff_phone">Phone no</label>
+      <input type="text" class="form-control" ng-model="staff.phone" id="staff_phone"  name="admin_phone" placeholder="Will serve as a username"/>
+    </div>
+
+    <br/>
+    <button type="submit" class="btn register-btn" style="padding: 8px 30px;"  ng-click="updateStaff(staff)">Update</button>
+    <br />
+  </form>
+
+</section>

@@ -1,0 +1,50 @@
+<br/><br/><br/>
+<div class="container">
+  <h2>Institution Settings</h2>
+</div>
+<br/>
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="InstitutionSettingsCtrl">
+
+  <form method="post">
+      <br/>
+    <div class="form-group edna-form-group ">
+      <label for="institution_session">Current Session</label>
+      <select class="form-control" ng-model="institution.session">
+        <option ng-repeat="s in sessions">{{s.id}}</option>
+      </select>
+    </div>
+    <div class="form-group edna-form-group ">
+      <label for="institution_name">Institution Name</label>
+      <input type="text" class="form-control" id="institution_name"  name="institution_name"  placeholder="Edna Secondary School" ng-model="institution.name"/>
+    </div>
+
+    <div class="form-group edna-form-group ">
+      <label for="institution_address">Institution Address</label>
+      <input type="text" class="form-control" id="institution_address"  name="institution_address"  placeholder="No 1 Example Town, Calabar" ng-model="institution.address"/>
+    </div>
+
+    <div class="form-group edna-form-group ">
+      <label for="institution_adminname">Admin Name</label>
+      <input type="text" class="form-control" id="institution_adminname"  name="institution_adminname"  placeholder="John Etim" ng-model="institution.adminname"/>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="form-group edna-form-group "  style="width:100%; display:inline-block">
+          <label for="institution.adminemail">Admin Email</label>
+          <input type="text" class="form-control" ng-model="institution.adminemail" id="institution.adminemail" name="institution.adminemail" placeholder="john.etim@example.com"/>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="form-group edna-form-group " style="width:100%; display:inline-block">
+        <label for="institution.adminphone">Admin Phone no</label>
+        <input type="text" class="form-control" ng-model="institution.adminphone" id="institution_adminphone"  name="institution_adminphone" placeholder="Will serve as a username"/>
+      </div>
+  </div>
+
+    <br/>
+    <button type="submit" class="btn register-btn" style="padding: 8px 30px;"  ng-click="updateInstitution(institution)">Update</button>
+    <br />
+  </form>
+
+</section>

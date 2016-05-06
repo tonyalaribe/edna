@@ -23,11 +23,12 @@ type Config struct {
 
 	MongoSession *mgo.Session
 
-	Public   []byte
-	Private  []byte
-	RootURL  string
-	S3Bucket *s3.Bucket
-	Token    string
+	Public     []byte
+	Private    []byte
+	RootURL    string
+	S3Bucket   *s3.Bucket
+	BucketName string
+	Token      string
 }
 
 func generateConfig() (config Config) {
@@ -74,6 +75,8 @@ func generateConfig() (config Config) {
 	s3bucket := s.Bucket(AWSBucket)
 
 	config.S3Bucket = s3bucket
+
+	config.BucketName = "yellowpageng"
 
 	config.Public, err = ioutil.ReadFile("app.rsa.pub")
 	if err != nil {

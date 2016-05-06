@@ -1,0 +1,40 @@
+<br/><br/><br/>
+<div class="container">
+  <h2>Session Settings</h2>
+</div>
+<br/>
+<section class="container" style="background-color:#fff; padding-top:20px;padding-bottom:20px;" ng-controller="SessionSettingsCtrl">
+
+  <form method="post">
+      <br/>
+
+
+    <div class="col-sm-6">
+      <div class="form-group edna-form-group " style="width:100%;">
+        <label for="session_start">Session Start Date</label>
+        <input type="date" class="form-control" id="session_start"  name="session_start"  placeholder="" ng-model="session.start"/>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group edna-form-group " style="width:100%;">
+        <label for="session_end">Session End Date</label>
+        <input type="date" class="form-control" id="session_end"  name="session_end"  placeholder="" ng-model="session.end"/>
+      </div>
+    </div>
+    <div style="clear:both"></div>
+    <div class="form-group edna-form-group ">
+      <label for="institution_adminname">Session ID</label>
+      <span class="form-control">{{session.start.getFullYear()}}/{{session.end.getFullYear()}} </span>
+    </div>
+
+    <br/>
+    <button type="submit" class="btn register-btn" style="padding: 8px 30px;"  ng-click="AddSession(session)">Add Session</button>
+    <br />
+  </form>
+
+  <br/>
+  <h2>Sessions</h2>
+  <ul>
+    <li ng-repeat="x in sessions">{{x.id}}</li>
+  </ul>
+</section>

@@ -1,14 +1,18 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"log"
 	"math/rand"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"
+	"github.com/mitchellh/goamz/aws"
+	"github.com/mitchellh/goamz/s3"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -16,15 +20,16 @@ import (
 
 // User struct holds information about each users skills, aids in marshalling to json and storing on the database
 type User struct {
-	ID       bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
-	Name     string        `json:"name"`
-	Type     string        `json:"type"`
-	Image    string        `json:"image"`
-	Phone    string        `json:"phone"`
-	Email    string        `json:"email"`
-	P        string        `json:"password"`
-	Password []byte        `json:"-"`
-	Roles    []string      `json:"roles"`
+	ID          bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
+	Name        string        `json:"name" bson:",omitempty"`
+	Type        string        `json:"type" bson:",omitempty"`
+	Image       string        `json:"image" bson:",omitempty"`
+	UpdateImage string        `json:"updateimage" bson:",omitempty"`
+	Phone       string        `json:"phone" bson:",omitempty"`
+	Email       string        `json:"email" bson:",omitempty"`
+	P           string        `json:"password" bson:",omitempty"`
+	Password    []byte        `json:"-" bson:",omitempty"`
+	Roles       []string      `json:"roles" bson:",omitempty"`
 }
 
 //UserCollection holds a slice of User structs within a Data key, to conform with the json api schema spec
@@ -79,7 +84,7 @@ func (r *UserRepo) Create(user *User) error {
 		user.Roles = append(user.Roles, "teacher")
 	}
 
-	avatars := []string{"/img/avatar.png", "/img/avatar2.jpg", "/img/avatar5.png"}
+	avatars := []string{"/img/avatars/avatar.png", "/img/avatars/avatar2.jpg", "/img/avatars/avatar3.jpg", "/img/avatars/avatar4.png", "/img/avatars/avatar5.png"}
 	user.Image = avatars[rand.Intn(len(avatars))]
 
 	err = r.coll.Insert(user)
@@ -92,8 +97,17 @@ func (r *UserRepo) Create(user *User) error {
 
 //Update adds a user to the database
 func (r *UserRepo) Update(user *User) error {
-
-	err := r.coll.UpdateId(user.ID, user)
+	//log.Println(user)
+	err := r.coll.UpdateId(user.ID, bson.M{
+		"$set": bson.M{
+			"name":  user.Name,
+			"email": user.Email,
+			"phone": user.Phone,
+			"image": user.Image,
+			"type":  user.Type,
+			"roles": user.Roles,
+		},
+	})
 	if err != nil {
 		log.Println(err)
 		return err
@@ -175,6 +189,9 @@ func (c *Config) LoginPost(w http.ResponseWriter, r *http.Request) {
 	// set our claims
 	t.Claims["AccessToken"] = user.Roles
 	t.Claims["User"] = user
+	t.Claims["UserID"] = user.ID.Hex()
+
+	//log.Println(user.ID.Hex())
 
 	//log.Println("the tokened user is", user)
 	// set the expire time
@@ -247,7 +264,7 @@ func (c *Config) createUserHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//updateUserHandler would create a user/staff
+//updateUserHandler would update a user/staff
 func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
 	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
@@ -255,6 +272,34 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		log.Println(err)
+	}
+
+	if user.UpdateImage != "" {
+		log.Println(user.UpdateImage)
+		auth, err := aws.EnvAuth()
+		if err != nil {
+			log.Fatal(err)
+		}
+		client := s3.New(auth, aws.USWest2)
+		bucket := client.Bucket(c.BucketName)
+
+		byt, err := base64.StdEncoding.DecodeString(strings.Split(user.UpdateImage, "base64,")[1])
+		if err != nil {
+			log.Println(err)
+		}
+
+		meta := strings.Split(user.UpdateImage, "base64,")[0]
+		newmeta := strings.Replace(strings.Replace(meta, "data:", "", -1), ";", "", -1)
+		imagename := randSeq(30)
+
+		err = bucket.Put(imagename, byt, newmeta, s3.PublicReadWrite)
+		if err != nil {
+			log.Println(err)
+		}
+
+		log.Println(bucket.URL(school.ID + "/" + imagename))
+
+		user.Image = bucket.URL(school.ID + "/" + imagename)
 	}
 	err = u.Update(&user)
 	if err != nil {
