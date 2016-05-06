@@ -450,7 +450,8 @@
 
 
     $scope.student = {};
-    $scope.newstudent = function(student){
+    $scope.savestudent = function(student){
+      console.log("here");
       $scope.submittedStudent = true;
       $http.post(API + '/student', student).then(
         function (res) {
