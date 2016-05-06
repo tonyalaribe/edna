@@ -9,14 +9,14 @@
     <hr/>
     <div>
       <div class="col-sm-2" style="text-align:center;">
-        <i class="fa fa-adn fa-border fa-circle fa-4x"></i>
+        <i class="fa fa-user-secret fa-border fa-circle fa-4x"></i>
       </div>
       <div class="col-sm-7">
-        <h4><strong>Classes</strong></h4>
-        <p>Create, manage, and assign classes to teachers, students, etc...<a href="#">learn more...</a></p>
+        <h4><strong>Staff</strong></h4>
+        <p>Add, manage, and assign roles to staff with ease...<a href="#">learn more...</a></p>
       </div>
       <div class="col-sm-3">
-        <a class="btn btn-default">Create a Class</a>
+        <a class="btn btn-default" ui-sref="staff.new">Add a staff</a>
       </div>
     </div>
 
@@ -26,7 +26,7 @@
         <div class="col-sm-2" style="text-align:center;">
           <span class="fa-stack fa-3x ">
             <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-flag fa-stack-1x fa-inverse"></i>
+            <i class="fa fa-bookmark fa-stack-1x fa-inverse"></i>
           </span>
         </div>
         <div class="col-sm-7">
@@ -34,9 +34,64 @@
           <p>Create, manage, and assign classes to teachers, students, etc...<a href="#">learn more...</a></p>
         </div>
         <div class="col-sm-3">
-          <a class="btn btn-default">Create a Class</a>
+          <a class="btn btn-default" ui-sref="class.new">Create a Class</a>
         </div>
       </div>
+
+
+      <div style="clear:both"></div>
+        <hr/>
+        <div>
+          <div class="col-sm-2" style="text-align:center;">
+            <span class="fa-stack fa-3x ">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+            </span>
+          </div>
+          <div class="col-sm-7">
+            <h4><strong>Subjects</strong></h4>
+            <p>Create, manage, and assign subjects to teachers ...<a href="#">learn more...</a></p>
+          </div>
+          <div class="col-sm-3">
+            <a class="btn btn-default" ui-sref="class.subject_new">Create a Subject</a>
+          </div>
+        </div>
+
+        <div style="clear:both"></div>
+          <hr/>
+          <div>
+            <div class="col-sm-2" style="text-align:center;">
+              <i class="fa fa-graduation-cap fa-border fa-circle fa-4x"></i>
+            </div>
+            <div class="col-sm-7">
+              <h4><strong>Students</strong></h4>
+              <p>Add and manage students data, classes, etc...<a href="#">learn more...</a></p>
+            </div>
+            <div class="col-sm-3">
+              <a class="btn btn-default" ui-sref="students.new">Add a student</a>
+            </div>
+          </div>
+
+
+          <div style="clear:both"></div>
+            <hr/>
+            <div>
+              <div class="col-sm-2" style="text-align:center;">
+                <span class="fa-stack fa-3x ">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-cogs fa-stack-1x fa-inverse"></i>
+                </span>
+              </div>
+              <div class="col-sm-7">
+                <h4><strong>Settings</strong></h4>
+                <p>Manage session Info, and institution details at the start of each session...<a href="#">learn more...</a></p>
+              </div>
+              <div class="col-sm-3">
+                <a class="btn btn-default" ui-sref="settings_session">Session settings</a>
+              </div>
+            </div>
+
   </div>
+
 
 </section>
