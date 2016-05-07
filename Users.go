@@ -11,7 +11,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"
-	"github.com/mitchellh/goamz/aws"
+	//"github.com/mitchellh/goamz/aws"
 	"github.com/mitchellh/goamz/s3"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2"
@@ -276,12 +276,8 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	if user.UpdateImage != "" {
 		log.Println(user.UpdateImage)
-		auth, err := aws.EnvAuth()
-		if err != nil {
-			log.Fatal(err)
-		}
-		client := s3.New(auth, aws.USWest2)
-		bucket := client.Bucket(c.BucketName)
+
+		bucket := c.S3Bucket
 
 		byt, err := base64.StdEncoding.DecodeString(strings.Split(user.UpdateImage, "base64,")[1])
 		if err != nil {
@@ -290,16 +286,16 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 
 		meta := strings.Split(user.UpdateImage, "base64,")[0]
 		newmeta := strings.Replace(strings.Replace(meta, "data:", "", -1), ";", "", -1)
-		imagename := randSeq(30)
+		//imagename := randSeq(30)
 
-		err = bucket.Put(imagename, byt, newmeta, s3.PublicReadWrite)
+		err = bucket.Put(school.ID+"/"+user.ID.Hex(), byt, newmeta, s3.PublicReadWrite)
 		if err != nil {
 			log.Println(err)
 		}
 
-		log.Println(bucket.URL(school.ID + "/" + imagename))
+		log.Println(bucket.URL(school.ID + "/" + user.ID.Hex()))
 
-		user.Image = bucket.URL(school.ID + "/" + imagename)
+		user.Image = bucket.URL(school.ID + "/" + user.ID.Hex())
 	}
 	err = u.Update(&user)
 	if err != nil {
