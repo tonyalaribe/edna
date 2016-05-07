@@ -48,6 +48,16 @@ type GuardianRepo struct {
 	coll *mgo.Collection
 }
 
+type CustomData struct {
+	SchoolId    string        `json:"schoolid"`
+	StudentName string        `json:"name"`
+	StudentId   bson.ObjectId `json:"id"`
+}
+
+type RenderView struct {
+	Data []*CustomData
+}
+
 /* THese are functions that perform the operations on the db. .they are usually,
 called by the handlers, in a bid to keep  handlers simple and less bulky.
 */
@@ -95,7 +105,7 @@ func (r *GuardianRepo) RequestPin(rr string) error {
 		log.Println(err)
 		return err
 	}
-
+	log.Println(pin)
 	if user.Phone != "" {
 		user.Pin, _ = bcrypt.GenerateFromPassword([]byte(pin), Cost)
 		r.coll.Update(bson.M{
@@ -144,9 +154,12 @@ func (r *GuardianRepo) AuthGuardian(rr string, x string) (Guardian, error) {
 	}
 	err = bcrypt.CompareHashAndPassword(guardian.Pin, []byte(x))
 	if err != nil {
+		guardian.True = "false"
 		return guardian, err
 	}
+
 	guardian.True = "true"
+
 	return guardian, nil
 }
 
@@ -205,6 +218,9 @@ func (c *Config) VerifyGuardian(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Config) AuthGuardianHandler(w http.ResponseWriter, r *http.Request) {
+	result := []*CustomData{}
+	view := RenderView{}
+	tempStudent := []Student{}
 	tmp := r.URL.Query().Get("no")
 	u := GuardianRepo{c.MongoSession.DB(c.MONGODB).C("guardians")}
 	//guardian := Guardian{}
@@ -226,7 +242,28 @@ func (c *Config) AuthGuardianHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	res, err := json.Marshal(guardian)
+	if guardian.True != "false" {
+		for i := 0; i < len(guardian.Schools); i++ {
+
+			rp := c.MongoSession.DB(c.MONGODB).C(guardian.Schools[i] + "_students")
+			err = rp.Find(bson.M{"guardianmobile": tmp}).All(&tempStudent)
+			if err != nil {
+				log.Println(err)
+			}
+
+			for k := 0; k < len(tempStudent); k++ {
+				thisStudent := tempStudent[k]
+				customData := new(CustomData)
+				customData.SchoolId = guardian.Schools[i]
+				customData.StudentId = thisStudent.ID
+				customData.StudentName = thisStudent.LastName + " " + thisStudent.FirstName
+				result = append(result, customData)
+			}
+		}
+		view.Data = result
+	}
+
+	res, err := json.Marshal(view)
 	if err != nil {
 		log.Println(err)
 	}

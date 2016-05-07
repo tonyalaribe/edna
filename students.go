@@ -5,9 +5,10 @@ import (
 
 	"github.com/gorilla/context"
 
+	"log"
+
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"log"
 
 	"net/http"
 )
@@ -186,6 +187,8 @@ func (c *Config) createStudentHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+	tmp := []string{}
+	tmp = append(tmp, school.ID)
 
 	guardian1 := Guardian{
 		Name:       student.GuardianName,
@@ -196,6 +199,7 @@ func (c *Config) createStudentHandler(w http.ResponseWriter, r *http.Request) {
 		Country:    student.GuardianCountry,
 		State:      student.GuardianState,
 		City:       student.GuardianCity,
+		Schools:    tmp,
 	}
 
 	guardian2 := Guardian{
