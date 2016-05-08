@@ -275,7 +275,7 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user.UpdateImage != "" {
-		log.Println(user.UpdateImage)
+		//log.Println(user.UpdateImage)
 
 		bucket := c.S3Bucket
 
@@ -293,7 +293,7 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 		}
 
-		log.Println(bucket.URL(school.ID + "/" + user.ID.Hex()))
+		//log.Println(bucket.URL(school.ID + "/" + user.ID.Hex()))
 
 		user.Image = bucket.URL(school.ID + "/" + user.ID.Hex())
 	}
@@ -306,7 +306,7 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 //getUsersHandler would create a user/staff
 func (c *Config) getUsersHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	log.Println(school)
+	//log.Println(school)
 	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
 	users, err := u.GetAll()
 
