@@ -272,6 +272,59 @@ func (c *Config) AuthGuardianHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (c *Config) GuardianWardsHandler(w http.ResponseWriter, r *http.Request) {
+	result := []*CustomData{}
+	view := RenderView{}
+	tempStudent := []Student{}
+	tmp := r.URL.Query().Get("no")
+	u := GuardianRepo{c.MongoSession.DB(c.MONGODB).C("guardians")}
+	//guardian := Guardian{}
+	//buf := new(bytes.Buffer)
+	//buf.ReadFrom(r.Body)
+	//s := buf.String()
+	//log.Println(s)
+
+	/*	err := json.NewDecoder(r.Body).Decode(&guardian)
+		if err != nil {
+			log.Println(err)
+		}
+	*/
+
+	//log.Println(guardian.Pin2)
+	log.Println(r.FormValue("Pin2"))
+	guardian, err := u.AuthGuardian(tmp, r.FormValue("Pin2"))
+	if err != nil {
+		log.Println(err)
+	}
+
+	for i := 0; i < len(guardian.Schools); i++ {
+
+		rp := c.MongoSession.DB(c.MONGODB).C(guardian.Schools[i] + "_students")
+		err = rp.Find(bson.M{"guardianmobile": tmp}).All(&tempStudent)
+		if err != nil {
+			log.Println(err)
+		}
+
+		for k := 0; k < len(tempStudent); k++ {
+			thisStudent := tempStudent[k]
+			customData := new(CustomData)
+			customData.SchoolId = guardian.Schools[i]
+			customData.StudentId = thisStudent.ID
+			customData.StudentName = thisStudent.LastName + " " + thisStudent.FirstName
+			result = append(result, customData)
+		}
+	}
+	view.Data = result
+
+	res, err := json.Marshal(view)
+	if err != nil {
+		log.Println(err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(res)
+
+}
+
 //putGuardianHandler would create a class
 func (c *Config) putGuardianHandler(w http.ResponseWriter, r *http.Request) {
 

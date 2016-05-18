@@ -93,6 +93,8 @@ func main() {
 	//api routes for iparent
 	router.Get("/api/child", commonHandlers.ThenFunc(ChildHandler))
 	router.Get("/api/board", commonHandlers.ThenFunc(BoardHandler))
+	router.Get("/api/wards", commonHandlers.ThenFunc(config.GuardianWardsHandler))
+	router.Get("/api/GetAssesment", commonHandlers.ThenFunc(config.GetAssessmentsOfAStudentMobile))
 	router.Post("/api/verify", commonHandlers.ThenFunc(config.AuthGuardianHandler))
 	router.Post("/api/send", commonHandlers.ThenFunc(config.VerifyGuardian))
 
