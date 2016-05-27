@@ -5,9 +5,10 @@ import (
 
 	"github.com/gorilla/context"
 
+	"log"
+
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"log"
 
 	"net/http"
 )
@@ -271,6 +272,33 @@ func (c *Config) GetAssessmentsOfAStudentHandler(w http.ResponseWriter, r *http.
 	school := context.Get(r, "school").(School)
 	sRepo := StudentAssessmentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_assessments")}
 	subjectRepo := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
+
+	studentID := r.URL.Query().Get("id")
+
+	assessments, err := sRepo.GetAssessmentsOfAStudent(studentID)
+	if err != nil {
+		log.Println(err)
+	}
+
+	for i := range assessments {
+		subject, err := subjectRepo.GetByName(assessments[i].Subject)
+		if err != nil {
+			log.Println(err)
+		}
+		assessments[i].SubjectInfo = subject
+	}
+
+	err = json.NewEncoder(w).Encode(assessments)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+//GetAssessmentsOfAStudentMobile get assesment of a student for mobile
+func (c *Config) GetAssessmentsOfAStudentMobile(w http.ResponseWriter, r *http.Request) {
+
+	sRepo := StudentAssessmentRepo{c.MongoSession.DB(c.MONGODB).C(r.URL.Query().Get("school") + "_assessments")}
+	subjectRepo := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(r.URL.Query().Get("school") + "_subjects")}
 
 	studentID := r.URL.Query().Get("id")
 
