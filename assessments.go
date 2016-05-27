@@ -66,6 +66,7 @@ type StudentAssessmentRepo struct {
 
 //CreateAssessment is for creating assessments on a subject
 func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) error {
+	var ass Assessment
 	err := r.coll.Update(bson.M{
 		"_id": bson.ObjectIdHex(subjectid),
 	},
@@ -74,9 +75,15 @@ func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) 
 				"assessments": assessment,
 			},
 		})
+	log.Println(subjectid)
 	if err != nil {
 		log.Println(err)
-		return err
+		//return err
+	}
+
+	errs := r.coll.FindId(bson.ObjectIdHex(subjectid)).One(&ass)
+	if errs != nil {
+		log.Println(errs)
 	}
 	return nil
 }
