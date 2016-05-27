@@ -283,6 +283,13 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         "staff": { templateUrl: "/partials/staff/staff_edit.html" },
       },
     })
+    .state('staff.change_password', {
+      url: "/staff/change_password",
+
+      views: {
+        "staff": { templateUrl: "/partials/staff/staff_change_password.html" },
+      },
+    })
     .state('staff_settings', {
       url: "/staff/settings",
 
@@ -715,6 +722,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
   .controller('NewStaffCtrl', NewStaffCtrl)
   .controller('EditStaffCtrl', EditStaffCtrl)
+  .controller('StaffChangePasswordCtrl', StaffChangePasswordCtrl)
   .controller('StaffListCtrl', StaffListCtrl)
   .controller('StaffSettingsCtrl', StaffSettingsCtrl)
 

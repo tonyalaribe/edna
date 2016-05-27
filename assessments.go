@@ -65,6 +65,8 @@ type StudentAssessmentRepo struct {
 
 //CreateAssessment is for creating assessments on a subject
 func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) error {
+	//subjectidhex := bson.ObjectIdHex(subjectid)
+	//log.Println(subjectidhex)
 	err := r.coll.Update(bson.M{
 		"_id": bson.ObjectIdHex(subjectid),
 	},
@@ -177,7 +179,7 @@ func (r *StudentAssessmentRepo) GetAssessmentsOfAStudent(student string) ([]Stud
 //newAssessmentHandler would create an assessment
 func (c *Config) newAssessmentHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subject")}
+	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
 	assessment := Assessment{}
 	err := json.NewDecoder(r.Body).Decode(&assessment)
 	if err != nil {

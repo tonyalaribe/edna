@@ -95,6 +95,27 @@ func (r *UserRepo) Create(user *User) error {
 	return nil
 }
 
+//UpdatePassword adds a users password in the database
+func (r *UserRepo) UpdatePassword(user *User) error {
+	phash, err := bcrypt.GenerateFromPassword([]byte(user.P), Cost)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	user.Password = phash
+
+	err = r.coll.UpdateId(user.ID, bson.M{
+		"$set": bson.M{
+			"password": user.Password,
+		},
+	})
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
+
 //Update adds a user to the database
 func (r *UserRepo) Update(user *User) error {
 	//log.Println(user)
@@ -301,6 +322,27 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+//updateUserPasswordHandler would update password for a user/staff
+func (c *Config) updateUserPasswordHandler(w http.ResponseWriter, r *http.Request) {
+	school := context.Get(r, "school").(School)
+	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
+	type passwordStruct struct {
+		Password string `json:"password"`
+	}
+	user := User{}
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(u)
+
+	err = u.UpdatePassword(&user)
+	if err != nil {
+		log.Println(err)
+	}
+
 }
 
 //getUsersHandler would create a user/staff

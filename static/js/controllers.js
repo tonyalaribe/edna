@@ -669,6 +669,13 @@
       $rootScope.staff = staff;
       $state.go("staff.edit")
     }
+
+    $scope.changepassword = function(staff){
+      console.log("change password");
+      console.log(staff);
+      $rootScope.staff = staff;
+      $state.go("staff.change_password");
+    }
   }
 
 
@@ -693,6 +700,29 @@
       $http.put(API + '/staff', staff).then(handleRequest, handleError)
     }
   }
+
+function StaffChangePasswordCtrl(API, $scope, $http, $state, $rootScope) {
+  console.log("edit staff ctrl");
+  $scope.staff = $rootScope.staff;
+  function handleRequest(res) {
+    console.log(res)
+    $scope.staff = {};
+    $state.go("staff.list")
+
+  }
+
+  function handleError(err){
+    console.log("Error")
+    console.log(err)
+  }
+
+
+  $scope.changepassword = function(staff){
+    console.log(staff);
+
+    $http.post(API + '/changepassword', staff).then(handleRequest, handleError)
+  }
+}
 
 function StaffSettingsCtrl($scope, API, $http, $state, auth){
 
