@@ -40,12 +40,13 @@ func main() {
 
 	config := generateConfig()
 	defer config.MongoSession.Close()
-	commonHandlers := alice.New(context.ClearHandler, loggingHandler)
+	commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
 	router := NewRouter()
 	//, recoverHandler
 	//router.Post("/api/v0.1/auth", commonHandlers.ThenFunc(appC.authHandler))
 	router.Post("/api/auth/login", commonHandlers.Append(dbsetter).ThenFunc(config.LoginPost))
 
+	router.Post("/api/changepassword", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.updateUserPasswordHandler))
 	router.Post("/api/staff", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.createUserHandler))
 	router.Put("/api/staff", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.updateUserHandler))
 	router.Get("/api/staff", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getUsersHandler))

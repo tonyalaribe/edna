@@ -283,6 +283,13 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         "staff": { templateUrl: "/partials/staff/staff_edit.html" },
       },
     })
+    .state('staff.change_password', {
+      url: "/staff/change_password",
+
+      views: {
+        "staff": { templateUrl: "/partials/staff/staff_change_password.html" },
+      },
+    })
     .state('staff_settings', {
       url: "/staff/settings",
 
@@ -561,7 +568,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       name:"Staff",
       state: "",
       roles:"admin",
-      thumbnail: $sce.trustAsHtml('<i class="fa fa-plus"></i>'),
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-user-secret "></i>'),
       children:[{
         id:"staff_new",
         name:"New",
@@ -580,7 +587,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       name:"Classes and Subjects",
       state: "",
       roles:"admin",
-      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-book"></i>'),
       children:[
       {
         id:"class_new",
@@ -612,7 +619,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       name:"Students",
       state: "",
       roles:"admin",
-      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-graduation-cap"></i>'),
       children:[{
         id:"students_new",
         name:"New",
@@ -633,7 +640,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       name:"Classes",
       state:"teacher_list",
       roles:"teacher",
-      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-bookmark"></i>'),
     };
 
     var SchoolSettings = {
@@ -642,7 +649,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
       name:"Settings",
       state: "",
       roles:"admin",
-      thumbnail: $sce.trustAsHtml('<i class="fa fa-group"></i>'),
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-cogs"></i>'),
       children:[{
         id:"settings_institution",
         name:"Institution Settings",
@@ -715,6 +722,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
 
   .controller('NewStaffCtrl', NewStaffCtrl)
   .controller('EditStaffCtrl', EditStaffCtrl)
+  .controller('StaffChangePasswordCtrl', StaffChangePasswordCtrl)
   .controller('StaffListCtrl', StaffListCtrl)
   .controller('StaffSettingsCtrl', StaffSettingsCtrl)
 

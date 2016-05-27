@@ -11,7 +11,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"
-	"github.com/mitchellh/goamz/aws"
+	//"github.com/mitchellh/goamz/aws"
 	"github.com/mitchellh/goamz/s3"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2"
@@ -88,6 +88,27 @@ func (r *UserRepo) Create(user *User) error {
 	user.Image = avatars[rand.Intn(len(avatars))]
 
 	err = r.coll.Insert(user)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
+
+//UpdatePassword adds a users password in the database
+func (r *UserRepo) UpdatePassword(user *User) error {
+	phash, err := bcrypt.GenerateFromPassword([]byte(user.P), Cost)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	user.Password = phash
+
+	err = r.coll.UpdateId(user.ID, bson.M{
+		"$set": bson.M{
+			"password": user.Password,
+		},
+	})
 	if err != nil {
 		log.Println(err)
 		return err
@@ -275,13 +296,9 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user.UpdateImage != "" {
-		log.Println(user.UpdateImage)
-		auth, err := aws.EnvAuth()
-		if err != nil {
-			log.Fatal(err)
-		}
-		client := s3.New(auth, aws.USWest2)
-		bucket := client.Bucket(c.BucketName)
+		//log.Println(user.UpdateImage)
+
+		bucket := c.S3Bucket
 
 		byt, err := base64.StdEncoding.DecodeString(strings.Split(user.UpdateImage, "base64,")[1])
 		if err != nil {
@@ -290,16 +307,16 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 
 		meta := strings.Split(user.UpdateImage, "base64,")[0]
 		newmeta := strings.Replace(strings.Replace(meta, "data:", "", -1), ";", "", -1)
-		imagename := randSeq(30)
+		//imagename := randSeq(30)
 
-		err = bucket.Put(imagename, byt, newmeta, s3.PublicReadWrite)
+		err = bucket.Put(school.ID+"/"+user.ID.Hex(), byt, newmeta, s3.PublicReadWrite)
 		if err != nil {
 			log.Println(err)
 		}
 
-		log.Println(bucket.URL(school.ID + "/" + imagename))
+		//log.Println(bucket.URL(school.ID + "/" + user.ID.Hex()))
 
-		user.Image = bucket.URL(school.ID + "/" + imagename)
+		user.Image = bucket.URL(school.ID + "/" + user.ID.Hex())
 	}
 	err = u.Update(&user)
 	if err != nil {
@@ -307,10 +324,31 @@ func (c *Config) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//updateUserPasswordHandler would update password for a user/staff
+func (c *Config) updateUserPasswordHandler(w http.ResponseWriter, r *http.Request) {
+	school := context.Get(r, "school").(School)
+	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
+	type passwordStruct struct {
+		Password string `json:"password"`
+	}
+	user := User{}
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(u)
+
+	err = u.UpdatePassword(&user)
+	if err != nil {
+		log.Println(err)
+	}
+
+}
+
 //getUsersHandler would create a user/staff
 func (c *Config) getUsersHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
-	log.Println(school)
+	//log.Println(school)
 	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
 	users, err := u.GetAll()
 
