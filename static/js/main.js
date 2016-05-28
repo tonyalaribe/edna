@@ -438,7 +438,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         console.log(upperLimit)
 
         xxx = (studentA[i].score /upperLimit)*(percentage)
-        total = total + xxx
+        total = Math.round(total + xxx)
 
       }
       return total
