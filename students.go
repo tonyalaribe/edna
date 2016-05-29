@@ -16,6 +16,7 @@ import (
 // Student struct
 type Student struct {
 	ID                          bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
+	Graduated                   bool          `json:"graduated" bson:",omitempty"`
 	SignUpDate                  string        `json:"signupdate,omitempty" bson:",omitempty"`
 	Class                       string        `json:"class, omitempty" bson:",omitempty"`
 	FirstName                   string        `json:"firstname,omitempty" bson:",omitempty"`
@@ -115,6 +116,21 @@ func (r *StudentRepo) Get(id string) (Student, error) {
 func (r *StudentRepo) GetAll() ([]Student, error) {
 	var student []Student
 	err := r.coll.Find(bson.M{}).All(&student)
+
+	if err != nil {
+		log.Println(err)
+		return student, err
+	}
+
+	return student, nil
+}
+
+//GetAll gets all user from db
+func (r *StudentRepo) GetAllCurrentStudents() ([]Student, error) {
+	var student []Student
+	err := r.coll.Find(bson.M{
+		"graduated": false,
+	}).All(&student)
 
 	if err != nil {
 		log.Println(err)
