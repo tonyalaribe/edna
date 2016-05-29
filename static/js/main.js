@@ -657,7 +657,7 @@ edna.config(function($stateProvider, $urlRouterProvider) {
         thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
       },{
         id:"settings_session",
-        name:"Session Settings",
+        name:"Academic Session",
         state:"settings_session",
         thumbnail:$sce.trustAsHtml('li'),
       }]

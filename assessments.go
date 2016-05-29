@@ -23,6 +23,7 @@ type Assessment struct {
 //StudentAssessments is
 type StudentAssessments struct {
 	ID          bson.ObjectId       `json:"id,omitempty" bson:"_id,omitempty"`
+	Session     string              `json:"session"`
 	StudentID   string              `json:"studentid"`
 	Name        string              `json:"name"` //Student Name
 	Subject     string              `json:"subject"`
@@ -42,6 +43,7 @@ type StudentAssessment struct {
 type SingleStudentAssessment struct {
 	ID             bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
 	StudentID      string        `json:"studentid"`
+	Session        string        `json:"session"`
 	Name           string        `json:"name"`
 	Subject        string        `json:"subject"`
 	Class          string        `json:"class"`
@@ -66,8 +68,6 @@ type StudentAssessmentRepo struct {
 
 //CreateAssessment is for creating assessments on a subject
 func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) error {
-	//subjectidhex := bson.ObjectIdHex(subjectid)
-	//log.Println(subjectidhex)
 	err := r.coll.Update(bson.M{
 		"_id": bson.ObjectIdHex(subjectid),
 	},
@@ -91,30 +91,8 @@ func (r *StudentAssessmentRepo) UpsertStudentAssessmentData(s SingleStudentAsses
 	assessment.Name = s.AssessmentName
 	assessment.Score = s.Score
 
-	/*
-		_, err := r.coll.Upsert(bson.M{
-			"studentid": s.StudentID,
-			"class":     s.Class,
-			"subject":   s.Subject,
-		}, bson.M{
-			"$addToSet": bson.M{
-				"assessments": bson.M{
-					"name":  assessment.Name,
-					"score": assessment.Score,
-				},
-			},
-
-			"$setOnInsert": bson.M{
-				"studentid": s.StudentID,
-				"class":     s.Class,
-				"subject":   s.Subject,
-				"name":      s.Name,
-			},
-		})
-
-	*/
-
 	err := r.coll.Update(bson.M{
+		"session":          s.Session,
 		"studentid":        s.StudentID,
 		"class":            s.Class,
 		"subject":          s.Subject,
@@ -132,6 +110,7 @@ func (r *StudentAssessmentRepo) UpsertStudentAssessmentData(s SingleStudentAsses
 			"studentid": s.StudentID,
 			"class":     s.Class,
 			"subject":   s.Subject,
+			"session":   s.Session,
 		}, bson.M{
 			"$push": bson.M{
 				"assessments": assessment,
@@ -140,6 +119,7 @@ func (r *StudentAssessmentRepo) UpsertStudentAssessmentData(s SingleStudentAsses
 				"studentid": s.StudentID,
 				"class":     s.Class,
 				"subject":   s.Subject,
+				"session":   s.Session,
 			},
 		},
 		)
@@ -153,9 +133,12 @@ func (r *StudentAssessmentRepo) UpsertStudentAssessmentData(s SingleStudentAsses
 	return nil
 }
 
-func (r *StudentAssessmentRepo) GetAssessments() ([]StudentAssessments, error) {
+func (r *StudentAssessmentRepo) GetAssessments(session, class string) ([]StudentAssessments, error) {
 	result := []StudentAssessments{}
-	err := r.coll.Find(bson.M{}).All(&result)
+	err := r.coll.Find(bson.M{
+		"session": session,
+		"class":   class,
+	}).All(&result)
 	if err != nil {
 		log.Println(err)
 		return result, err
@@ -163,10 +146,11 @@ func (r *StudentAssessmentRepo) GetAssessments() ([]StudentAssessments, error) {
 	return result, nil
 }
 
-func (r *StudentAssessmentRepo) GetAssessmentsOfAStudent(student string) ([]StudentAssessments, error) {
+func (r *StudentAssessmentRepo) GetAssessmentsOfAStudent(student, session string) ([]StudentAssessments, error) {
 	result := []StudentAssessments{}
 	err := r.coll.Find(bson.M{
 		"studentid": student,
+		"session":   session,
 	}).All(&result)
 	if err != nil {
 		log.Println(err)
@@ -199,13 +183,15 @@ func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http
 	school := context.Get(r, "school").(School)
 	StudentAssessmentRepo := StudentAssessmentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_assessments")}
 	StudentRepo := StudentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_students")}
-	assessments, err := StudentAssessmentRepo.GetAssessments()
+
+	class := r.URL.Query().Get("class")
+	//subject := r.URL.Query().Get("subject")
+
+	assessments, err := StudentAssessmentRepo.GetAssessments(school.Session, class)
 	if err != nil {
 		log.Println(err)
 	}
 
-	class := r.URL.Query().Get("class")
-	//subject := r.URL.Query().Get("subject")
 	students, err := StudentRepo.GetAllStudentsInParentClass(class)
 	if err != nil {
 		log.Println(err)
@@ -220,17 +206,9 @@ func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http
 		s.Name = student.FirstName + " " + student.LastName
 		//log.Println(s.Name)
 		s.StudentID = student.ID.Hex()
-
-		//as := assessments.Assessments
-
 		for _, a := range assessments {
-			//log.Println(a.ID)
-			//log.Println(student.ID)
 			if a.StudentID == student.ID.Hex() {
 				s.Assessments = append(s.Assessments, a.Assessments...)
-
-				//assessments[i] = assessments[len(assessments)-1]
-				//assessments = assessments[:len(assessments)-1]
 			}
 
 		}
@@ -238,12 +216,10 @@ func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http
 		if len(s.Assessments) < 1 {
 			s.Assessments = []StudentAssessment{}
 		}
-		//log.Println(s.Assessments)
 		returnStudents = append(returnStudents, s)
 	}
 
 	log.Println(returnStudents)
-	//log.Println(students)
 
 	err = json.NewEncoder(w).Encode(returnStudents)
 	if err != nil {
@@ -275,7 +251,7 @@ func (c *Config) GetAssessmentsOfAStudentHandler(w http.ResponseWriter, r *http.
 
 	studentID := r.URL.Query().Get("id")
 
-	assessments, err := sRepo.GetAssessmentsOfAStudent(studentID)
+	assessments, err := sRepo.GetAssessmentsOfAStudent(studentID, school.Session)
 	if err != nil {
 		log.Println(err)
 	}
@@ -296,13 +272,19 @@ func (c *Config) GetAssessmentsOfAStudentHandler(w http.ResponseWriter, r *http.
 
 //GetAssessmentsOfAStudentMobile get assesment of a student for mobile
 func (c *Config) GetAssessmentsOfAStudentMobile(w http.ResponseWriter, r *http.Request) {
+	schoolR := SchoolRepo{c.MongoSession.DB(c.MONGODB).C("schools")}
+
+	school, err := schoolR.Get(r.URL.Query().Get("school"))
+	if err != nil {
+		log.Println(err)
+	}
 
 	sRepo := StudentAssessmentRepo{c.MongoSession.DB(c.MONGODB).C(r.URL.Query().Get("school") + "_assessments")}
 	subjectRepo := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(r.URL.Query().Get("school") + "_subjects")}
 
 	studentID := r.URL.Query().Get("id")
 
-	assessments, err := sRepo.GetAssessmentsOfAStudent(studentID)
+	assessments, err := sRepo.GetAssessmentsOfAStudent(studentID, school.Session)
 	if err != nil {
 		log.Println(err)
 	}
