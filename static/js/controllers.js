@@ -248,6 +248,7 @@
   Subject
   *****************************************************/
 
+
   function NewSubjectCtrl(API, $http, $scope) {
     $scope.subject = {};
     $scope.subject.teachers = [];
@@ -901,6 +902,8 @@ function SessionSettingsCtrl(API, $scope, $http ){
 
   function TeacherAssignedToSubjectOverviewCtrl(API, $http, $scope, $stateParams){
     $scope.overview = {};
+    $scope.feedBack = "";
+    $scope.assessment = {};
     //console.log($scope.$parent.$stateParams)
     $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
         console.log(res.data)
@@ -913,7 +916,9 @@ function SessionSettingsCtrl(API, $scope, $http ){
     $scope.newAssessment = function(assessment){
       $http.post(API + '/createassessment?id='+encodeURI($stateParams.id), assessment).then(function(res){
           console.log(res.data)
-          //$scope.asessments.push(assessment);
+          $scope.feedBack = res.data;
+            $scope.assessment = {};
+          $scope.overview.assessments.push(assessment);
         },function(err){
           console.log(err)
         }
