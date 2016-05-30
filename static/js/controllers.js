@@ -195,8 +195,6 @@
     $http.get(API + '/class').then(handleRequest, handleError);
 
     $scope.edit = function(cl){
-      console.log("edit");
-      console.log(cl);
       $rootScope.c = cl;
       $state.go("class.edit")
     }
@@ -204,11 +202,9 @@
 
 
   function EditClassCtrl(API, $scope, $http, $state, $rootScope) {
-    console.log("edit class ctrl");
     $scope.c = $rootScope.c;
 
     $http.get(API + '/teachers').then(function(res) {
-      console.log(res)
       $scope.teachers = res.data.users;
 
     }, function(err){
@@ -253,7 +249,6 @@
   *****************************************************/
 
   function NewSubjectCtrl(API, $http, $scope) {
-    console.log("new subject");
     $scope.subject = {};
     $scope.subject.teachers = [];
     $scope.err = "";
@@ -306,7 +301,6 @@
 
 
   function SubjectListCtrl(API, $scope, $http, $state, $rootScope) {
-    console.log("subject list ctrl");
     $scope.subject = $rootScope.subject;
 
 
@@ -351,8 +345,6 @@
     $http.get(API + '/subjects').then(handleRequest, handleError);
 
     $scope.edit = function(sub){
-      console.log("edit");
-      console.log(sub);
       $rootScope.subject = sub;
       $state.go("class.subject_edit")
     }
@@ -360,7 +352,6 @@
 
 
   function EditSubjectCtrl(API, $scope, $http, $state, $rootScope) {
-    console.log("edit subject ctrl");
     $scope.subject = $rootScope.subject;
 
 
@@ -408,8 +399,6 @@
   **********************************************************/
 
   function NewStudentCtrl(API, $http, $scope, $location) {
-    console.log("new staff");
-
       $scope.steps = [
         {
             templateUrl: '/partials/students/students_new_official.html',
@@ -440,7 +429,6 @@
     ];
 
     $http.get(API + '/class').then(function(res) {
-      console.log(res)
       $scope.classes = res.data.classes;
 
     }, function(err){
@@ -451,7 +439,6 @@
 
     $scope.student = {};
     $scope.savestudent = function(student){
-      console.log("here");
       $scope.submittedStudent = true;
       $http.post(API + '/student', student).then(
         function (res) {
@@ -480,8 +467,6 @@
       })
 
     $scope.edit = function(student){
-      console.log("edit");
-      console.log(student);
       $rootScope.student = student;
       $state.go("students.edit", {id:student.id})
     }
@@ -490,14 +475,12 @@
   function StudentResultCtrl(API, $scope, $rootScope, $state, $http, $stateParams) {
     $http.get(API + '/student?id='+$stateParams.id).then(
       function (res) {
-        console.log(res)
         $scope.student = res.data.student;
       },function (err) {
       }
     )
     $http.get(API + '/student/result?id='+$stateParams.id).then(
       function (res) {
-        console.log(res)
         var assessments = res.data;
         nassessment = []
 
@@ -537,9 +520,6 @@
 
 
   function EditStudentCtrl(API, $scope, $http, $state, $rootScope, $stateParams) {
-    console.log("edit staff ctrl");
-
-
       $scope.steps = [
         {
             templateUrl: '/partials/students/students_new_official.html',
@@ -570,7 +550,6 @@
     ];
 
     $http.get(API + '/class').then(function(res) {
-      console.log(res)
       $scope.classes = res.data.classes;
 
     }, function(err){
@@ -584,7 +563,6 @@
     //$scope.student.signupdate = new Date($scope.student.signupdate);
 
     $http.get(API + '/student?id='+$stateParams.id).then(function(res) {
-      console.log(res)
       $scope.student = res.data.student;
       $scope.student.dateofbirth = new Date($scope.student.dateofbirth);
       $scope.student.signupdate = new Date($scope.student.signupdate);
@@ -617,7 +595,6 @@
   **********************************************************/
 
   function NewStaffCtrl(API, $http, $scope) {
-    console.log("new staff");
     $scope.newstaff = {};
     $scope.res = "";
     $scope.ress = "";
@@ -963,5 +940,19 @@ function SessionSettingsCtrl(API, $scope, $http ){
   }
 
   function TeacherAssignedToClassOverviewCtrl(API, $http, $scope, $stateParams){
+    $scope.overview = {};
+    console.log($stateParams)
 
+    $scope.students = [];
+    $http.get(API + '/getclassdata?class='+encodeURI($stateParams.id)).then(function(res){
+      console.log(res)
+
+      $scope.overview.name = res.data.name
+      $scope.overview.count = res.data.count
+      console.log($scope.overview)
+      //$scope.students = res.data;
+      },function(err){
+        console.log(err)
+      }
+    );
   }

@@ -188,14 +188,15 @@
 
                               </li>
                               <br/>
+
+                              <!-- HIDE add addon button
                               <li class="m-t-30 ">
-                              <a href="index.html" class="detailed side-a" style="width:100%; ">
-
+                                <a href="index.html" class="detailed side-a" style="width:100%; ">
                                   <span class="title" style="border:1px solid #788195; padding:5px 10px;"> <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp; Add Addon</span>
-                              </a>
-
-
+                                </a>
                               </li>
+                            -->
+                            
                             </ul>
                             <div class="clearfix"></div>
                           </div>
@@ -560,12 +561,13 @@
                       <div style="text-align:center; " class="nav-centered-group">-->
 
                         <ul class="nav navbar-nav pull-right navbar-right" style="display:inline-block; margin:0;">
-                          <li class="navbar-form" style="padding:10px; margin:0;">
+
+                          <!--<li class="navbar-form" style="padding:10px; margin:0; ">
                             <div class="input-group nav-search" style="width:auto; display:inline-table;" >
                                 <div class="input-group-addon " style="width:auto;"><i class="fa fa-search"></i></div>
                                 <input type="text" class="form-control hidden-xs" style="width:200px;" placeholder="Type to Search">
                              </div>
-                          </li>
+                          </li>-->
                           <li class="dropdown">
                             <a onclick="dropExpandInline('nav-dropdown')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding:5px;">
                               <span class="hidden-xs" ng-bind="$root.user.name"></span> <img src="{{ $root.user.image || 'img/avatar.png' }}" class=" img-circle img-thumbnail edna-nav-avatar" /> <span class="caret"></span></a>
@@ -573,7 +575,7 @@
                               <li><a ui-sref="staff_settings"><i class="fa fa-gears "></i>&nbsp;&nbsp;Settings</a></li>
                               <li><a href="#"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Help</a></li>
                               <li role="separator" class="divider"></li>
-                              <li><a ng-click="root.logout()">Logout<i class=" pull-right fa fa-power-off"></i></a></li>
+                              <li><a style="cursor: pointer; cursor: hand;" ng-click="root.logout()">Logout<i class=" pull-right fa fa-power-off"></i></a></li>
                             </ul>
                           </li>
                           <li style="cursor: pointer; cursor: hand; display:none;">

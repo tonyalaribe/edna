@@ -248,7 +248,7 @@ func (c *Config) getStudentHandler(w http.ResponseWriter, r *http.Request) {
 
 	u := StudentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_students")}
 	student, err := u.Get(id)
-	log.Println(student)
+
 	err = json.NewEncoder(w).Encode(StudentData{student})
 	if err != nil {
 		log.Println(err)
@@ -281,6 +281,30 @@ func (c *Config) getStudentsInClassHandler(w http.ResponseWriter, r *http.Reques
 		log.Println(err)
 	}
 	err = json.NewEncoder(w).Encode(StudentCollection{students})
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+//getClassDataHandler would create a student
+func (c *Config) getClassDataHandler(w http.ResponseWriter, r *http.Request) {
+	school := context.Get(r, "school").(School)
+
+	class := r.URL.Query().Get("class")
+	u := StudentRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_students")}
+	students, err := u.GetAllStudentsInParentClass(class)
+	if err != nil {
+		log.Println(err)
+	}
+
+	result := struct {
+		Count int    `json:"count"`
+		Name  string `json:"name"`
+	}{
+		Count: len(students),
+		Name:  class,
+	}
+	err = json.NewEncoder(w).Encode(&result)
 	if err != nil {
 		log.Println(err)
 	}

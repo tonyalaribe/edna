@@ -1,12 +1,34 @@
 <section class="container" style="" ng-controller="TeacherAssignedToSubjectOverviewCtrl">
 
   <div style="padding:20px;">
-    <h3>Assessments</h3>
-    <ol>
-      <li ng-repeat="x in overview.assessments"> {{x.name}} </li>
-    </ol>
+    <h2><strong>Assessments</strong></h2>
 
-<br/><br/>
+    <div class="table-responsive" data-snap-ignore="true">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Upper Limit</th>
+              <th>Percentage of Total Assessment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(i,x) in overview.assessments">
+              <th scope="row">
+                {{i}}
+              </th>
+              <td>{{x.name}}</td>
+              <td>{{x.upperlimit}}</td>
+              <td>{{x.percentage}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+  <br/><br/>
+  <h2><strong>Create a new Assessment</strong></h2>
     <div>
       <div class="form-group edna-form-group ">
         <label for="assessment_name">Assessment Name</label>
