@@ -65,8 +65,10 @@ type StudentAssessmentRepo struct {
 }
 
 //CreateAssessment is for creating assessments on a subject
-func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) error {
+func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) (string, error) {
 	var ass Assessment
+	var htm string
+	htm = "Assessment " + assessment.Name + " Added Succesfully"
 	err := r.coll.Update(bson.M{
 		"_id": bson.ObjectIdHex(subjectid),
 	},
@@ -78,14 +80,16 @@ func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) 
 	log.Println(subjectid)
 	if err != nil {
 		log.Println(err)
+		htm = " Error Adding " + assessment.Name
 		//return err
 	}
 
 	errs := r.coll.FindId(bson.ObjectIdHex(subjectid)).One(&ass)
 	if errs != nil {
 		log.Println(errs)
+		htm = "Error Adding " + assessment.Name
 	}
-	return nil
+	return htm, nil
 }
 
 func (r *StudentAssessmentRepo) UpsertStudentAssessmentData(s SingleStudentAssessment) error {
@@ -185,6 +189,7 @@ func (r *StudentAssessmentRepo) GetAssessmentsOfAStudent(student string) ([]Stud
 //newAssessmentHandler would create an assessment
 func (c *Config) newAssessmentHandler(w http.ResponseWriter, r *http.Request) {
 	school := context.Get(r, "school").(School)
+	var msg string
 	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
 	assessment := Assessment{}
 	err := json.NewDecoder(r.Body).Decode(&assessment)
@@ -194,10 +199,11 @@ func (c *Config) newAssessmentHandler(w http.ResponseWriter, r *http.Request) {
 
 	subjectid := r.URL.Query().Get("id")
 	log.Println(subjectid)
-	err = u.CreateAssessment(subjectid, assessment)
+	msg, err = u.CreateAssessment(subjectid, assessment)
 	if err != nil {
 		log.Println(err)
 	}
+	w.Write([]byte(msg))
 }
 
 func (c *Config) getStudentsAndAssessmentsHandler(w http.ResponseWriter, r *http.Request) {
