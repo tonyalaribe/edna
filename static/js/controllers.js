@@ -101,7 +101,7 @@
   Class
   ****/
 
-  function NewClassCtrl(API, $http, $scope) {
+  function NewClassCtrl(API, $http, $scope, Notification) {
     console.log("new class");
     $scope.c = {};
     $scope.err = "";
@@ -129,13 +129,15 @@
     function handleRequest(res) {
       console.log(res)
       $scope.c = {};
-      $scope.suc = "New Class Added Succesfully";
+      //$scope.suc = "New Class Added Succesfully";
+      Notification({message: 'New Class Added Succesfully', title: 'Class Management'});
 
     }
 
     function handleError(err){
       console.log("Error")
       console.log(err)
+      Notification.error(err);
     }
 
 
@@ -201,7 +203,7 @@
   }
 
 
-  function EditClassCtrl(API, $scope, $http, $state, $rootScope) {
+  function EditClassCtrl(API, $scope, $http, $state, $rootScope, Notification) {
     $scope.c = $rootScope.c;
 
     $http.get(API + '/teachers').then(function(res) {
@@ -210,18 +212,21 @@
     }, function(err){
       console.log("Error")
       console.log(err)
+      Notification.error("Error Loading Teacher Info");
     });
 
     function handleRequest(res) {
       console.log(res)
       $scope.c = {};
+      Notification({message: 'Class Data Successfuly Update!', title: 'Class Management'});
       $state.go("class.list")
 
     }
 
     function handleError(err){
-      console.log("Error")
-      console.log(err)
+      console.log("Error");
+      console.log(err);
+      Notification.error(err);
     }
 
 
@@ -238,6 +243,7 @@
     }, function(err){
       console.log("Error")
       console.log(err)
+      Notification.error(err);
     });
 
   }
@@ -249,7 +255,7 @@
   *****************************************************/
 
 
-  function NewSubjectCtrl(API, $http, $scope) {
+  function NewSubjectCtrl(API, $http, $scope, Notification) {
     $scope.subject = {};
     $scope.subject.teachers = [];
     $scope.err = "";
@@ -279,12 +285,14 @@
       console.log(res)
       $scope.subject = {};
       $scope.suc = "New Subject Added Succesfully";
+      Notification({message: 'New Subject Added Succesfully', title: 'Subject Management'});
 
     }
 
     function handleError(err){
       console.log("Error")
       console.log(err)
+      Notification.error(err);
     }
 
 
@@ -352,7 +360,7 @@
   }
 
 
-  function EditSubjectCtrl(API, $scope, $http, $state, $rootScope) {
+  function EditSubjectCtrl(API, $scope, $http, $state, $rootScope, Notification) {
     $scope.subject = $rootScope.subject;
 
 
@@ -363,6 +371,7 @@
     }, function(err){
       console.log("Error")
       console.log(err)
+      Notification.error(err);
     });
 
     $http.get(API + '/class').then(function(res) {
@@ -378,12 +387,14 @@
     function handleRequest(res) {
       console.log(res)
       $scope.subject = {};
+      Notification({message: 'Subject Succesfully Updated', title: 'Subject Management'});
       $state.go("class.subject_list")
 
     }
 
     function handleError(err){
       console.log("Error")
+      Notification.error(err);
       console.log(err)
     }
 
@@ -595,14 +606,14 @@
   staff
   **********************************************************/
 
-  function NewStaffCtrl(API, $http, $scope) {
+  function NewStaffCtrl(API, $http, $scope, Notification) {
     $scope.newstaff = {};
     $scope.res = "";
-    $scope.ress = "";
     function handleRequest(res) {
       console.log(res)
       $scope.newstaff = {};
-      $scope.ress = "New Staff Data Added";
+
+      Notification({message: 'New Staff Data Added', title: 'Staff Management'});
 
     }
 
@@ -610,6 +621,7 @@
     function handleError(err){
       console.log("Error")
       console.log(err)
+      Notification.error(err);
     }
 
 
@@ -657,11 +669,12 @@
   }
 
 
-  function EditStaffCtrl(API, $scope, $http, $state, $rootScope) {
+  function EditStaffCtrl(API, $scope, $http, $state, $rootScope, Notification) {
     console.log("edit staff ctrl");
     $scope.staff = $rootScope.staff;
     function handleRequest(res) {
       console.log(res)
+      Notification({message: 'Data Update Complete', title: 'Staff Management'});
       $scope.staff = {};
       $state.go("staff.list")
 
@@ -670,6 +683,7 @@
     function handleError(err){
       console.log("Error")
       console.log(err)
+      Notification.error(err);
     }
 
 
