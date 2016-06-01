@@ -97,6 +97,17 @@ func (r *SchoolRepo) Update(school *School) error {
 	return nil
 }
 
+//Get retrieves a school in the database
+func (r *SchoolRepo) Get(schoolID string) (School, error) {
+	result := School{}
+	err := r.coll.FindId(schoolID).All(&result)
+	if err != nil {
+		log.Println(err)
+		return result, err
+	}
+	return result, nil
+}
+
 //Verify Completes the verification Process from the link and mark school as verified
 func (r *SchoolRepo) Verify(adminEmail string, schoolID string, verificationKey string, rootURL string) (School, error) {
 	school := School{}

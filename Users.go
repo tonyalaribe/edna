@@ -84,7 +84,7 @@ func (r *UserRepo) Create(user *User) error {
 		user.Roles = append(user.Roles, "teacher")
 	}
 
-	avatars := []string{"/img/avatars/avatar.png", "/img/avatars/avatar2.jpg", "/img/avatars/avatar3.jpg", "/img/avatars/avatar4.png", "/img/avatars/avatar5.png"}
+	avatars := []string{"/img/avatars/avatar.png"}
 	user.Image = avatars[rand.Intn(len(avatars))]
 
 	err = r.coll.Insert(user)
