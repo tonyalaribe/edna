@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 
 	"github.com/gorilla/context"
@@ -118,9 +119,6 @@ func (r *SchoolRepo) Verify(adminEmail string, schoolID string, verificationKey 
 	if err != nil {
 		return school, err
 	}
-
-	log.Println(school.VerificationKey + " vs " + verificationKey)
-
 	if school.VerificationKey == verificationKey {
 		var domain string
 		if rootURL != "localhost:8080" {
@@ -199,13 +197,27 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	verificationURL := c.RootURL + "/verify?key=" + school.VerificationKey + "&email=" + school.AdminEmail + "&id=" + school.ID
 	log.Println(verificationURL)
 
-	client := &http.Client{}
+	client1 := &http.Client{}
+	client2 := &http.Client{}
 
 	// ...
-	htmlMessage := `"You created a School named <strong>` + school.Name + `</strong>. Please click the verification link below,  to verify your account.<br/> <a href='` + verificationURL + `'>` + verificationURL + `</a>"`
-	str := `{"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"}, "from":["anthonyalaribe@gmail.com","Edna - School Management System"], "subject":"Edna: Verify your Account", "html":` + htmlMessage + `}`
+	htmlMessage := `
+			"<h2>You created a School named <strong>` + school.Name + `</strong><h2>
+			<br/></br/>
+			<p>
+				Please click the verification link below,  to verify your account.<br/>
+				<a href='` + verificationURL + `'>` + verificationURL + `</a>
+			</p>"
+		`
 
-	mesg := bytes.NewReader([]byte(str))
+	verificationMessage := `
+		{	"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"},
+			"from":["noreply@edna.ng","Edna - School Management System"],
+			"subject":"Edna: Verify your Account",
+			"html":` + htmlMessage + `
+		}`
+
+	mesg := bytes.NewReader([]byte(verificationMessage))
 
 	req, err := http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", mesg)
 	if err != nil {
@@ -215,12 +227,61 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	}
 
 	req.Header.Add("api-key", "y12YpKGZtJErsqTI")
-	_, err = client.Do(req)
+	_, err = client1.Do(req)
 
 	if err != nil {
-
 		log.Println(err)
 		http.Redirect(w, r, "/registrationerror.html", http.StatusInternalServerError)
+		return
+	}
+
+	//Send Email alerting about new users
+	htmlMessage = `
+		<h1>New User Details</h1>
+		<div>
+			<div>
+				<strong>School Name: </strong> %v
+			</div>
+			<div>
+				<strong>School Address: </strong> %v
+			</div>
+			<div>
+				<strong>School Domain: </strong> %v
+			</div>
+			<div>
+				<strong>Admin Name: </strong> %v
+			</div>
+			<div>
+				<strong>Admin Email: </strong> %v
+			</div>
+			<div>
+				<strong>Admin Phone: </strong> %v
+			</div>
+		</div>
+		`
+
+	newUserMessage := `
+		{
+			"to":{"daniel@edna.ng":"Daniel Adigun"},
+			"from":["noreply@edna.ng","Edna - School Management System"],
+			"subject":"Edna: New Signup",
+			"html":` + fmt.Sprintf(htmlMessage, school.Name, school.Address, school.Domain, school.AdminName, school.AdminEmail, school.AdminPhone) + `
+		}
+		`
+	log.Println(fmt.Sprintf(htmlMessage, school.Name, school.Address, school.Domain, school.AdminName, school.AdminEmail, school.AdminPhone))
+	mesg = bytes.NewReader([]byte(newUserMessage))
+
+	req, err = http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", mesg)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	req.Header.Add("api-key", "y12YpKGZtJErsqTI")
+	_, err = client2.Do(req)
+
+	if err != nil {
+		log.Println(err)
 		return
 	}
 
