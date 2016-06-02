@@ -202,8 +202,8 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	client := &http.Client{}
 
 	// ...
-
-	str := `{"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"}, "from":["anthonyalaribe@gmail.com","Edna - School Management System"], "subject":"Edna: Verify your Account", "html":"You created a School named <strong>` + school.Name + `</strong>. Please click the verification link below,  to verify your account.<br/> <a href='` + verificationURL + `'>` + verificationURL + `</a>"}`
+	htmlMessage := `"You created a School named <strong>` + school.Name + `</strong>. Please click the verification link below,  to verify your account.<br/> <a href='` + verificationURL + `'>` + verificationURL + `</a>"`
+	str := `{"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"}, "from":["anthonyalaribe@gmail.com","Edna - School Management System"], "subject":"Edna: Verify your Account", "html":` + htmlMessage + `}`
 
 	mesg := bytes.NewReader([]byte(str))
 
@@ -214,7 +214,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	req.Header.Add("api-key", "2BsIqZ9XWMp6YKUk")
+	req.Header.Add("api-key", "y12YpKGZtJErsqTI")
 	_, err = client.Do(req)
 
 	if err != nil {
