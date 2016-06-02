@@ -339,7 +339,6 @@ func (c *Config) ValidateRegHandler(w http.ResponseWriter, r *http.Request) {
 	school, err := x.ValidateReg(schoolID)
 	if err != nil {
 		log.Println(err)
-
 	}
 	w.Write([]byte(school))
 }
