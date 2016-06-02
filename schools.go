@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 
 	"github.com/gorilla/context"
@@ -269,22 +270,23 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 		}
 		`
 	log.Println(fmt.Sprintf(htmlMessage, school.Name, school.Address, school.Domain, school.AdminName, school.AdminEmail, school.AdminPhone))
-	mesg = bytes.NewReader([]byte(newUserMessage))
+	nUserMesg := bytes.NewReader([]byte(newUserMessage))
 
-	req, err = http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", mesg)
+	req2, err := http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", nUserMesg)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
-	req.Header.Add("api-key", "y12YpKGZtJErsqTI")
-	_, err = client2.Do(req)
-
+	log.Println("still working")
+	req2.Header.Add("api-key", "y12YpKGZtJErsqTI")
+	resp, err = client2.Do(req2)
+	defer resp.Body.Close()
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("response Body:", string(body))
 	http.Redirect(w, r, "/success.html", http.StatusFound)
 }
 
