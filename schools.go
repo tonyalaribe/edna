@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strings"
 
 	"github.com/gorilla/context"
 	"golang.org/x/crypto/bcrypt"
@@ -232,7 +233,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 		{	"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"},
 			"from":["noreply@edna.ng","Edna - School Management System"],
 			"subject":"Edna: Verify your Account",
-			"html":'` + strings.Replace(htmlMessage.String(), "'", `\'`, -1) + `'
+			"html":"` + strings.Replace(htmlMessage.String(), `"`, `\"`, -1) + `"
 		}`
 
 	log.Println(verificationMessage)
