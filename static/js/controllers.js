@@ -914,10 +914,12 @@ function SessionSettingsCtrl(API, $scope, $http ){
 
   }
 
-  function TeacherAssignedToSubjectOverviewCtrl(API, $http, $scope, $stateParams){
+  function TeacherAssignedToSubjectOverviewCtrl(API, $http, $scope, $stateParams, Notification){
     $scope.overview = {};
     $scope.feedBack = "";
     $scope.assessment = {};
+    $scope.indeterminate = "indeterminate";
+    $scope.show = "hide";
     //console.log($scope.$parent.$stateParams)
     $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
         console.log(res.data)
@@ -928,13 +930,18 @@ function SessionSettingsCtrl(API, $scope, $http ){
     );
 
     $scope.newAssessment = function(assessment){
+      $scope.show = "show";
       $http.post(API + '/createassessment?id='+encodeURI($stateParams.id), assessment).then(function(res){
           console.log(res.data)
+          $scope.show = "hide";
           $scope.feedBack = res.data;
             $scope.assessment = {};
+            Notification({message: 'Success', title: 'Class Assesment'});
           $scope.overview.assessments.push(assessment);
         },function(err){
           console.log(err)
+          $scope.show = "hide";
+          Notification.error(err);
         }
       );
     }
