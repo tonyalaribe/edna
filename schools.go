@@ -209,8 +209,21 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 			<a href='` + verificationURL + `'>` + verificationURL + `</a>
 		</p>
 	`*/
+
+	VerificationData := struct {
+		Name            string
+		VerificationURL string
+	}{
+		Name:            school.AdminName,
+		VerificationURL: verificationURL,
+	}
 	var htmlMessage bytes.Buffer
-	err := template.New("").ExecuteTemplate(&htmlMessage, "./static/email-templates/verifyhtml.html", "")
+	tmpl, err := template.New("").ParseFiles("./static/email-templates/verifyhtml.html")
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = tmpl.ExecuteTemplate(&htmlMessage, "verifyhtml.html", VerificationData)
 	if err != nil {
 		log.Println(err)
 	}
@@ -219,8 +232,10 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 		{	"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"},
 			"from":["noreply@edna.ng","Edna - School Management System"],
 			"subject":"Edna: Verify your Account",
-			"html":"` + htmlMessage.String() + `"
+			"html":'` + strings.Replace(htmlMessage.String(), "'", `\'`, -1) + `'
 		}`
+
+	log.Println(verificationMessage)
 
 	mesg := bytes.NewReader([]byte(verificationMessage))
 
@@ -244,7 +259,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Send Email alerting about new users
-	htmlMessage = `
+	htmlMessage1 := `
 			<h1>New User Details</h1>
 			<div>
 				<div>
@@ -270,7 +285,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 				"to":{"anthonyalaribe@gmail.com":"Daniel Adigun"},
 				"from":["noreply@edna.ng","Edna - School Management System"],
 				"subject":"Edna: New Signup",
-				"html":"` + fmt.Sprintf(htmlMessage, school.Name, school.ID+".edna.ng", school.AdminName, school.AdminEmail, school.AdminPhone) + `"
+				"html":"` + fmt.Sprintf(htmlMessage1, school.Name, school.ID+".edna.ng", school.AdminName, school.AdminEmail, school.AdminPhone) + `"
 			}
 			`
 	log.Println(newUserMessage)
