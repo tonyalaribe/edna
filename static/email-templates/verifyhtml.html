@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="date=no">
+<meta name="format-detection" content="address=no">
+<meta name="format-detection" content="email=no">
+<title></title>
+<link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic" rel="stylesheet" type="text/css">
+<style type="text/css">
+/**
+ * Commerce
+ * oroian.ro/responsive-transactional-emails
+ * Last Modified: 01/02/2016
+**/
+/* Reset */
+body { Margin: 0; padding: 0; min-width: 100%; }
+a, #outlook a { display: inline-block; }
+a, a span { text-decoration: none; }
+img { line-height: 1; outline: none; border: 0; text-decoration: none; -ms-interpolation-mode: bicubic; mso-line-height-rule: exactly; }
+table { border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+td { padding: 0; }
+/* Email preview text */
+.email_summary { display:none; font-size:1px; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; }
+/* Typography */
+.font_default, h1, h2, h3, h4, h5, h6, p, a { font-family: Helvetica, Arial, sans-serif; /* this is used for email clients that don't support webfonts */ }
+small { font-size: 100%; }
+.font_default, p { font-size: 16px; /* default text size */ }
+p { line-height: 23px; Margin-top: 16px; Margin-bottom: 24px; }
+h1, h2, h3, h4, h5, h6 { Margin-left: 0; Margin-right: 0; Margin-top: 16px; Margin-bottom: 8px; padding: 0; }
+h1 {
+	font-size: 32px;
+	line-height: 40px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 4px;
+}
+h1 small {
+	font-size: 18px;
+	line-height: 1;
+	font-weight: normal;
+}
+h2 {
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+h2 small {
+	font-size: 12px;
+	line-height: 1;
+	font-weight: normal;
+}
+h2 span { text-decoration: line-through; }
+h2 .amount { text-decoration: none; }
+h2 ins { text-decoration: none; }
+h3 {
+	font-size: 22px;
+	line-height: 30px;
+	font-weight: normal;
+}
+h3 small {
+	font-size: 14px;
+	line-height: 1;
+	font-weight: normal;
+}
+h4 {
+	font-size: 19px;
+	line-height: 28px;
+	font-weight: normal;
+}
+h5 {
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+h5 small {
+	font-size: 10px;
+	line-height: 18px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+h6 {
+	font-size: 30px;
+	line-height: 34px;
+	font-weight: bold;
+}
+h6 small {
+	font-size: 16px;
+	line-height: 1;
+	font-weight: normal;
+}
+.primary_btn td,
+.secondary_btn td {
+	font-size: 19px;
+	line-height: 28px;
+	mso-line-height-rule: exactly;
+}
+.primary_btn a,
+.secondary_btn a {
+	font-weight: bold;
+}
+/* Grid */
+.row, .col-1, .col-13, .col-2, .col-3 {
+	display: inline-block;
+	width: 100%;
+	vertical-align: top;
+	text-align: center;
+}
+.col-1 { max-width: 200px; }
+.col-2 { max-width: 300px; }
+.col-13 { max-width: 400px; }
+.col-3, .row { max-width: 600px; }
+.row { margin: 0 auto; }
+.column {
+	width: 100%;
+	vertical-align: top;
+}
+.column_cell {
+	padding: 32px 16px;
+	text-align: center;
+	vertical-align: top;
+}
+.col-bottom-0 .column_cell { padding-bottom: 0; }
+.col-top-0 .column_cell { padding-top: 0; }
+/* Content Blocks */
+.header_cell, .jumbotron_cell, .content_cell, .footer_cell {
+	font-size: 0 !important;
+	text-align: center;
+}
+/* Header */
+.header_cell img {
+	max-width: 144px;
+	height: auto;
+}
+/* Footer */
+.footer_cell { border-top: 1px solid; }
+.footer_cell p { Margin: 16px 0; }
+.footer_cell .column_cell { padding: 16px; }
+/* Jumbotron */
+.jumbotron_image, .jumbotron_image_2, .jumbotron_image_3, .jumbotron_image_4, .jumbotron_image_5, .jumbotron_image_6 {
+	background-repeat: no-repeat;
+	background-position: 50% 0;
+	background-size: 100% auto;
+}
+/* Content */
+.billing_information {
+	padding-top: 16px;
+	padding-bottom: 8px;
+}
+.billing_information .column_cell {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* Buttons */
+.primary_btn,
+.secondary_btn {
+	clear: both;
+	margin: 0 auto;
+}
+.primary_btn td,
+.secondary_btn td {
+	text-align: center;
+	vertical-align: middle;
+	padding: 10px 32px;
+	-webkit-border-radius: 60px;
+	border-radius: 60px;
+}
+.primary_btn a,
+.primary_btn span,
+.secondary_btn a,
+.secondary_btn span {
+	text-align: center;
+	display: block;
+}
+/* Icon Holder + Rules */
+.icon_holder, .hruler {
+	width: 62px;
+	margin-left: auto;
+	margin-right: auto;
+	clear: both;
+}
+.icon_holder { width: 48px; }
+.hspace, .hruler_cell {
+	font-size: 0;
+	height: 8px;
+	overflow: hidden;
+}
+.hruler_cell {
+	height: 4px;
+	line-height: 4px;
+}
+.icon_cell {
+  font-size: 0;
+  line-height: 1;
+  -webkit-border-radius: 80px;
+  border-radius: 80px;
+  padding: 8px;
+  height: 48px;
+  border: 2px solid;
+}
+/* Product Row */
+.product_row { padding: 24px 0; }
+.product_row .column_cell { padding: 8px 16px; }
+.image_thumb img {
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+.product_row .col-13 .column_cell { text-align: left; }
+.jumbotron_cell .col-13 .column_cell { text-align: center; }
+.content .product_row, .content .order_total { border-top: 1px solid; }
+.product_row h6 { Margin-top: 0; }
+.product_row p {
+	Margin-top: 8px;
+	Margin-bottom: 8px;
+}
+.order_total_right .column_cell { text-align: right; }
+.order_total p { Margin: 8px 0; }
+.order_total h2 { Margin: 8px 0; }
+/* Responsive Images */
+.image_responsive img {
+	width: 100%;
+	height: auto;
+	max-width: 264px;
+}
+.image_responsive_2 {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+.image_responsive_2 img {
+	width: 100%;
+	height: auto;
+	max-width: 568px;
+}
+.image_responsive_3 img {
+	width: 100%;
+	height: auto;
+	max-width: 368px;
+}
+/* Colors */
+body,
+.email_body,
+.header_cell,
+.content_cell,
+.footer_cell {
+	background-color: #ffffff;
+}
+.jumbotron_cell {
+	background-color: #262840;
+}
+.primary_btn td,
+.icon_primary .icon_cell,
+.hruler_primary .hruler_cell {
+	background-color: #56bfa3;
+}
+.content_cell .hruler_secondary .hruler_cell,
+.content_cell .secondary_btn td {
+	background-color: #dbdbdb;
+}
+.jumbotron_cell .secondary_btn td,
+.jumbotron_cell .hruler_secondary .hruler_cell {
+	background-color: #ffffff;
+}
+.jumbotron_image {
+	background-image: url(https://s3-us-west-2.amazonaws.com/ednang/staticfiles/jumbotron_image.jpg);
+}
+.jumbotron_image_2 {
+	background-image: url(https://s3-us-west-2.amazonaws.com/ednang/staticfiles/jumbotron_image_2.jpg);
+}
+.jumbotron_image_3 {
+	background-image: url(https://s3-us-west-2.amazonaws.com/ednang/staticfiles/jumbotron_image_3.jpg);
+}
+.jumbotron_image_4 {
+	background-image: url(https://s3-us-west-2.amazonaws.com/ednang/staticfiles/jumbotron_image_4.jpg);
+}
+.jumbotron_image_5 {
+	background-image: url(https://s3-us-west-2.amazonaws.com/ednang/staticfiles/jumbotron_image_5.jpg);
+}
+.jumbotron_image_6 {
+	background-image: url(https://s3-us-west-2.amazonaws.com/ednang/staticfiles/jumbotron_image_6.jpg);
+}
+.billing_information, .order_total {
+	background-color: #fafafa;
+}
+.jumbotron_cell,
+.jumbotron_cell a,
+.jumbotron_cell h1,
+.jumbotron_cell h2,
+.jumbotron_cell h3,
+.jumbotron_cell h4,
+.jumbotron_cell .column_cell,
+.jumbotron_cell .stat_label,
+.primary_btn a,
+.primary_btn span,
+.content_cell .primary_btn a,
+.content_cell .primary_btn span,
+.content_cell .secondary_btn a,
+.content_cell .secondary_btn span {
+	color: #ffffff;
+}
+.content_cell h1,
+.content_cell h2,
+.content_cell h3,
+.content_cell h4,
+.content_cell h4 a,
+.content_cell .stat_label,
+.content_cell h2 span {
+	color: #333333;
+}
+.header_cell .column_cell,
+.content_cell .column_cell {
+	color: #888888;
+}
+h5,
+h6,
+.jumbotron_cell .secondary_btn a,
+.jumbotron_cell .secondary_btn span,
+.content_cell a,
+.content_cell a span,
+.header_cell a,
+.header_cell a span,
+.amount, .content_cell h2 .amount {
+	color: #56bfa3;
+}
+.footer_cell .column_cell, .footer_cell a, .footer_cell a span, .content h4 span, .content h3 span {
+	color: #b3b3b5;
+}
+.jumbotron_cell .icon_secondary .icon_cell {
+	border-color: #ffffff;
+
+}
+.icon_primary .icon_cell {
+	border-color: #56bfa3;
+}
+.content_cell .icon_secondary .icon_cell, .footer_cell, .content .product_row, .content .order_total {
+	border-color: #ebebeb;
+}
+/* Responsive */
+@media screen {
+  h1, h2, h3, h4, h5, h6, p, a, .font_default {
+	  font-family: "Lato", Helvetica, Arial, sans-serif !important;  /* web font */
+  }
+  .primary_btn td, .secondary_btn td {
+	  padding: 0 !important;
+  }
+  .primary_btn a, .secondary_btn a {
+	  font-size: 18px !important;
+	  line-height: 26px !important;
+	  padding: 9px 32px !important;
+  }
+}
+@media screen and (min-width: 631px) and (max-width: 769px) {
+.col-1, .col-2 {
+	float: left !important;
+}
+.col-1 {
+	width: 200px !important;
+}
+.col-2 {
+	width: 300px !important;
+}
+}
+@media screen and (max-width: 630px) {
+  .jumbotron_cell {
+	  background-size: cover !important;
+  }
+  .row, .col-1, .col-13, .col-2, .col-3 {
+	  max-width: 100% !important;
+  }
+}
+</style>
+</head>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="margin: 0;padding: 0;min-width: 100%;background-color: #ffffff;">
+  <div class="email_summary" style="display: none;font-size: 1px;line-height: 1px;max-height: 0px;max-width: 0px;opacity: 0;overflow: hidden;">Summarize your email here.</div><!-- /.email_summary -->
+  <div class="email_body" style="background-color: #ffffff;">
+      <table class="header" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;">
+        <tbody>
+          <tr>
+            <td class="header_cell" align="center" valign="top" style="padding: 0;text-align: center;background-color: #ffffff;font-size: 0 !important;">
+                <!--[if (gte mso 9)|(IE)]>
+                <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="vertical-align: top;">
+                  <tbody>
+                    <tr>
+                      <td width="600" align="center" valign="top">
+                <![endif]-->
+                <div class="row" style="display: inline-block;width: 100%;vertical-align: top;text-align: center;max-width: 600px;margin: 0 auto;">
+                  <!--[if (gte mso 9)|(IE)]>
+                  <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="vertical-align: top;">
+                    <tbody>
+                      <tr>
+                        <td width="600" align="center" valign="top">
+                  <![endif]-->
+                  <div class="col-3" style="display: inline-block;width: 100%;vertical-align: top;text-align: center;max-width: 600px;">
+                      <table class="column" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;width: 100%;vertical-align: top;">
+                        <tbody>
+                          <tr>
+                            <td class="column_cell font_default" align="center" valign="top" style="padding: 32px 16px;font-family: Helvetica, Arial, sans-serif;font-size: 16px;text-align: center;vertical-align: top;color: #888888;"><a href="#" style="display: inline-block;text-decoration: none;font-family: Helvetica, Arial, sans-serif;color: #56bfa3;"><img src="https://s3-us-west-2.amazonaws.com/ednang/staticfiles/email_logo.png" width="144" height="22" alt="Commerce" style="line-height: 1;outline: none;border: 0;text-decoration: none;-ms-interpolation-mode: bicubic;mso-line-height-rule: exactly;max-width: 144px;height: auto;"></a></td><!-- /.column_cell -->
+                          </tr>
+                        </tbody>
+                      </table><!-- /.column -->
+                  </div><!-- /.col-3 -->
+                  <!--[if (gte mso 9)|(IE)]>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <![endif]-->
+                </div><!-- /.row -->
+                <!--[if (gte mso 9)|(IE)]>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <![endif]-->
+            </td><!-- /.header_cell -->
+          </tr>
+        </tbody>
+      </table><!-- /.header -->
+      <table class="jumbotron" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;">
+        <tbody>
+          <tr>
+            <td class="jumbotron_cell jumbotron_image" align="center" valign="top" style="padding: 0;text-align: center;background-repeat: no-repeat;background-position: 50% 0;background-size: 100% auto;background-color: #262840;background-image: url(https://s3-us-west-2.amazonaws.com/ednang/staticfiles/jumbotron_image.jpg);color: #ffffff;font-size: 0 !important;">
+                <!--[if (gte mso 9)|(IE)]>
+                <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="vertical-align: top;">
+                  <tbody>
+                    <tr>
+                      <td width="600" align="center" valign="top">
+                <![endif]-->
+                <div class="row" style="display: inline-block;width: 100%;vertical-align: top;text-align: center;max-width: 600px;margin: 0 auto;">
+                  <!--[if (gte mso 9)|(IE)]>
+                  <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="vertical-align: top;">
+                    <tbody>
+                      <tr>
+                        <td width="600" align="center" valign="top">
+                  <![endif]-->
+                  <div class="col-3" style="display: inline-block;width: 100%;vertical-align: top;text-align: center;max-width: 600px;">
+                    <table class="column" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;width: 100%;vertical-align: top;">
+                      <tbody>
+                        <tr>
+                          <td class="column_cell font_default" align="center" valign="top" style="padding: 32px 16px;font-family: Helvetica, Arial, sans-serif;font-size: 16px;text-align: center;vertical-align: top;color: #ffffff;">
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 16px;margin-bottom: 24px;">&nbsp; </p>
+                            <table class="icon_holder icon_secondary" width="80" border="0" align="center" cellpadding="0" cellspacing="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;width: 48px;margin-left: auto;margin-right: auto;clear: both;">
+                              <tbody>
+                                <tr>
+                                  <td class="hspace" style="padding: 0;font-size: 0;height: 8px;overflow: hidden;">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                  <td class="icon_cell" style="padding: 8px;font-size: 0;line-height: 1;-webkit-border-radius: 80px;border-radius: 80px;height: 48px;border: 2px solid;border-color: #ffffff;"><img src="https://s3-us-west-2.amazonaws.com/ednang/staticfiles/ic_vpn_key_white_48dp_2x.png" width="48" height="48" alt="" style="line-height: 1;outline: none;border: 0;text-decoration: none;-ms-interpolation-mode: bicubic;mso-line-height-rule: exactly;"></td>
+                                </tr>
+                                <tr>
+                                  <td class="hspace" style="padding: 0;font-size: 0;height: 8px;overflow: hidden;">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                  <td class="hspace" style="padding: 0;font-size: 0;height: 8px;overflow: hidden;">&nbsp;</td>
+                                </tr>
+                              </tbody>
+                            </table><!-- /.icon_holder:icon_secondary -->
+                            <h1 style="font-family: Helvetica, Arial, sans-serif;margin-left: 0;margin-right: 0;margin-top: 16px;margin-bottom: 8px;padding: 0;font-size: 32px;line-height: 40px;font-weight: bold;text-transform: uppercase;letter-spacing: 4px;color: #ffffff;">Verify your Email</h1>
+                            <h4 style="font-family: Helvetica, Arial, sans-serif;margin-left: 0;margin-right: 0;margin-top: 16px;margin-bottom: 8px;padding: 0;font-size: 19px;line-height: 28px;font-weight: normal;color: #ffffff;">Dear {{.Name}}, you created a new school account with edna. Please click the link below to verify your email.</h4>
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 16px;margin-bottom: 24px;">&nbsp; </p>
+                            <table class="primary_btn" align="center" border="0" cellspacing="0" cellpadding="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;clear: both;margin: 0 auto;">
+                              <tbody>
+                                <tr>
+                                  <td class="font_default" style="padding: 10px 32px;font-family: Helvetica, Arial, sans-serif;font-size: 19px;line-height: 28px;mso-line-height-rule: exactly;text-align: center;vertical-align: middle;-webkit-border-radius: 60px;border-radius: 60px;background-color: #56bfa3;"><a href="{{.VerificationURL}}" style="display: block;text-decoration: none;font-family: Helvetica, Arial, sans-serif;font-weight: bold;text-align: center;color: #ffffff;"><span style="text-decoration: none;text-align: center;display: block;color: #ffffff;">Verify Email</span></a></td>
+                                </tr>
+                              </tbody>
+                            </table><!-- /.primary_btn -->
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 16px;margin-bottom: 24px;">&nbsp; </p>
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 16px;margin-bottom: 24px;"><em>If you received this email in error, you can safely ignore it.</em></p>
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 16px;margin-bottom: 24px;">&nbsp; </p>
+                          </td><!-- /.column_cell -->
+                        </tr>
+                      </tbody>
+                    </table><!-- /.column -->
+                  </div><!-- /.col-3 -->
+                  <!--[if (gte mso 9)|(IE)]>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <![endif]-->
+                </div><!-- /.row -->
+                <!--[if (gte mso 9)|(IE)]>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <![endif]-->
+            </td><!-- /.jumbotron_cell -->
+          </tr>
+        </tbody>
+      </table><!-- /.jumbotron -->
+      <table class="footer" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;">
+        <tbody>
+          <tr>
+            <td class="footer_cell product_row" align="center" valign="top" style="padding: 24px 0;text-align: center;border-top: 1px solid;background-color: #ffffff;border-color: #ebebeb;font-size: 0 !important;">
+                <!--[if (gte mso 9)|(IE)]>
+                <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="vertical-align: top;">
+                  <tbody>
+                    <tr>
+                      <td width="600" align="center" valign="top">
+                <![endif]-->
+                <div class="row" style="display: inline-block;width: 100%;vertical-align: top;text-align: center;max-width: 600px;margin: 0 auto;">
+                  <!--[if (gte mso 9)|(IE)]>
+                  <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="vertical-align: top;">
+                    <tbody>
+                      <tr>
+                        <td width="600" align="center" valign="top">
+                  <![endif]-->
+                  <div class="col-3" style="display: inline-block;width: 100%;vertical-align: top;text-align: center;max-width: 600px;">
+                    <table class="column" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;width: 100%;vertical-align: top;">
+                      <tbody>
+                        <tr>
+                          <td class="column_cell font_default" align="center" valign="top" style="padding: 8px 16px;font-family: Helvetica, Arial, sans-serif;font-size: 16px;text-align: center;vertical-align: top;color: #b3b3b5;">
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 8px;margin-bottom: 8px;margin: 16px 0;">If if you have any questions hit reply on this email.</p>
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 8px;margin-bottom: 8px;margin: 16px 0;">&nbsp; </p>
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 8px;margin-bottom: 8px;margin: 16px 0;"><a href="#" style="display: inline-block;text-decoration: none;font-family: Helvetica, Arial, sans-serif;color: #b3b3b5;">&nbsp;<img src="https://s3-us-west-2.amazonaws.com/ednang/staticfiles/facebook-iso-black.png" width="32" height="32" alt="" style="line-height: 1;outline: none;border: 0;text-decoration: none;-ms-interpolation-mode: bicubic;mso-line-height-rule: exactly;">&nbsp;</a> &nbsp;&nbsp; <a href="#" style="display: inline-block;text-decoration: none;font-family: Helvetica, Arial, sans-serif;color: #b3b3b5;">&nbsp;<img src="https://s3-us-west-2.amazonaws.com/ednang/staticfiles/twitter-iso-black.png" width="32" height="32" alt="" style="line-height: 1;outline: none;border: 0;text-decoration: none;-ms-interpolation-mode: bicubic;mso-line-height-rule: exactly;">&nbsp;</a> &nbsp;&nbsp; </p>
+                            <p style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;line-height: 23px;margin-top: 8px;margin-bottom: 8px;margin: 16px 0;"><a href="#" style="display: inline-block;text-decoration: none;font-family: Helvetica, Arial, sans-serif;color: #b3b3b5;"><span style="text-decoration: none;color: #b3b3b5;"><strong>Email Preferences</strong></span></a> &nbsp; <a href="#" style="display: inline-block;text-decoration: none;font-family: Helvetica, Arial, sans-serif;color: #b3b3b5;"><strong>Unsubscribe</strong></a> &nbsp; <a href="#" style="display: inline-block;text-decoration: none;font-family: Helvetica, Arial, sans-serif;color: #b3b3b5;"><strong>About</strong></a><br>
+                              Commerce, Inc. 2080 Spadafore Drive,
+                              Pleasantville, PA 16341</p>
+                          </td><!-- /.column_cell -->
+                        </tr>
+                      </tbody>
+                    </table><!-- /.column -->
+                  </div><!-- /.col-3 -->
+                  <!--[if (gte mso 9)|(IE)]>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <![endif]-->
+                </div><!-- /.row -->
+                <!--[if (gte mso 9)|(IE)]>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <![endif]-->
+            </td><!-- /.footer_cell -->
+          </tr>
+        </tbody>
+      </table><!-- /.footer -->
+  </div><!-- /.email_body -->
+</body>
+</html>

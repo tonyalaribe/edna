@@ -12,9 +12,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	//"net"
+
+	"html/template"
 	"net/http"
-	//"net/smtp"
 	"net/url"
 )
 
@@ -198,24 +198,28 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	verificationURL := c.RootURL + "/verify?key=" + school.VerificationKey + "&email=" + school.AdminEmail + "&id=" + school.ID
 	log.Println(verificationURL)
 
-	client1 := &http.Client{}
-	client2 := &http.Client{}
+	client := &http.Client{}
 
 	// ...
-	htmlMessage := `
-			"<h2>You created a School named <strong>` + school.Name + `</strong><h2>
-			<br/></br/>
-			<p>
-				Please click the verification link below,  to verify your account.<br/>
-				<a href='` + verificationURL + `'>` + verificationURL + `</a>
-			</p>"
-		`
+	/*htmlMessage := `
+		<h2>You created a School named <strong>` + school.Name + `</strong><h2>
+		<br/></br/>
+		<p>
+			Please click the verification link below,  to verify your account.<br/>
+			<a href='` + verificationURL + `'>` + verificationURL + `</a>
+		</p>
+	`*/
+	var htmlMessage bytes.Buffer
+	err := template.New("").ExecuteTemplate(&htmlMessage, "./static/email-templates/verifyhtml.html", "")
+	if err != nil {
+		log.Println(err)
+	}
 
 	verificationMessage := `
 		{	"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"},
 			"from":["noreply@edna.ng","Edna - School Management System"],
 			"subject":"Edna: Verify your Account",
-			"html":` + htmlMessage + `
+			"html":"` + htmlMessage.String() + `"
 		}`
 
 	mesg := bytes.NewReader([]byte(verificationMessage))
@@ -228,65 +232,67 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	}
 
 	req.Header.Add("api-key", "y12YpKGZtJErsqTI")
-	_, err = client1.Do(req)
-
+	resp, err = client.Do(req)
+	defer resp.Body.Close()
 	if err != nil {
 		log.Println(err)
+		body, _ := ioutil.ReadAll(resp.Body)
+		fmt.Println("response Body:", string(body))
+
 		http.Redirect(w, r, "/registrationerror.html", http.StatusInternalServerError)
 		return
 	}
 
 	//Send Email alerting about new users
 	htmlMessage = `
-		<h1>New User Details</h1>
-		<div>
+			<h1>New User Details</h1>
 			<div>
-				<strong>School Name: </strong> %v
+				<div>
+					<strong>School Name: </strong> %v
+				</div>
+				<div>
+					<strong>School Domain: </strong> %v
+				</div>
+				<div>
+					<strong>Admin Name: </strong> %v
+				</div>
+				<div>
+					<strong>Admin Email: </strong> %v
+				</div>
+				<div>
+					<strong>Admin Phone: </strong> %v
+				</div>
 			</div>
-			<div>
-				<strong>School Address: </strong> %v
-			</div>
-			<div>
-				<strong>School Domain: </strong> %v
-			</div>
-			<div>
-				<strong>Admin Name: </strong> %v
-			</div>
-			<div>
-				<strong>Admin Email: </strong> %v
-			</div>
-			<div>
-				<strong>Admin Phone: </strong> %v
-			</div>
-		</div>
-		`
+			`
 
 	newUserMessage := `
-		{
-			"to":{"daniel@edna.ng":"Daniel Adigun"},
-			"from":["noreply@edna.ng","Edna - School Management System"],
-			"subject":"Edna: New Signup",
-			"html":` + fmt.Sprintf(htmlMessage, school.Name, school.Address, school.Domain, school.AdminName, school.AdminEmail, school.AdminPhone) + `
-		}
-		`
-	log.Println(fmt.Sprintf(htmlMessage, school.Name, school.Address, school.Domain, school.AdminName, school.AdminEmail, school.AdminPhone))
+			{
+				"to":{"anthonyalaribe@gmail.com":"Daniel Adigun"},
+				"from":["noreply@edna.ng","Edna - School Management System"],
+				"subject":"Edna: New Signup",
+				"html":"` + fmt.Sprintf(htmlMessage, school.Name, school.ID+".edna.ng", school.AdminName, school.AdminEmail, school.AdminPhone) + `"
+			}
+			`
+	log.Println(newUserMessage)
 	nUserMesg := bytes.NewReader([]byte(newUserMessage))
 
-	req2, err := http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", nUserMesg)
+	req, err = http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", nUserMesg)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	log.Println("still working")
-	req2.Header.Add("api-key", "y12YpKGZtJErsqTI")
-	resp, err = client2.Do(req2)
+
+	req.Header.Add("api-key", "y12YpKGZtJErsqTI")
+	resp, err = client.Do(req)
 	defer resp.Body.Close()
 	if err != nil {
 		log.Println(err)
+		body1, _ := ioutil.ReadAll(resp.Body)
+		fmt.Println("response Body:", string(body1))
+
 		return
 	}
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println("response Body:", string(body))
+
 	http.Redirect(w, r, "/success.html", http.StatusFound)
 }
 
