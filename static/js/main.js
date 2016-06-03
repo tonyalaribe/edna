@@ -118,8 +118,17 @@ function userService($http, API, auth, $rootScope) {
 
 }
 
-var edna = angular.module('edna', ['ui.router', 'multiStepForm']);
-edna.config(function($stateProvider, $urlRouterProvider) {
+var edna = angular.module('edna', ['ui.router', 'multiStepForm', 'ui-notification']);
+edna.config(function($stateProvider, $urlRouterProvider, NotificationProvider) {
+  NotificationProvider.setOptions({
+      delay: 6000,
+      startTop: 20,
+      startRight: 10,
+      verticalSpacing: 20,
+      horizontalSpacing: 20,
+      positionX: 'right',
+      positionY: 'top'
+  });
   //
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise("/404");
