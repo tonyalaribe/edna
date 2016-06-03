@@ -103,6 +103,7 @@
 
   function NewClassCtrl(API, $http, $scope, Notification) {
     console.log("new class");
+    $scope.show = "hide";
     $scope.c = {};
     $scope.err = "";
     $scope.suc = "";
@@ -127,7 +128,7 @@
 
 
     function handleRequest(res) {
-      console.log(res)
+      $scope.show = "hide";
       $scope.c = {};
       //$scope.suc = "New Class Added Succesfully";
       Notification({message: 'New Class Added Succesfully', title: 'Class Management'});
@@ -135,7 +136,7 @@
     }
 
     function handleError(err){
-      console.log("Error")
+      $scope.show = "hide";
       console.log(err)
       Notification.error(err);
     }
@@ -144,7 +145,7 @@
     $scope.newclass = function(c){
       if(c.name){
         $scope.err = "";
-        console.log(c);
+        $scope.show = "show";
         $scope.c = {};
         $http.post(API + '/class', c).then(handleRequest, handleError)
       }else {
@@ -205,6 +206,7 @@
 
   function EditClassCtrl(API, $scope, $http, $state, $rootScope, Notification) {
     $scope.c = $rootScope.c;
+    $scope.show = "hide";
 
     $http.get(API + '/teachers').then(function(res) {
       $scope.teachers = res.data.users;
@@ -216,7 +218,7 @@
     });
 
     function handleRequest(res) {
-      console.log(res)
+      $scope.show = "hide";
       $scope.c = {};
       Notification({message: 'Class Data Successfuly Update!', title: 'Class Management'});
       $state.go("class.list")
@@ -224,13 +226,14 @@
     }
 
     function handleError(err){
-      console.log("Error");
+      $scope.show = "hide";
       console.log(err);
       Notification.error(err);
     }
 
 
     $scope.editclass = function(c){
+      $scope.show = "show";
       console.log(c);
       $http.put(API + '/class', c).then(handleRequest, handleError)
     }
@@ -260,6 +263,7 @@
     $scope.subject.teachers = [];
     $scope.err = "";
     $scope.suc = "";
+    $scope.show = "hide";
 
     $http.get(API + '/teachers').then(function(res) {
       console.log(res)
@@ -282,7 +286,7 @@
 
 
     function handleRequest(res) {
-      console.log(res)
+      $scope.show = "hide";
       $scope.subject = {};
       $scope.suc = "New Subject Added Succesfully";
       Notification({message: 'New Subject Added Succesfully', title: 'Subject Management'});
@@ -290,7 +294,7 @@
     }
 
     function handleError(err){
-      console.log("Error")
+      $scope.show = "hide";
       console.log(err)
       Notification.error(err);
     }
@@ -298,7 +302,7 @@
 
     $scope.newsubject = function(c){
       if(c.name){
-        console.log(c);
+        $scope.show = "show";
         $scope.err = "";
         $http.post(API + '/subject', c).then(handleRequest, handleError)
       }else {
@@ -354,6 +358,7 @@
     $http.get(API + '/subjects').then(handleRequest, handleError);
 
     $scope.edit = function(sub){
+
       $rootScope.subject = sub;
       $state.go("class.subject_edit")
     }
@@ -362,6 +367,7 @@
 
   function EditSubjectCtrl(API, $scope, $http, $state, $rootScope, Notification) {
     $scope.subject = $rootScope.subject;
+    $scope.show = "hide";
 
 
     $http.get(API + '/teachers').then(function(res) {
@@ -385,6 +391,7 @@
 
 
     function handleRequest(res) {
+      $scope.show = "hide";
       console.log(res)
       $scope.subject = {};
       Notification({message: 'Subject Succesfully Updated', title: 'Subject Management'});
@@ -394,12 +401,14 @@
 
     function handleError(err){
       console.log("Error")
+      $scope.show = "hide";
       Notification.error(err);
       console.log(err)
     }
 
 
     $scope.editsubject = function(subject){
+      $scope.show = "show";
       console.log(subject);
       $http.put(API + '/subject', subject).then(handleRequest, handleError)
     }
@@ -609,8 +618,10 @@
   function NewStaffCtrl(API, $http, $scope, Notification) {
     $scope.newstaff = {};
     $scope.res = "";
+    $scope.show = "hide";
     function handleRequest(res) {
       console.log(res)
+      $scope.show = "hide";
       $scope.newstaff = {};
 
       Notification({message: 'New Staff Data Added', title: 'Staff Management'});
@@ -620,6 +631,7 @@
 
     function handleError(err){
       console.log("Error")
+      $scope.show = "hide";
       console.log(err)
       Notification.error(err);
     }
@@ -628,6 +640,7 @@
     $scope.newstaffx = function(staff){
       if(staff.name && staff.type && staff.email && staff.phone && staff.password){
         $scope.res = "";
+        $scope.show = "show";
         $http.post(API + '/staff', staff).then(handleRequest, handleError);
       }else{
         $scope.res = "Please fill empty fields";
@@ -671,9 +684,11 @@
 
   function EditStaffCtrl(API, $scope, $http, $state, $rootScope, Notification) {
     console.log("edit staff ctrl");
+    $scope.show = "hide";
     $scope.staff = $rootScope.staff;
     function handleRequest(res) {
       console.log(res)
+      $scope.show = "hide";
       Notification({message: 'Data Update Complete', title: 'Staff Management'});
       $scope.staff = {};
       $state.go("staff.list")
@@ -683,11 +698,13 @@
     function handleError(err){
       console.log("Error")
       console.log(err)
+      $scope.show = "hide";
       Notification.error(err);
     }
 
 
     $scope.editstaff = function(staff){
+      $scope.show = "show";
       console.log(staff);
       $http.put(API + '/staff', staff).then(handleRequest, handleError)
     }
