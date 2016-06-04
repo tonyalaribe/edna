@@ -201,16 +201,6 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 
 	client := &http.Client{}
 
-	// ...
-	/*htmlMessage := `
-		<h2>You created a School named <strong>` + school.Name + `</strong><h2>
-		<br/></br/>
-		<p>
-			Please click the verification link below,  to verify your account.<br/>
-			<a href='` + verificationURL + `'>` + verificationURL + `</a>
-		</p>
-	`*/
-
 	VerificationData := struct {
 		Name            string
 		VerificationURL string
@@ -219,7 +209,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 		VerificationURL: verificationURL,
 	}
 	var htmlMessage bytes.Buffer
-	tmpl, err := template.New("").ParseFiles("./static/email-templates/verifyhtml.html")
+	tmpl, err := template.New("").ParseFiles("./static/email-templates/verifyhtml.html", "./static/email-templates/new_school_notification.html")
 	if err != nil {
 		log.Println(err)
 	}
@@ -235,8 +225,6 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 			"subject":"Edna: Verify your Account",
 			"html":"` + strings.Replace(htmlMessage.String(), `"`, `\"`, -1) + `"
 		}`
-
-	log.Println(verificationMessage)
 
 	mesg := bytes.NewReader([]byte(verificationMessage))
 
@@ -260,36 +248,22 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Send Email alerting about new users
-	htmlMessage1 := `
-			<h1>New User Details</h1>
-			<div>
-				<div>
-					<strong>School Name: </strong> %v
-				</div>
-				<div>
-					<strong>School Domain: </strong> %v
-				</div>
-				<div>
-					<strong>Admin Name: </strong> %v
-				</div>
-				<div>
-					<strong>Admin Email: </strong> %v
-				</div>
-				<div>
-					<strong>Admin Phone: </strong> %v
-				</div>
-			</div>
-			`
+
+	school.Domain = school.ID + ".edna.ng"
+
+	err = tmpl.ExecuteTemplate(&htmlMessage, "new_school_notification.html", school)
+	if err != nil {
+		log.Println(err)
+	}
 
 	newUserMessage := `
 			{
-				"to":{"anthonyalaribe@gmail.com":"Daniel Adigun"},
+				"to":{"daniel@edna.ng":"Daniel Adigun"},
 				"from":["noreply@edna.ng","Edna - School Management System"],
 				"subject":"Edna: New Signup",
-				"html":"` + fmt.Sprintf(htmlMessage1, school.Name, school.ID+".edna.ng", school.AdminName, school.AdminEmail, school.AdminPhone) + `"
+				"html":"` + strings.Replace(htmlMessage.String(), `"`, `\"`, -1) + `"
 			}
 			`
-	log.Println(newUserMessage)
 	nUserMesg := bytes.NewReader([]byte(newUserMessage))
 
 	req, err = http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", nUserMesg)
