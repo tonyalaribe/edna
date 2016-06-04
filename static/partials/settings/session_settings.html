@@ -12,13 +12,14 @@
     <div class="col-sm-6">
       <div class="form-group edna-form-group " style="width:100%;">
         <label for="session_start">Session Start Date</label>
-        <input type="date" class="form-control" id="session_start"  name="session_start"  placeholder="" ng-model="session.start"/>
+        <md-datepicker ng-model="session.start" md-placeholder="Enter date"></md-datepicker>
       </div>
     </div>
     <div class="col-sm-6">
       <div class="form-group edna-form-group " style="width:100%;">
         <label for="session_end">Session End Date</label>
-        <input type="date" class="form-control" id="session_end"  name="session_end"  placeholder="" ng-model="session.end"/>
+        <md-datepicker ng-model="session.end" md-placeholder="Enter date"></md-datepicker>
+
       </div>
     </div>
     <div style="clear:both"></div>

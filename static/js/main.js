@@ -118,7 +118,7 @@ function userService($http, API, auth, $rootScope) {
 
 }
 
-var edna = angular.module('edna', ['ui.router', 'multiStepForm', 'ui-notification']);
+var edna = angular.module('edna', ['ui.router', 'multiStepForm', 'ui-notification', 'ngMaterial']);
 edna.config(function($stateProvider, $urlRouterProvider, NotificationProvider) {
   NotificationProvider.setOptions({
       delay: 6000,

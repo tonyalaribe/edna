@@ -46,6 +46,10 @@
         <input type="text" class="form-control" id="assessment_upper_limit"  name="assessment_upper_limit"  placeholder="20" ng-model="assessment.percentage"/>
       </div>
       <button class="btn register-btn" style="padding: 8px 30px;"  ng-click="newAssessment(assessment)">Add Assessment</button>
+      <div layout="row" layout-sm="column" layout-align="space-around">
+    <md-progress-circular md-mode="{{indeterminate}}" ng-show="show == 'show'"></md-progress-circular>
+  </div>
+
     </div>
   </div>
 
