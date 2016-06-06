@@ -91,7 +91,7 @@ func main() {
 
 	router.HandleMethodNotAllowed = false
 	router.NotFound = http.FileServer(http.Dir("./static")).ServeHTTP
-
+	router.Get("/test", commonHandlers.ThenFunc(config.ParseHandler))
 	//api routes for iparent
 	router.Get("/api/child", commonHandlers.ThenFunc(ChildHandler))
 	router.Get("/api/board", commonHandlers.ThenFunc(BoardHandler))
