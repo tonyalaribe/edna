@@ -941,6 +941,7 @@ function SessionSettingsCtrl(API, $scope, $http ){
     $http.get(API + '/subject?id='+encodeURI($stateParams.id)).then(function(res){
         console.log(res.data)
         $scope.overview = res.data.subject;
+        $scope.overview.class = $stateParams.class;
       },function(err){
         console.log(err)
       }
