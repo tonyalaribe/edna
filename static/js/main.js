@@ -377,22 +377,31 @@ edna.config(function($stateProvider, $urlRouterProvider, NotificationProvider) {
         "class": { templateUrl: "/partials/class/class_edit.html" },
       },
     })
-    .state('class.subject_new', {
-      url: "/class/subjects/new",
+    .state('subjects', {
+      url: "",
       views: {
-        "class": { templateUrl: "/partials/subject/subject_new.html" },
+        "content": { templateUrl: "/partials/subject/subject.html" },
+      },data:{
+        roles: ["admin"],
+        requireLogin: true,
+      }
+    })
+    .state('subjects.new', {
+      url: "/subjects/new",
+      views: {
+        "subject": { templateUrl: "/partials/subject/subject_new.html" },
       },
     })
-    .state('class.subject_list', {
-      url: "/class/subjects/list",
+    .state('subjects.list', {
+      url: "/subjects/list",
       views: {
-        "class": { templateUrl: "/partials/subject/subject_list.html" },
+        "subject": { templateUrl: "/partials/subject/subject_list.html" },
       },
     })
-    .state('class.subject_edit', {
-      url: "/class/subjects/edit",
+    .state('subjects.edit', {
+      url: "/subjects/edit",
       views: {
-        "class": { templateUrl: "/partials/subject/subject_edit.html" },
+        "subject": { templateUrl: "/partials/subject/subject_edit.html" },
       },
     })
 
@@ -590,10 +599,10 @@ edna.config(function($stateProvider, $urlRouterProvider, NotificationProvider) {
         thumbnail:$sce.trustAsHtml('li'),
       }]
     };
-    var classesnsubjects = {
+    var classes = {
       nested:true,
-      id:"classesnsubjects",
-      name:"Classes and Subjects",
+      id:"classes",
+      name:"Classes",
       state: "",
       roles:"admin",
       thumbnail: $sce.trustAsHtml('<i class="fa fa-book"></i>'),
@@ -608,16 +617,26 @@ edna.config(function($stateProvider, $urlRouterProvider, NotificationProvider) {
         name:"Classes",
         state:"class.list",
         thumbnail:$sce.trustAsHtml('li'),
-      },
+      }]
+    };
+
+    var subjects = {
+      nested:true,
+      id:"subjects",
+      name:"Subjects",
+      state: "",
+      roles:"admin",
+      thumbnail: $sce.trustAsHtml('<i class="fa fa-book"></i>'),
+      children:[
       {
         id:"subject_new",
         name:"New Subjects",
-        state:"class.subject_new",
+        state:"subjects.new",
         thumbnail:$sce.trustAsHtml('<i class="fa fa-plus"></i>'),
       },{
         id:"subject_list",
         name:"Subjects",
-        state:"class.subject_list",
+        state:"subjects.list",
         thumbnail:$sce.trustAsHtml('li'),
       }]
     };
@@ -672,7 +691,7 @@ edna.config(function($stateProvider, $urlRouterProvider, NotificationProvider) {
       }]
     };
 
-    $rootScope.addons = [dashboard, staff, classesnsubjects, students, teacher, SchoolSettings];
+    $rootScope.addons = [dashboard, staff, classes, subjects, students, teacher, SchoolSettings];
 
       console.log(auth.isAuthed())
       $rootScope.$on('$stateChangeStart', function(event, toState, toParams){

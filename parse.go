@@ -44,13 +44,48 @@ func (rp *ParseRepo) AddCsv() error {
 		rp.coll.Insert(lga)
 	}
 	for key, value := range m {
+		state := new(State)
+		state.Slug = key
+		state.State = value
 
 	}
 
 	return nil
 }
 
+func (rp *ParseRepo) AddCsvS() error {
+
+	dat, err := ioutil.ReadFile("csv/lga.csv")
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+	r := csv.NewReader(strings.NewReader(string(dat)))
+	records, errs := r.ReadAll()
+	if errs != nil {
+		log.Fatal(errs)
+	}
+	m := make(map[string]string)
+	for i := 1; i < len(records); i++ {
+		m[strings.Replace(records[i][2], " ", "-", -1)] = records[i][2]
+	}
+	for key, value := range m {
+		state := new(State)
+		state.Slug = key
+		state.State = value
+		rp.coll.Insert(state)
+	}
+
+	return nil
+}
+
+/*func (rp *ParseRepo) GetStates() (string, error) {
+	//  result, err :=
+}*/
+
 func (c *Config) ParseHandler(w http.ResponseWriter, r *http.Request) {
-	u := ParseRepo{c.MongoSession.DB(c.MONGODB).C("state")}
+	u := ParseRepo{c.MongoSession.DB(c.MONGODB).C("lga")}
 	u.AddCsv()
+	y := ParseRepo{c.MongoSession.DB(c.MONGODB).C("state")}
+	y.AddCsvS()
 }
