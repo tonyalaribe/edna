@@ -10,15 +10,22 @@
     <div class="col-sm-4">
       <div class="form-group edna-form-group ">
         <label for="student_country">Country</label>
-        <input type="text" class="form-control" id="student_country"  name="student_country"  placeholder="Nigeria" ng-model="student.country"/>
-      </div>
+        <select ng-model="student.country" ng-change="state(student.country)"><option ng-repeat="data in country" value="{{data.Country}}" >{{data.Country}}</option></select>
     </div>
     <div class="col-sm-4">
       <div class="form-group edna-form-group ">
         <label for="student_state">State</label>
-        <input type="text" class="form-control" id="student_state"  name="student_state"  placeholder="Cross River State" ng-model="student.state"/>
+        <select ng-model="student.state" ng-show="student.country == 'NG|Nigeria'" ng-change="lga(data.slug)"><option ng-repeat="data in stateList" value="{{data.State}}" >{{data.State}}</option></select>
       </div>
     </div>
+
+    <div class="col-sm-4">
+      <div class="form-group edna-form-group ">
+        <label for="student_state">LGA</label>
+        <select ng-model="student.lga"><option ng-repeat="data in lgaList" value="{{data.Lga}}">{{data.Lga}}</option></select>
+      </div>
+    </div>
+
     <div class="col-sm-4">
       <div class="form-group edna-form-group ">
         <label for="student_city">City</label>

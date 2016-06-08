@@ -457,8 +457,44 @@
       console.log(err)
     });
 
-
+    $scope.country = {};
     $scope.student = {};
+    $scope.stateList = {};
+    $scope.lgaList = {};
+    $scope.change = "";
+    $scope.state = function(data){
+      console.log(data);
+$scope.change = data;
+        console.log("data");
+        $http.get(API +'/GetStates').then(function(res){
+          console.log(res.data);
+          $scope.stateList = res.data;
+        }, function(err){
+          console.log(err);
+        });
+    };
+
+    $scope.lga = function(data){
+        console.log(data);
+        $http.get(API +'/GetLgas?q='+data).then(function(res){
+          console.log(res.data);
+          $scope.lgaList = res.data;
+        }, function(err){
+          console.log(err);
+
+        });
+    };
+
+
+    $http.get(API +'/GetCountries').then(function(res){
+      console.log(res.data);
+      $scope.country = res.data;
+    }, function(err){
+      console.log(err);
+
+    });
+
+
     $scope.savestudent = function(student){
       $scope.submittedStudent = true;
       $http.post(API + '/student', student).then(

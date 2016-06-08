@@ -82,9 +82,11 @@ func main() {
 
 	router.Post("/api/session", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.createSessionHandler))
 	router.Get("/api/sessions", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getSessionHandler))
-
 	router.Get("/api/me", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getMeHandler))
 	router.Post("/register.html", commonHandlers.ThenFunc(config.NewSchool))
+	router.Get("/api/GetStates", commonHandlers.ThenFunc(config.GetStates))
+	router.Get("/api/GetLgas", commonHandlers.ThenFunc(config.GetLga))
+	router.Get("/api/GetCountries", commonHandlers.ThenFunc(config.GetCountries))
 	router.Get("/verify", commonHandlers.ThenFunc(config.VerifySchool))
 
 	router.Get("/", commonHandlers.Append(dbsetter).ThenFunc(config.RootHandler))
@@ -92,6 +94,7 @@ func main() {
 	router.HandleMethodNotAllowed = false
 	router.NotFound = http.FileServer(http.Dir("./static")).ServeHTTP
 	router.Get("/test", commonHandlers.ThenFunc(config.ParseHandler))
+	router.Get("/test2", commonHandlers.ThenFunc(config.Test))
 	//api routes for iparent
 	router.Get("/api/child", commonHandlers.ThenFunc(ChildHandler))
 	router.Get("/api/board", commonHandlers.ThenFunc(BoardHandler))

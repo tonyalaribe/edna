@@ -28,6 +28,7 @@ type Student struct {
 	Nationality                 string        `json:"nationality,omitempty" bson:",omitempty"`
 	StateOfOrigin               string        `json:"stateoforigin,omitempty" bson:",omitempty"`
 	State                       string        `json:"state,omitempty" bson:",omitempty"`
+	Lga                         string        `json:"lga,omitempty" bson:",omitempty"`
 	PermanentAddress            string        `json:"permanentaddress,omitempty" bson:",omitempty"`
 	Country                     string        `json:"country,omitempty" bson:",omitempty"`
 	City                        string        `json:"city,omitempty" bson:",omitempty"`
