@@ -464,7 +464,6 @@
     $scope.change = "";
     $scope.state = function(data){
       console.log(data);
-$scope.change = data;
         console.log("data");
         $http.get(API +'/GetStates').then(function(res){
           console.log(res.data);

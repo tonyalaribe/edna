@@ -9,36 +9,37 @@
 
     <div class="col-sm-4">
       <div class="form-group edna-form-group ">
-        <label for="student_country">Country</label>
+        <label for="student_country">Residential Country</label>
         <select ng-model="student.country" ng-change="state(student.country)"><option ng-repeat="data in country" value="{{data.Country}}" >{{data.Country}}</option></select>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-8" ng-show="student.country == 'NG|Nigeria'">
       <div class="form-group edna-form-group ">
-        <label for="student_state">State</label>
-        <select ng-model="student.state" ng-show="student.country == 'NG|Nigeria'" ng-change="lga(data.slug)"><option ng-repeat="data in stateList" value="{{data.State}}" >{{data.State}}</option></select>
+        <label for="student_state">Residential State</label>
+        <select ng-model="student.state"  ng-change="lga(student.state)">
+          <option ng-repeat="data in stateList" value="{{data.Slug}}" >{{data.State}}</option></select>
       </div>
     </div>
 
-    <div class="col-sm-4">
+    <div class="col-sm-8" ng-show="student.country == 'NG|Nigeria'">
       <div class="form-group edna-form-group ">
-        <label for="student_state">LGA</label>
+        <label for="student_state">Residential LGA</label>
         <select ng-model="student.lga"><option ng-repeat="data in lgaList" value="{{data.Lga}}">{{data.Lga}}</option></select>
       </div>
     </div>
 
-    <div class="col-sm-4">
+    <div class="col-sm-8">
       <div class="form-group edna-form-group ">
         <label for="student_city">City</label>
         <input type="text" class="form-control" id="student_city"  name="student_city"  placeholder="Calabar" ng-model="student.city"/>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-8">
       <div class="form-group edna-form-group ">
         <label for="student_phone">Phone</label>
         <input type="text" class="form-control" id="student_phone"  name="student_phone"  placeholder="2348098765432" ng-model="student.phone"/>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-8">
       <div class="form-group edna-form-group ">
         <label for="student_email">Email</label>
         <input type="text" class="form-control" id="student_email"  name="student_email"  placeholder="john@example.com" ng-model="student.email"/>
