@@ -4,6 +4,7 @@ function showNav(){
 }
 
 
+
 function dropExpand(e){
   var x = document.getElementById(e).style.display;
   console.log(x)
