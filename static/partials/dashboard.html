@@ -48,7 +48,7 @@
           <hr/>
           <div class="col-sm-2" style="text-align:center;">
             <span class="fa-stack fa-3x ">
-              <i class="fa fa-circle fa-stack-2x" style="color:#95CDB3"></i>
+              <i class="fa fa-circle fa-stack-2x" style="color:#32526E;"></i>
               <i class="fa fa-book fa-stack-1x fa-inverse" ></i>
             </span>
           </div>
@@ -110,10 +110,27 @@
             </div>
             <div class="col-sm-7">
               <h4><strong>Classes</strong></h4>
-              <p>Manage all classess assigned to you. Create and score assesments, and view class reports..</p>
+              <p>Manage all classess assigned to you. Manage class reports, students, etc..</p>
             </div>
             <div class="col-sm-3">
               <a class="btn btn-default" ui-sref="teacher_list" style="width:150px">Assigned Classes</a>
+            </div>
+          </div>
+          <div style="clear:both"></div>
+          <div data-restrict access="teacher">
+            <hr/>
+            <div class="col-sm-2" style="text-align:center;">
+              <span class="fa-stack fa-3x ">
+                <i class="fa fa-circle fa-stack-2x" style="color:#32526E;"></i>
+                <i class="fa fa-book fa-stack-1x fa-inverse" ></i>
+              </span>
+            </div>
+            <div class="col-sm-7">
+              <h4><strong>Subjects</strong></h4>
+              <p>Manage all subjects assigned to you. Create and score assesments, etc...</p>
+            </div>
+            <div class="col-sm-3">
+              <a class="btn btn-default" ui-sref="teacher_list" style="width:150px">Assigned Subjects</a>
             </div>
           </div>
           <!-- End Teacher items -->
