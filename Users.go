@@ -218,9 +218,9 @@ func (c *Config) LoginPost(w http.ResponseWriter, r *http.Request) {
 	// set the expire time
 	// see http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-20#section-4.1.4
 	if x.Remember {
-		t.Claims["exp"] = time.Now().Add(time.Hour * 3000).Unix()
+		t.Claims["exp"] = time.Now().Add(time.Hour * 24 * 30 * 12).Unix() //24 hours inn a day, in 30 days * 12 months = 1 year in milliseconds
 	} else {
-		t.Claims["exp"] = time.Now().Add(time.Hour * 10).Unix()
+		t.Claims["exp"] = time.Now().Add(time.Hour * 100).Unix()
 	}
 	tokenString, err := t.SignedString(c.Private)
 
