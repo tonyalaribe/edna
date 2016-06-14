@@ -95,6 +95,35 @@ func (r *SubjectRepo) CreateAssessment(subjectid string, assessment Assessment) 
 	return htm, nil
 }
 
+//DeleteAssessment is for creating assessments on a subject
+func (r *SubjectRepo) DeleteAssessment(subjectid string, assessment Assessment) (string, error) {
+	var ass Assessment
+	var htm string
+	htm = "Assessment " + assessment.Name + " Added Succesfully"
+
+	err := r.coll.Update(bson.M{
+		"_id": bson.ObjectIdHex(subjectid),
+	},
+		bson.M{
+			"$pull": bson.M{
+				"assessments": assessment,
+			},
+		})
+	log.Println(subjectid)
+	if err != nil {
+		log.Println(err)
+		htm = " Error Removing " + assessment.Name
+		//return err
+	}
+
+	errs := r.coll.FindId(bson.ObjectIdHex(subjectid)).One(&ass)
+	if errs != nil {
+		log.Println(errs)
+		htm = "Error Removing " + assessment.Name
+	}
+	return htm, nil
+}
+
 func (r *StudentAssessmentRepo) UpsertStudentAssessmentData(s SingleStudentAssessment) error {
 
 	log.Println(s)
@@ -187,6 +216,26 @@ func (c *Config) newAssessmentHandler(w http.ResponseWriter, r *http.Request) {
 	subjectid := r.URL.Query().Get("id")
 	log.Println(subjectid)
 	msg, err = u.CreateAssessment(subjectid, assessment)
+	if err != nil {
+		log.Println(err)
+	}
+	w.Write([]byte(msg))
+}
+
+//newAssessmentHandler would create an assessment
+func (c *Config) deleteAssessmentHandler(w http.ResponseWriter, r *http.Request) {
+	school := context.Get(r, "school").(School)
+	var msg string
+	u := SubjectRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_subjects")}
+	assessment := Assessment{}
+	err := json.NewDecoder(r.Body).Decode(&assessment)
+	if err != nil {
+		log.Println(err)
+	}
+
+	subjectid := r.URL.Query().Get("id")
+	log.Println(subjectid)
+	msg, err = u.DeleteAssessment(subjectid, assessment)
 	if err != nil {
 		log.Println(err)
 	}

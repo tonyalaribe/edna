@@ -989,8 +989,34 @@ function SessionSettingsCtrl(API, $scope, $http ){
           $scope.show = "hide";
           $scope.feedBack = res.data;
             $scope.assessment = {};
-            Notification({message: 'Success', title: 'Class Assesment'});
+            Notification({message: 'Successfully added assessment', title: 'Class Assesment'});
           $scope.overview.assessments.push(assessment);
+        },function(err){
+          console.log(err)
+          $scope.show = "hide";
+          Notification.error(err);
+        }
+      );
+    }
+
+    $scope.deleteAssessment = function(assessment){
+      //$scope.show = "show";
+      console.log(assessment)
+
+      //$scope.overview.assessments.push(assessment);
+
+
+      $http.post(API + '/deleteassessment?id='+encodeURI($stateParams.id), assessment).then(function(res){
+          console.log(res)
+          let assessments = $scope.overview.assessments;
+          var index = assessments.indexOf(assessment);
+          console.log(index);
+          if (index > -1) {
+              assessments.splice(index, 1);
+          }
+
+          Notification({message: 'Successfully deleted assessment', title: 'Class Assesment'});
+
         },function(err){
           console.log(err)
           $scope.show = "hide";

@@ -65,6 +65,7 @@ func main() {
 	router.Post("/api/addstudentassessment", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.addStudentAssessmentsHandler))
 
 	router.Post("/api/createassessment", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.newAssessmentHandler))
+	router.Post("/api/deleteassessment", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.deleteAssessmentHandler))
 
 	router.Post("/api/class", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.createClassHandler))
 	router.Get("/api/class", commonHandlers.Append(dbsetter, config.frontAuthHandler).ThenFunc(config.getClassesHandler))
