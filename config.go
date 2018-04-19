@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/mitchellh/goamz/aws"
-	"github.com/mitchellh/goamz/s3"
-	"gopkg.in/mgo.v2"
 	"io/ioutil"
 	"log"
 	"os"
+
+	"github.com/mitchellh/goamz/aws"
+	"github.com/mitchellh/goamz/s3"
+	"gopkg.in/mgo.v2"
 )
 
 var (

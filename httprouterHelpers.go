@@ -1,9 +1,10 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gorilla/context"
 	"github.com/julienschmidt/httprouter"
-	"net/http"
 )
 
 // Router

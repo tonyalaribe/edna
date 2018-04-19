@@ -181,10 +181,7 @@ edna.config(function($stateProvider, $urlRouterProvider, NotificationProvider) {
       }
     })
 
-
-
-
-        .state('teacher_list', {
+    .state('teacher_list', {
           url: "/teacher/list",
           data:{
             roles: ['teacher'],

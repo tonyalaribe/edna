@@ -5,9 +5,10 @@ import (
 
 	"github.com/gorilla/context"
 
+	"log"
+
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"log"
 
 	"net/http"
 )

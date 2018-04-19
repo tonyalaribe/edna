@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"log"
 	"net/http"
 	"reflect"
 	"strings"
 	"time"
+
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"

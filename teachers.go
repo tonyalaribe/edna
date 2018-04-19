@@ -2,10 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/gorilla/context"
-	"gopkg.in/mgo.v2/bson"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/context"
+	"gopkg.in/mgo.v2/bson"
 )
 
 //TeacherAssignmentCollection struct
