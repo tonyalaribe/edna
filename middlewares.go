@@ -87,7 +87,7 @@ func dbsetter(next http.Handler) http.Handler {
 
 		if strings.Contains(r.Host, ":8080") || h[0] == "www" {
 			err := col.Find(bson.M{
-				"_id": "unical",
+				"_id": "edna",
 			}).One(&school)
 			if err != nil {
 				log.Println(err)

@@ -186,6 +186,7 @@ func (c *Config) LoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	school := context.Get(r, "school").(School)
+	log.Printf("user %#v,  school %#v ", x, school)
 
 	u := UserRepo{c.MongoSession.DB(c.MONGODB).C(school.ID + "_users")}
 
