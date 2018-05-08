@@ -1,13 +1,21 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"net/http/httputil"
 	"strings"
 )
 
 func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
+	// Save a copy of this request for debugging.
+	requestDump, err := httputil.DumpRequest(r, true)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(requestDump))
 	// host := r.Header.Get("Host")
 	log.Printf("%#v", r.Header)
 	host := r.Host
