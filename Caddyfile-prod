@@ -1,0 +1,12 @@
+lolostalkshow.com, *.lolostalkshow.com  {
+  proxy / localhost:8100
+  on startup systemctl restart edna
+
+  root /home/ubuntu/go/github.com/tonyalaribe/edna
+  git {
+          repo git@github.com:tonyalaribe/edna
+          key /home/ubuntu/id_rsa
+          interval 600
+          then systemctl restart edna
+  }
+}

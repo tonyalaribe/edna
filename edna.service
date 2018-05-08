@@ -1,0 +1,21 @@
+[Unit]
+Description=Edna service
+ConditionPathExists=/home/ubuntu/server/edna/src/edna
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+LimitNOFILE=8194
+
+Restart=on-failure
+RestartSec=10
+
+WorkingDirectory=/home/ubuntu/server/edna/src/
+EnvironmentFile=/home/ubuntu/server/edna/src/.env
+ExecStart=/home/ubuntu/server/edna/src/edna
+
+
+[Install]
+WantedBy=multi-user.target
