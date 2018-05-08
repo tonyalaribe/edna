@@ -8,7 +8,9 @@ import (
 )
 
 func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
-	host := r.Header.Get("Host")
+	// host := r.Header.Get("Host")
+	log.Printf("%#v", r.Header)
+	host := r.Host
 	log.Println(r.Host)
 	log.Println(host)
 	h := strings.Split(host, ".")
