@@ -221,7 +221,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 
 	verificationMessage := `
 		{	"to":{"` + school.AdminEmail + `":"` + school.AdminName + `"},
-			"from":["noreply@edna.ng","Edna - School Management System"],
+			"from":["noreply@past3.com.ng","Edna - School Management System"],
 			"subject":"Edna: Verify your Account",
 			"html":"` + strings.Replace(htmlMessage.String(), `"`, `\"`, -1) + `"
 		}`
@@ -237,7 +237,6 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 
 	req.Header.Add("api-key", "y12YpKGZtJErsqTI")
 	resp, err = client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		log.Println(err)
 		body, _ := ioutil.ReadAll(resp.Body)
@@ -246,10 +245,10 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/registrationerror.html", http.StatusInternalServerError)
 		return
 	}
-
+	defer resp.Body.Close()
 	//Send Email alerting about new users
 
-	school.Domain = school.ID + ".edna.ng"
+	school.Domain = school.ID + "." + ROOT_DOMAIN
 
 	err = tmpl.ExecuteTemplate(&htmlMessage, "new_school_notification.html", school)
 	if err != nil {
@@ -258,8 +257,8 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 
 	newUserMessage := `
 			{
-				"to":{"daniel@edna.ng":"Daniel Adigun"},
-				"from":["noreply@edna.ng","Edna - School Management System"],
+				"to":{"hello@past3.com.ng":"Daniel Adigun"},
+				"from":["hello@past3.com.ng","Edna - School Management System"],
 				"subject":"Edna: New Signup",
 				"html":"` + strings.Replace(htmlMessage.String(), `"`, `\"`, -1) + `"
 			}
@@ -274,7 +273,6 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 
 	req.Header.Add("api-key", "y12YpKGZtJErsqTI")
 	resp, err = client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		log.Println(err)
 		body1, _ := ioutil.ReadAll(resp.Body)
@@ -282,7 +280,7 @@ func (c *Config) NewSchool(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-
+	defer resp.Body.Close()
 	http.Redirect(w, r, "/success.html", http.StatusFound)
 }
 

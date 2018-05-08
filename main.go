@@ -20,6 +20,8 @@ const (
 	Cost int = 5
 )
 
+const ROOT_DOMAIN = "lolostalkshow.com"
+
 type Conf struct {
 	AuthToken string
 }
