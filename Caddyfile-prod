@@ -1,5 +1,9 @@
 lolostalkshow.com, *.lolostalkshow.com  {
-  proxy / localhost:8100
+  proxy / localhost:8100  {
+        proxy_header Host {host}
+        proxy_header X-Real-IP {remote}
+        proxy_header X-Forwarded-Proto {scheme}
+    }
   on startup systemctl restart edna
 
   root /home/ubuntu/server/edna
