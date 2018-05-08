@@ -8,8 +8,10 @@ import (
 )
 
 func (config *Config) RootHandler(w http.ResponseWriter, r *http.Request) {
+	host := r.Header.Get("Host")
 	log.Println(r.Host)
-	h := strings.Split(r.Host, ".")
+	log.Println(host)
+	h := strings.Split(host, ".")
 	log.Println(len(h))
 	if h[0] == "www" || len(h) == 2 {
 		log.Println("landing page")
